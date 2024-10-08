@@ -17,7 +17,7 @@ type AuthContextdata = {
 
 type UserProps = {
     id: string;
-    name: string;
+    nome: string;
     email: string;
     token: string;
 }
@@ -36,7 +36,7 @@ export const AuthContext = createContext({} as AuthContextdata);
 export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<UserProps>({
         id: '',
-        name: '',
+        nome: '',
         email: '',
         token: '',
     });
@@ -45,7 +45,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [loading, setLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");  // Estado para a mensagem de erro
 
-    const isAuthenticated = !!user.name;
+    const isAuthenticated = !!user.nome;
 
     useEffect(() => {
         async function getUser() {
@@ -59,7 +59,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
                 setUser({
                     id: hasUser.id,
-                    name: hasUser.name,
+                    nome: hasUser.nome,
                     email: hasUser.email,
                     token: hasUser.token
                 })
@@ -82,9 +82,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 email,
                 senha
             })
-            console.log(response.data);
+            console.log("chegou aqui no mobile", response.data);
 
-            const { id, name, token } = response.data;
+            const { id, nome, token } = response.data;
 
             const data = {
                 ...response.data
@@ -96,7 +96,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
             setUser({
                 id,
-                name,
+                nome,
                 email,
                 token
             })
@@ -117,7 +117,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             .then(() => {
                 setUser({
                     id: '',
-                    name: '',
+                    nome: '',
                     email: '',
                     token: '',
                 })
