@@ -1,48 +1,113 @@
-@import "~react-datepicker/dist/react-datepicker.css";
-
-.containerCenter{
-  min-height: 100vh;
+.header {
+  width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between; /* Distribui logo à esquerda e botões à direita */
   align-items: center;
-  flex-direction: column;
+  padding: 0 0px; /* Espaçamento fixo entre a esquerda e a direita */
   background-color: var(--gray-900);
+  border: 1px solid #ffffff;
+  height: 80px;
 }
 
-.login{
-  margin-top: 2rem;
-  width: 550px;
+.localizacao{
+margin-left: 215px; /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
+}
+
+.carrinho{
+padding-right: 250px; /* Padding fixo à direita */
+}
+
+.subHeader{
+width: 100%;
   display: flex;
+  justify-content: space-between; /* Distribui logo à esquerda e botões à direita */
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 2rem 1.5rem;
-
-  h1{
-    color: var(--white);
-    padding-bottom: 1rem;
-  }
-  
-  form{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  form button{
-    height: 40px;
-    font-size: 1.2rem;
-  }
+  padding: 0 0px; /* Espaçamento fixo entre a esquerda e a direita */
+  background-color: var(--gray-900);
+  border: 1px solid #d1cfcf;
+  height: 70px;
 }
 
-.text{
-  margin-top: 1rem;
-  color: var(--white);
-  cursor: pointer;
+.logo {
+display: flex;
+align-items: center;
+margin-left: 215px; /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
 }
 
-@media (max-widht: 620px){
-  .login{
-    width: 90%;
-  }
+.baner {
+// margin-top: 40px; /* Aumente o valor para mover mais para baixo */
+display: flex;
+justify-content: center; /* Centraliza horizontalmente */
+align-items: center; /* Centraliza verticalmente */
+}
+
+.paginacao{
+align-items: center; /* Centraliza verticalmente */
+margin-top: 35px; /* Aumente o valor para mover mais para baixo */
+margin-left: 207px; /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
+}
+
+.customButton {
+justify-content: center; /* Centraliza horizontalmente */
+align-items: center; /* Centraliza verticalmente */
+background-color: #ffffff;
+color: #000000;
+padding: 10px 20px;
+font-size: 16px;
+gap: 35px;
+border-radius: 20px;
+margin: 25px;
+transition: background-color 0.3s ease;
+
+&:hover {
+  background-color: #FFC107;
+}
+}
+
+.clickedButton {
+background-color: #c8102e;
+color: #ffffff;
+padding: 5px 20px;
+font-size: 14px;
+gap: 15px;
+border-radius: 15px;
+margin: 2px;
+}
+
+.logo img {
+width: 170px; /* Ajuste o tamanho da imagem */
+height: auto; /* Mantém a proporção da imagem */
+margin-right: -110px; /* Define o espaçamento à direita da imagem, se necessário */
+}
+
+.nav {
+display: flex;
+gap: 20px;
+padding-right: 200px; /* Padding fixo à direita */
+}
+
+.navLogo {
+display: flex;
+gap: 20px;
+padding-right: 280px; /* Padding fixo à direita */
+}
+
+.button {
+background-color: var(--orange-500);
+color: var(--white);
+padding: 10px 20px;
+border-radius: 5px;
+text-decoration: none;
+font-size: 1rem;
+transition: background-color 0.3s ease;
+
+&:hover {
+  background-color: var(--orange-600);
+}
+}
+
+@media (max-width: 620px) {
+.login {
+  width: 90%;
+}
 }
