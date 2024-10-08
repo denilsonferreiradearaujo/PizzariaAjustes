@@ -31,11 +31,11 @@ export default function SignIn() {
     }
 
     // Função auxiliar para validar a força da senha
-    function isValidPassword(senha: string) {
+    function isValidPassword(password: string) {
       const minLength = 6;
       // const passwordRegex =
       //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-      return senha.length >= minLength; // passwordRegex.test(password)
+      return password.length >= minLength; // passwordRegex.test(password)
     }
 
     if (email === "" || senha === "") {
@@ -61,8 +61,7 @@ export default function SignIn() {
     }
 
     // neste passo devemos colocar um comando apos a validação, apos receber o token redirecionar para uma pagina
-    // const teste = await signIn({ email, senha });
-    await signIn({ email, senha });
+    const teste = await signIn({ email, senha });
 
   }
 
