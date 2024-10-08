@@ -1,4 +1,4 @@
-import React, {useState, createContext, ReactNode, useEffect} from "react";
+import React, { useState, createContext, ReactNode, useEffect } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -28,12 +28,12 @@ type AuthProviderProps = {
 
 type SignInProps = {
     email: string,
-    password: string,
+    senha: string,
 }
 
 export const AuthContext = createContext({} as AuthContextdata);
 
-export function AuthProvider({children}: AuthProviderProps){
+export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<UserProps>({
         id: '',
         name: '',
@@ -47,17 +47,17 @@ export function AuthProvider({children}: AuthProviderProps){
 
     const isAuthenticated = !!user.name;
 
-    useEffect(() =>{
-        async function getUser(){
+    useEffect(() => {
+        async function getUser() {
             // Pegar os dados salvo do User
             const userInfo = await AsyncStorage.getItem('@sujeitopizzaria');
             let hasUser: UserProps = JSON.parse(userInfo || '{}')
 
             // Verificar se recebemos as informações
-            if(Object.keys(hasUser).length > 0){
+            if (Object.keys(hasUser).length > 0) {
                 api.defaults.headers.common['Authorization'] = `Bearer ${hasUser.token}`
 
-                setUser ({
+                setUser({
                     id: hasUser.id,
                     name: hasUser.name,
                     email: hasUser.email,
@@ -67,23 +67,24 @@ export function AuthProvider({children}: AuthProviderProps){
 
             setLoading(false);
         }
-        
+
         getUser();
 
     }, [])
-    
-    async function signIn({email, password}: SignInProps ) {
+
+    async function signIn({ email, senha }: SignInProps) {
         setLoadingAuth(true);
         setErrorMessage("");  // Limpa a mensagem de erro ao tentar novamente
+        console.log(email, senha);
 
-        try{
-            const response = await api.post('/session', {
+        try {
+            const response = await api.post('/login', {
                 email,
-                password
+                senha
             })
             console.log(response.data);
 
-            const {id, name, token} = response.data;
+            const { id, name, token } = response.data;
 
             const data = {
                 ...response.data
@@ -96,13 +97,13 @@ export function AuthProvider({children}: AuthProviderProps){
             setUser({
                 id,
                 name,
-                email, 
+                email,
                 token
             })
 
             setLoadingAuth(false);
 
-        }catch(err){
+        } catch (err) {
             console.log('Erro ao acessar', err)
             setErrorMessage("Falha no login. Verifique suas credenciais.");  // Define a mensagem de erro
             setLoadingAuth(false);
@@ -113,28 +114,28 @@ export function AuthProvider({children}: AuthProviderProps){
 
     async function signOut() {
         await AsyncStorage.clear()
-        .then(() => {
-            setUser({
-                id: '',
-                name: '',
-                email: '',
-                token: '',
+            .then(() => {
+                setUser({
+                    id: '',
+                    name: '',
+                    email: '',
+                    token: '',
+                })
             })
-        })
     }
 
     function clearError() {
         setErrorMessage("");  // Limpa a mensagem de erro
     }
 
-    return(
-        <AuthContext.Provider 
-            value={{ 
-                user, 
-                isAuthenticated, 
-                signIn, 
-                loadingAuth, 
-                loading, 
+    return (
+        <AuthContext.Provider
+            value={{
+                user,
+                isAuthenticated,
+                signIn,
+                loadingAuth,
+                loading,
                 signOut,
                 errorMessage,    // Passa a mensagem de erro
                 clearError       // Passa a função para limpar a mensagem de erro
