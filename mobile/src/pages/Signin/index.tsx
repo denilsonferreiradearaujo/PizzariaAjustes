@@ -16,12 +16,12 @@ export default function SignIn() {
   const { signIn, loadingAuth, errorMessage, clearError } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [senha, setSenha] = useState("");
   
   useEffect(() => {
     // Limpa a mensagem de erro ao alterar os campos de email ou senha
     clearError();
-  }, [email, password]);
+  }, [email, senha]);
 
   async function handleLogin() {
     // Função auxiliar para validar o formato do email
@@ -38,7 +38,7 @@ export default function SignIn() {
       return password.length >= minLength; // passwordRegex.test(password)
     }
 
-    if (email === "" || password === "") {
+    if (email === "" || senha === "") {
       // Verificação se email ou senha estão vazios
       Alert.alert('Preencha os campos email e senha.')
       return;
@@ -51,7 +51,7 @@ export default function SignIn() {
       return;
     }
 
-    if (!isValidPassword(password)) {
+    if (!isValidPassword(senha)) {
       // Verificação de força da senha
       Alert.alert(
         "Erro",
@@ -60,7 +60,9 @@ export default function SignIn() {
       return;
     }
 
-    await signIn({ email, password });
+    // neste passo devemos colocar um comando apos a validação, apos receber o token redirecionar para uma pagina
+    const teste = await signIn({ email, senha });
+
   }
 
   return (
@@ -80,8 +82,8 @@ export default function SignIn() {
           placeholder="sua senha"
           placeholderTextColor="#f0f0f0"
           secureTextEntry={true}
-          value={password}
-          onChangeText={setPassword}
+          value={senha}
+          onChangeText={setSenha}
         />
 
         <TouchableOpacity style={styles.button} onPress={handleLogin}>

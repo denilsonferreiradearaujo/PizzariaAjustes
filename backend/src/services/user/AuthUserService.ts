@@ -8,7 +8,12 @@ interface AuthRequest {
 }
 
 class AuthUserService {
+
+
+
   async execute({ email, senha }: AuthRequest) {
+
+    
     // Verificar se o email existe
     const user = await prismaClient.pessoa.findFirst({
       where: {
@@ -19,42 +24,51 @@ class AuthUserService {
       }
     });
 
-    // Verificar se o usuário existe e se há um login associado
-    if (!user || user.logins.length === 0) {
-      throw new Error('User/password incorrect');
-    }
-
-    // Obtém o login do usuário (assumindo o primeiro login, mas pode ajustar caso tenha múltiplos)
-    const login = user.logins[0];
-
-    // Comparar a senha fornecida com a senha armazenada no banco de dados
-    const passwordMatch = await compare(senha, login.senha);
-
-    // Verifica a senha e retorna erro se não coincidir
-    if (!passwordMatch) {
-      throw new Error('User/password incorrect');
-    }
-
-    // Gerar o token JWT
-    const token = sign(
-      {
-        nome: user.nome,
-        email: user.email
-      },
-      process.env.JWT_SECRET,
-      {
-        subject: String(user.id), // Garantir que subject seja uma string
-        expiresIn: '30d'
+    try {
+      // Verificar se o usuário existe e se há um login associado
+      if (!user || user.logins.length === 0) {
+        throw new Error('User/password incorrect');
       }
-    );
 
-    return {
-      id: user.id,
-      nome: user.nome,
-      email: user.email,
-      token: token
-    };
+      // Obtém o login do usuário (assumindo o primeiro login, mas pode ajustar caso tenha múltiplos)
+      const login = user.logins[0];
+
+
+      // Senha não está chegando para comparação
+
+      // Comparar a senha fornecida com a senha armazenada no banco de dados
+      const passwordMatch = await compare(senha, login.senha);
+
+      // Verifica a senha e retorna erro se não coincidir
+      if (!passwordMatch) {
+        throw new Error('User/password incorrect');
+      }
+
+      // Gerar o token JWT
+      const token = sign(
+        {
+          nome: user.nome,
+          email: user.email
+        },
+        process.env.JWT_SECRET,
+        {
+          subject: String(user.id), // Garantir que subject seja uma string
+          expiresIn: '30d'
+        }
+      );
+
+      return {
+        id: user.id,
+        nome: user.nome,
+        email: user.email,
+        token: token
+      };
+    } catch (error) {
+      console.log(error);
+
+    }
   }
+
 }
 
 export { AuthUserService };
