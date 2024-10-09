@@ -14,7 +14,7 @@
     "@mui/material": "^6.1.2",
     "axios": "^1.7.2",
     "jwt-decode": "^4.0.0",
-    "next": "14.2.4",
+    "next": "^14.2.15",
     "nookies": "^2.5.2",
     "react": "^18",
     "react-datepicker": "^7.4.0",
