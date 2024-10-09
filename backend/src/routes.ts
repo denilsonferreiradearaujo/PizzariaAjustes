@@ -31,9 +31,10 @@ const router = Router();
 
 // Rotas User
 router.post('/users', new CreateUserController().handle)
-router.post('/login', new AuthUserController().handle)
-router.get('/users/:pessoa_id', isAuthenticated, new DetailUserController().handle)
-router.get('/allUsers', isAuthenticated,  new DetailAllUserController().handle)
+router.post('/login', new AuthUserController().handle)  
+// router.post('/updateUser', new UpdateUserController().handle)  - [RF002] / [RF003] - Exclusão / desativar / Alteração dados cadastrais cliente 
+router.get('/users/:pessoa_id', isAuthenticated, new DetailUserController().handle) // lapizinho manda pra essa
+router.get('/allUsers', isAuthenticated,  new DetailAllUserController().handle) // Todos os usuarios
 router.post('/forgotPassword', new ForgotPasswordController().handle)
 router.post('/resetPassword/:token', new ResetPasswordUserController().handle)
 
@@ -41,7 +42,7 @@ router.post('/resetPassword/:token', new ResetPasswordUserController().handle)
 router.post('/category' ,new CreateCategoryController().handle)
 router.get('/listCategory' ,new ListCategoryController().handle)
 router.post('/updateCategory/:id' ,new UpdateCategoryController().handle)
-
+    
 // Rotas produto
 router.post('/createProduct', new CreateProductController().handle);
 router.get('/listProduct', new ListProductController().handle);
@@ -53,9 +54,9 @@ router.get('/taxasEntrega', new ListAllTaxaEntregaController().handle);
 router.post('/updateTaxaEntrega/:id', new UpdateTaxaEntregaController().handle);
 
 // Rotas dos pedidos
-router.post('/createPedido', new CreatePedidoController().handle)
-router.get('/listPedidos', new ListAllPedidosController().handle);
-router.put("/pedido/status/:id", new UpdatePedidoStatusController().handle);
+router.post('/createPedido', new CreatePedidoController().handle) // [RF007] - Solicitação de pedido via delivery  
+router.get('/listPedidos', new ListAllPedidosController().handle); // [RF004] - Visualização de histórico de pedidos ( tela da produção )
+router.put("/pedido/status/:id", new UpdatePedidoStatusController().handle); // [RF023] - Atualização de pedido delivery  
 
 
 export { router };
