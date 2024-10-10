@@ -1,0 +1,26 @@
+.header {
+    width: 100%;
+    display: flex;
+    background-color: var(--gray-900);
+    border: 1px solid #dedddd;
+    height: 100px;
+    align-items: center;
+    padding: 50px 40px;
+  }
+
+  .logoImg {
+    width: 170px;
+  }
+
+
+
+  
+
+  @media (max-width: 620px) {
+    .gridForm {
+      grid-template-columns: 1fr; /* Em telas menores, tudo em uma coluna */
+    }
+    .login {
+      width: 90%;
+    }
+  }

@@ -8,13 +8,13 @@ import { toast } from 'react-toastify';
 
 import { canSSRAuth } from '@/src/utils/canSSRAuth';
 
-export default function Category(){
+export default function Category() {
     const [nome, setNome] = useState('')
 
-    async function handleRegister(event: FormEvent ){
+    async function handleRegister(event: FormEvent) {
         event.preventDefault();
 
-        if(nome === ""){
+        if (nome === "") {
             toast.error('Insira o nome da categoria')
             return;
         }
@@ -29,41 +29,47 @@ export default function Category(){
         setNome('');
     }
 
-    return(
+    return (
         <>
-        <Head>
-            <title>Nova Categoria - Pizzaria</title>
-        </Head>
+            <Head>
+                <title>Nova Categoria - Pizzaria</title>
+            </Head>
 
-        <div>
-            <Header/>
+            <div>
+                <Header />
 
-            <main className={styles.container}>
-                <h1>Cadastrar categoria</h1>
+                <div className={styles.h1Cad2}>
+                    <h1>Cadastrar Categoria</h1>
+                </div>
+                <main className={styles.container}>
 
-                <form className={styles.form} onSubmit={handleRegister}>
-                    <input 
-                        type='text'
-                        placeholder='Digite o nome da categoria'
-                        className={styles.input}
-                        value={nome}
-                        onChange={(e) => setNome(e.target.value)}
-                    />
+                    <form className={styles.form} onSubmit={handleRegister}>
+                        <input
+                            type='text'
+                            placeholder='Digite o nome da categoria'
+                            className={styles.input}
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)}
+                        />
 
-                    <button className={styles.buttonAdd} type="submit">
-                        Cadastrar
-                    </button>
-                </form>
+                        <button className={styles.buttonAdd} type="submit">
+                            Cadastrar
+                        </button>
+                    </form>
 
-            </main>
-        
-        </div>
+                    <div className={styles.h1Cad1}>
+                        <h1>Categorias Cadastradas</h1>
+                    </div>
+
+                </main>
+
+            </div>
         </>
     )
-} 
+}
 
-export const getServerSideProps = canSSRAuth( async(ctx) => {
-    return{
-        props:{}
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+    return {
+        props: {}
     }
 })

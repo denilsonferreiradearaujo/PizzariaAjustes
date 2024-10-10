@@ -1,7 +1,7 @@
 import { useState, FormEvent, useContext, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import styles from '../../../styles/Home.module.scss';
+import styles from '../../pages/signup/styles.module.scss';
 import logoImg from '../../../public/logo.png';
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
@@ -94,11 +94,16 @@ export default function SignUp() {
 
   return (
     <>
-      <Head>
-        <title>Faça seu cadastro agora!</title>
-      </Head>
+      <header className={styles.header}>
+        <Link href="/" legacyBehavior>
+          <a className={styles.voltarHome}>🠔 Voltar para home</a>
+        </Link>
+        <div>
+          <Image src={logoImg} alt="Logo Pizzaria" width={270} height={100} />
+        </div>
+      </header>
       <div className={styles.containerCenter}>
-        <Image src={logoImg} alt="Logo Pizzaria" />
+
         <div className={styles.login}>
           <h1>Criando sua conta</h1>
           <form onSubmit={handleSignUp}>
@@ -133,12 +138,12 @@ export default function SignUp() {
             <Input placeholder="Cidade" type="text" value={cidade} onChange={(e) => setCidade(e.target.value)} />
             <Input placeholder="UF" type="text" value={uf} onChange={(e) => setUf(e.target.value)} />
             <Input placeholder="Telefone Residencial" type="text" value={telefoneResidencial} onChange={(e) => setTelefoneResidencial(e.target.value)} />
-            <Input placeholder="telefone Celular" type="text" value={telefoneCelular} onChange={(e) => setTelefoneCelular(e.target.value)} />            
-            
+            <Input placeholder="telefone Celular" type="text" value={telefoneCelular} onChange={(e) => setTelefoneCelular(e.target.value)} />
+
             <Button type="submit" loading={loading}>
               Cadastrar
             </Button>
-            
+
             <Link href="/" legacyBehavior>
               <a className={styles.text}>Já possui uma conta? Faça o login</a>
             </Link>
