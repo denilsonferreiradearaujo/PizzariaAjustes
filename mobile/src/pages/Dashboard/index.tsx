@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import {Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Button } from "react-native";
+import { Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Button } from "react-native";
 import Icon from 'react-native-vector-icons/Feather'; // Importa os ícones da Feather
 
 import { AuthContext } from "../../contexts/AuthContext";
@@ -10,34 +10,53 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StackParamsList } from "../../routes/app.routes";
 
 import { api } from "../../services/api";
+export default function MyButton() {
+    const [isPressed, setIsPressed] = useState(false);
+}
 
-export default function Dashboard(){
+export default function Dashboard() {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
 
     const [number, setNumber] = useState('');
 
-    const {signOut} = useContext(AuthContext)
+    const { signOut } = useContext(AuthContext)
 
-    async function openOrder(){
-        if(number === ""){
+    async function openOrder() {
+        if (number === "") {
             alert('Informe o número da mesa.')
             return;
         }
 
-        const response = await api.post('/order', {
-            table: Number(number)
-        })
+        try {
+            const response = await api.post('/order', {
+                table: Number(number)
+            })
 
-        navigation.navigate('Order', {number: number,  order_id: response.data.id});
+            navigation.navigate('Order', { number: number, order_id: response.data.id });
 
-        setNumber('');
+            setNumber('');
+        } catch (error) {
+            console.error("Erro ao abrir pedido, error");
+            alert("Error ao abrir a mesa. Tente novamente");
+        }
     }
 
-    return(
+    function handleSignout() {
+        Alert.alert(
+            "Sair",
+            "Deseja realmente sair?",
+            [
+                { text: "Cancelar", style: "cancel" },
+                { text: "Sim", onPress: () => signOut() }
+            ]
+        )
+    }
+
+    return (
         <SafeAreaView style={styles.container}>
             <TouchableOpacity onPress={signOut} style={styles.iconButton}>
                 <Icon name='log-out' color='#fff' size={24} />
-            </TouchableOpacity> 
+            </TouchableOpacity>
 
             <Text style={styles.title}>Novo pedido</Text>
             <TextInput
@@ -48,9 +67,19 @@ export default function Dashboard(){
                 value={number}
                 onChangeText={setNumber}
             />
-            <TouchableOpacity style={styles.button} onPress={openOrder}>
+            {/* <TouchableOpacity style={styles.button} onPress={openOrder}>
                 <Text style={styles.textButton}>Abrir mesa</Text>
-            </TouchableOpacity> 
+            </TouchableOpacity> */}
+
+            <TouchableOpacity
+                style={[styles.button, isPressed && styles.buttonHover]}
+                onPressIn={() => setIsPressed(true)}  // Quando o usuário pressiona o botão
+                onPressOut={() => setIsPressed(false)} // Quando o usuário solta o botão
+                onPress={openOrder}
+            >
+                <Text style={styles.buttonText}>Abrir mesa</Text>
+            </TouchableOpacity>
+
         </SafeAreaView>
     )
 }
@@ -61,7 +90,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 15,
-        backgroundColor: '#1d1d2e',
+        backgroundColor: '#ffffff',
     },
 
     iconButton: {
@@ -72,14 +101,14 @@ const styles = StyleSheet.create({
         zIndex: 1, // Garante que o botão fique acima de outros elementos
     },
 
-    title:{
+    title: {
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#fff',
+        color: '#101026',
         marginBottom: 35,
     },
 
-    input:{
+    input: {
         width: '90%',
         height: 60,
         backgroundColor: '#101026',
@@ -93,14 +122,19 @@ const styles = StyleSheet.create({
     button: {
         width: '90%',
         height: 40,
-        backgroundColor: '#3fffa3',
-        borderRadius: 4,
+        backgroundColor: '#b22222',
+        borderRadius: 20,
         marginVertical: 12,
         justifyContent: 'center',
         alignItems: 'center',
+        transition: 'transform 0.5s',
     },
 
-    textButton:{
+    buttonHover: {
+        transform: [{ scale: 1.4 }]
+    },
+
+    textButton: {
         fontSize: 18,
         color: '#101026',
         fontWeight: 'bold',

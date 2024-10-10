@@ -67,20 +67,20 @@ export default function SignIn() {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={require("../../assets/logo.png")} />
+      <Image style={styles.logo} source={require("../../assets/logo02.png")} />
 
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           placeholder="Digite seu email"
-          placeholderTextColor="#f0f0f0"
+          placeholderTextColor="#101026"
           value={email}
           onChangeText={setEmail}
         />
         <TextInput
           style={styles.input}
           placeholder="sua senha"
-          placeholderTextColor="#f0f0f0"
+          placeholderTextColor="#101026"
           secureTextEntry={true}
           value={senha}
           onChangeText={setSenha}
@@ -108,10 +108,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#1d1d2e",
+    backgroundColor: "#ffffff",
   },
   logo: {
     marginBottom: 18,
+    height: 120,
+    width: 340,
   },
 
   inputContainer: {
@@ -125,11 +127,11 @@ const styles = StyleSheet.create({
   input: {
     width: "95%",
     height: 40,
-    backgroundColor: "#101026",
+    backgroundColor: "#d4d3d2",
     marginBottom: 12,
     borderRadius: 4,
     paddingHorizontal: 8,
-    color: "#fff",
+    color: "#101026",
     borderWidth: 0.3,
     borderColor: '#8a8a8a',
   },
@@ -137,11 +139,17 @@ const styles = StyleSheet.create({
   button: {
     width: "95%",
     height: 40,
-    backgroundColor: "#3fffa3",
-    borderRadius: 4,
+    backgroundColor: "#b22222",
+    borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
+
   },
+
+  // button: hover {
+  //   transform: scale(1.1);
+  //   transition: all 0.5s;
+  // },
 
   buttonText: {
     fontSize: 18,
