@@ -14,6 +14,7 @@ import { UpdateCategoryController } from "./controllers/category/UpdateCategoryC
 import { CreateProductController } from "./controllers/product/CreateProductController";
 import { ListProductController } from "./controllers/product/ListProductController";
 import { UpdateProductController } from "./controllers/product/UpdateProductController";
+import { ListProductByCategoryController } from "./controllers/product/ListProductByCategoryController";
 
 import { CreateTaxaEntregaController } from "./controllers/taxaEntrega/CreateTaxaEntregaController";
 import { ListAllTaxaEntregaController } from "./controllers/taxaEntrega/ListAllTaxaEntregaController";
@@ -47,6 +48,7 @@ router.post('/updateCategory/:id' ,new UpdateCategoryController().handle)
 router.post('/createProduct', new CreateProductController().handle);
 router.get('/listProduct', new ListProductController().handle);
 router.post('/updateProduct/:id', new UpdateProductController().handle);
+router.get("/produtos", new ListProductByCategoryController().handle);
 
 // Rotas taxa de entrega
 router.post('/addTaxaEntrega', new CreateTaxaEntregaController().handle);
