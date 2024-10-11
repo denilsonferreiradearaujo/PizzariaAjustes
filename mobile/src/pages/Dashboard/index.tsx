@@ -67,9 +67,6 @@ export default function Dashboard() {
                 value={number}
                 onChangeText={setNumber}
             />
-            {/* <TouchableOpacity style={styles.button} onPress={openOrder}>
-                <Text style={styles.textButton}>Abrir mesa</Text>
-            </TouchableOpacity> */}
 
             <TouchableOpacity
                 style={[styles.button, isPressed && styles.buttonHover]}
@@ -97,15 +94,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        width: '90%',
-        marginBottom: 300,
+        width: '80%',
+        left: 10,
+        marginBottom: 190,
     },
 
     iconButton: {
         position: 'absolute',
-        top: 30,
-        right: 20,
+        right: 10,
         padding: 10,
+        bottom: 10,
         zIndex: 1, // Garante que o botão fique acima de outros elementos
     },
 
