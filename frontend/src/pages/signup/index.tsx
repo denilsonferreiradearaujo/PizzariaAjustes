@@ -97,8 +97,9 @@ export default function SignUp() {
       <Head>
         <title>Faça seu cadastro agora!</title>
       </Head>
-      <div className={styles.containerCenter}>
+      <div className={styles.containerCenter}> 
         <div className={styles.login}>
+          <Image src={logoImg} alt="Logo Pizzaria "/>
           <h1 className={styles.title}>Criando sua conta</h1>
 
           <form onSubmit={handleSignUp} className={styles.form}>
@@ -107,7 +108,7 @@ export default function SignUp() {
             <div className={styles.sectionInputs}>
               <div className={styles.sectionInputsRow}>
                 <select value={genero} onChange={(e) => setGenero(e.target.value)} className={styles.select}>
-                  <option value="">Selecione seu gênero</option>
+                  <option value="">Gênero</option>
                   <option value="Masculino">Masculino</option>
                   <option value="Feminino">Feminino</option>
                   <option value="Prefiro não informar">Prefiro não informar</option>
@@ -117,7 +118,7 @@ export default function SignUp() {
                   id="dataNasc"
                   selected={dataNasc ? new Date(dataNasc) : null}
                   onChange={(date) => setDataNasc(date ? date.toISOString().split('T')[0] : '')}
-                  placeholderText="Selecione a data"
+                  placeholderText="Data de Nascimento"
                   className={styles.datePicker}
                   dateFormat="dd/MM/yyyy"
                 />
@@ -125,7 +126,7 @@ export default function SignUp() {
 
               <div className={styles.sectionInputsRow}>
                 <select value={tipo} onChange={(e) => setTipo(e.target.value)} className={styles.select}>
-                  <option value="">Selecione o tipo</option>
+                  <option value="">Tipo de cadastro</option>
                   <option value="cliente">Cliente</option>
                   <option value="funcionario">Funcionário</option>
                 </select>

@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import logoImg from '../../public/logo.png';
 import baner from '../../public/baner.jpg';
-import Button from '@mui/material/Button'; 
+import Button from '@mui/material/Button';
 import { setupAPICliente } from '../../../frontend/src/services/api';
 
 import styles from '../../styles/Home.module.scss';
@@ -18,7 +18,7 @@ export default function Home() {
 
   // Função para capturar o clique e buscar produtos da categoria
   const handleClick = async (categoriaId: number) => {
-    setClickedButton(categoriaId); 
+    setClickedButton(categoriaId);
     setLoading(true);
 
     try {
@@ -97,9 +97,9 @@ export default function Home() {
         ) : produtos.length > 0 ? (
           produtos.map((produto) => (
             <div key={produto.id} className={styles.card}>
-              <h3>{produto.nome}</h3>
-              <p>Categoria: {produto.Categoria.nome}</p>
-              <p>Preço: R$ {produto.valores[0].preco}</p>
+              <h3 className={styles.cardTitle}>{produto.nome}</h3>
+              <p className={styles.cardText}>Categoria: {produto.Categoria.nome}</p>
+              <p className={styles.cardText}>Preço: R$ {produto.valores[0].preco}</p>
             </div>
           ))
         ) : (

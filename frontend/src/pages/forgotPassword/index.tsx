@@ -4,9 +4,10 @@ import { useState, FormEvent, useContext } from "react";
 
 import Head from "next/head";
 import Image from "next/image";
-import styles from '../../../styles/Home.module.scss'
+// import styles from '../../../styles/Home.module.scss';
+import styles from '../../pages/login/style.module.scss';
 
-import logoImg from '../../../public/logo.svg';
+import logoImg from '../../../public/logo.png';
 
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
@@ -45,6 +46,7 @@ export default function ForgotPass() {
         <title>Redefinir senha!</title>
       </Head>
       <div className={styles.containerCenter}>
+        {/* <Image src={logoImg} alt="Logo Pizzaria "/> */}
         <Image src={logoImg} alt="Logo Pizzaria "/>
 
         <div className={styles.login}>

@@ -6,7 +6,7 @@ import Head from "next/head";
 import Image from "next/image";
 import logoImg from '../../../public/logo.png';
 
-import styles from '../../pages/login/style.module.scss'
+import styles from '../../pages/login/style.module.scss';
 
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
