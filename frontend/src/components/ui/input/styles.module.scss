@@ -1,4 +1,4 @@
-.input{
+.input {
     margin-bottom: 1rem;
     height: 40px;
     border: 0;
@@ -7,13 +7,33 @@
     color: var(--white);
     padding: 1rem;
     border: 1px solid var(--gray-100);
+    position: relative;
+    transition: all 0.3s;
+
+    // Efeito de foco
+    &:focus {
+        outline: none;
+        border-color: var(--green-900);
+        box-shadow: 0 0 5px var(--green-900);
+    }
+
+    // Efeito de preenchimento
+    &:not(:placeholder-shown) {
+        background-color: var(--dark-800);
+        color: var(--green-100);
+    }
 }
 
-.input::placeholder{
-    color: rgba(255,255,255,0.8);
+.input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.3s;
 }
 
-.select, .datePicker{
+.input:focus::placeholder {
+    color: transparent; // Esconde o placeholder no foco
+}
+
+.select, .datePicker {
     margin-bottom: 1rem;
     height: 40px;
     border: 0;
@@ -22,4 +42,16 @@
     color: var(--white);
     padding: 1rem;
     border: 1px solid var(--gray-100);
+    position: relative;
+    transition: all 0.3s;
+
+    &:focus {
+        outline: none;
+        border-color: var(--green-900);
+        box-shadow: 0 0 5px var(--green-900);
+    }
+
+    &:hover {
+        background-color: var(--dark-800); // Muda a cor ao passar o mouse
+    }
 }

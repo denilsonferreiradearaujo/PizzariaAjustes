@@ -1,141 +1,103 @@
-.container{
-    max-width: 720px;
-    margin: 1.6rem auto;
-    padding: 0 2rem;
+.containerCenter {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F5F5F5; // Cor de fundo geral
+  padding: 2rem;
+}
 
-    display: flex;
-    justify-content: space-between;
+.login {
+  background-color: #FFFFFF; // Fundo branco para o formulário
+  width: 100%;
+  max-width: 600px; // Aumentei um pouco o tamanho
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  color: #4CAF50; // Cor primária
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* Dividindo o formulário em duas seções */
+.sectionInputs {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: #FFFFFF; // Fundo branco para inputs
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+}
+
+.sectionInputsRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.input, .select, .datePicker {
+  flex: 1; // Faz os inputs crescerem uniformemente
+  height: 44px;
+  padding: 0 1rem;
+  border: 1px solid #E0E0E0; // Cor da borda
+  border-radius: 6px;
+  background-color: #FFFFFF; // Fundo dos inputs
+  color: #333333; // Cor do texto
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.input::placeholder {
+  color: #757575; // Cor do placeholder
+}
+
+.input:focus, .select:focus, .datePicker:focus {
+  border-color: #4CAF50; // Cor de foco
+  outline: none;
+}
+
+.button {
+  background-color: #4CAF50; // Fundo do botão
+  color: #FFFFFF; // Cor do texto do botão
+  font-size: 1.2rem;
+  height: 44px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 1.5rem;
+}
+
+.button:hover {
+  background-color: #388E3C; // Cor do botão ao passar o mouse
+}
+
+.text {
+  margin-top: 1rem;
+  color: #333333; // Cor do texto
+  text-align: center;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .sectionInputsRow {
     flex-direction: column;
-}
-
-.container h1{
-    color: var(--white);
-}
-
-.form{
-    display: flex;
-    flex-direction: column;
-    margin: 1rem 0;
-
-    textarea{
-        width: 100%;
-        min-height: 110px;
-        resize: none;
-    }
-
-    select{
-        width: 100%;
-        height: 40px;
-        border-radius: 0.3rem;
-        margin-bottom: 1rem;
-        color: var(--white);
-        background-color: var(--dark-900);
-        border: 1px solid var(--gray-100);
-        padding: 0 0.5rem;
-    }
-}
-
-.input{
-    background-color: var(--dark-900);
-    border: 0;
-    padding: 1rem;
-    height: 40px;
-    border-radius: 0.3rem;
-    color: var(--white);
-    border: 1px solid var(--gray-100);
-    margin-bottom: 1rem;
-}
-
-.buttonAdd{
-    height: 40px;
-    border: 0;
-    background-color: var(--green-900);
-    font-weight: bold;
-    font-size: 1.2rem;
-    border-radius: 0.3rem;
-    color: var(--dark-700);
-}
-
-.labelAvatar{
-    width: 100%;
-    height: 280px;
-    background-color: var(--dark-900);
-    margin-bottom: 1rem;
-    border-radius: 0.3rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-
-    input{
-        display: none;
-    }
-
-    span{
-        z-index: 99;
-        position: absolute;
-        opacity: 0.7;
-        transition: all 0.7s;
-    }
-
-    span:hover{
-        opacity: 1;
-        transform: scale(1.2);
-    }
-}
-
-.preview{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 0.3rem;
-}
-
-
-.containerCenter{
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background-color: var(--gray-900);
   }
-  
-  .login{
-    // margin-top: 2rem;
-    width: 550px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    // padding: 2rem 1.5rem;
-  
-    h1{
-      color: var(--white);
-      padding-bottom: 2rem;
-    }
-    
-    form{
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-  
-    form button{
-      height: 40px;
-      font-size: 1.2rem;
-    }
-  }
-  
-  .text{
-    margin-top: 1rem;
-    color: var(--white);
-    cursor: pointer;
-  }
-  
-  @media (max-widht: 620px){
-    .login{
-      width: 90%;
-    }
-  }
-  
+}
