@@ -1,28 +1,25 @@
 import React, { useContext, useState } from "react";
-import { Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Button } from "react-native";
+import { Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View, Button, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/Feather'; // Importa os ícones da Feather
 
 import { AuthContext } from "../../contexts/AuthContext";
-
 import { useNavigation } from "@react-navigation/native";
-
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { StackParamsList } from "../../routes/app.routes";
 
 import { api } from "../../services/api";
-export default function MyButton() {
-    const [isPressed, setIsPressed] = useState(false);
-}
 
 export default function Dashboard() {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
 
-    const [number, setNumber] = useState('');
+    const { user, signOut } = useContext(AuthContext)
 
-    const { signOut } = useContext(AuthContext)
+    const [number, setNumber] = useState('');
+    const [isPressed, setIsPressed] = useState(false);
+
 
     async function openOrder() {
-        if (number === "") {
+        if (number === " ") {
             alert('Informe o número da mesa.')
             return;
         }
@@ -33,30 +30,33 @@ export default function Dashboard() {
             })
 
             navigation.navigate('Order', { number: number, order_id: response.data.id });
-
             setNumber('');
         } catch (error) {
-            console.error("Erro ao abrir pedido, error");
+            // console.error("Erro ao abrir pedido, error");
             alert("Error ao abrir a mesa. Tente novamente");
         }
     }
 
     function handleSignout() {
         Alert.alert(
-            "Sair",
+            "Já vai? que pena :(",
             "Deseja realmente sair?",
             [
-                { text: "Cancelar", style: "cancel" },
-                { text: "Sim", onPress: () => signOut() }
+                { text: "Permanecer", style: "cancel" },
+                { text: "Sair", onPress: () => signOut() }
             ]
         )
     }
 
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity onPress={signOut} style={styles.iconButton}>
-                <Icon name='log-out' color='#fff' size={24} />
-            </TouchableOpacity>
+            <View style={styles.header}>
+                <Text style={styles.nameUser}>Bem vindo, {user?.nome}!</Text>
+
+                <TouchableOpacity onPress={handleSignout} style={styles.iconButton}>
+                    <Icon name='log-out' color='#b22222' size={24} />
+                </TouchableOpacity>
+            </View>
 
             <Text style={styles.title}>Novo pedido</Text>
             <TextInput
@@ -93,12 +93,27 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
     },
 
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '90%',
+        marginBottom: 300,
+    },
+
     iconButton: {
         position: 'absolute',
         top: 30,
         right: 20,
         padding: 10,
         zIndex: 1, // Garante que o botão fique acima de outros elementos
+    },
+
+    nameUser: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: '#101026',
+        marginBottom: 20,
     },
 
     title: {
@@ -127,7 +142,6 @@ const styles = StyleSheet.create({
         marginVertical: 12,
         justifyContent: 'center',
         alignItems: 'center',
-        transition: 'transform 0.5s',
     },
 
     buttonHover: {
@@ -140,4 +154,4 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 
-})
+});
