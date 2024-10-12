@@ -1,7 +1,7 @@
 import { useState, FormEvent, useContext, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import styles from '../../../styles/Home.module.scss';
+import styles from '../signup/style.module.scss';
 import logoImg from '../../../public/logo.png';
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
@@ -97,48 +97,64 @@ export default function SignUp() {
       <Head>
         <title>Faça seu cadastro agora!</title>
       </Head>
-      <div className={styles.containerCenter}>
-        <Image src={logoImg} alt="Logo Pizzaria" />
+      <div className={styles.containerCenter}> 
         <div className={styles.login}>
-          <h1>Criando sua conta</h1>
-          <form onSubmit={handleSignUp}>
-            <Input placeholder="Digite seu nome" type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
-            <Input placeholder="Digite seu email" type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <select value={genero} onChange={(e) => setGenero(e.target.value)} className={styles.select}>
-              <option value="">Selecione seu gênero</option>
-              <option value="Masculino">Masculino</option>
-              <option value="Feminino">Feminino</option>
-              <option value="Prefiro não informar">Prefiro não informar</option>
-            </select>
-            <DatePicker
-              id="dataNasc"
-              selected={dataNasc ? new Date(dataNasc) : null}
-              onChange={(date) => setDataNasc(date ? date.toISOString().split('T')[0] : '')}
-              placeholderText="Selecione a data"
-              className={styles.datePicker} // Aplique estilos conforme necessário
-              dateFormat="dd/MM/yyyy" // Formato desejado
-            />
-            <Input placeholder="Digite seu CPF" type="text" value={cpf} onChange={(e) => setCpf(e.target.value)} />
-            <Input placeholder="Digite sua senha" type="password" value={senha} onChange={(e) => setSenha(e.target.value)} />
-            <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
-              <option value="">Selecione o tipo</option>
-              <option value="cliente">Cliente</option>
-              <option value="funcionario">Funcionario</option>
-            </select>
-            <Input placeholder="CEP" type="text" value={cep} onChange={(e) => setCep(e.target.value)} />
-            <Input placeholder="Logradouro" type="text" value={logradouro} onChange={(e) => setLogradouro(e.target.value)} />
-            <Input placeholder="Número" type="text" value={numero} onChange={(e) => setNumero(e.target.value)} />
-            <Input placeholder="Complemento" type="text" value={complemento} onChange={(e) => setComplemento(e.target.value)} />
-            <Input placeholder="Bairro" type="text" value={bairro} onChange={(e) => setBairro(e.target.value)} />
-            <Input placeholder="Cidade" type="text" value={cidade} onChange={(e) => setCidade(e.target.value)} />
-            <Input placeholder="UF" type="text" value={uf} onChange={(e) => setUf(e.target.value)} />
-            <Input placeholder="Telefone Residencial" type="text" value={telefoneResidencial} onChange={(e) => setTelefoneResidencial(e.target.value)} />
-            <Input placeholder="telefone Celular" type="text" value={telefoneCelular} onChange={(e) => setTelefoneCelular(e.target.value)} />            
-            
-            <Button type="submit" loading={loading}>
+          <Image src={logoImg} alt="Logo Pizzaria "/>
+          <h1 className={styles.title}>Criando sua conta</h1>
+
+          <form onSubmit={handleSignUp} className={styles.form}>
+
+            {/* Inputs de clicar/selecionar */}
+            <div className={styles.sectionInputs}>
+              <div className={styles.sectionInputsRow}>
+                <select value={genero} onChange={(e) => setGenero(e.target.value)} className={styles.select}>
+                  <option value="">Gênero</option>
+                  <option value="Masculino">Masculino</option>
+                  <option value="Feminino">Feminino</option>
+                  <option value="Prefiro não informar">Prefiro não informar</option>
+                </select>
+
+                <DatePicker
+                  id="dataNasc"
+                  selected={dataNasc ? new Date(dataNasc) : null}
+                  onChange={(date) => setDataNasc(date ? date.toISOString().split('T')[0] : '')}
+                  placeholderText="Data de Nascimento"
+                  className={styles.datePicker}
+                  dateFormat="dd/MM/yyyy"
+                />
+              </div>
+
+              <div className={styles.sectionInputsRow}>
+                <select value={tipo} onChange={(e) => setTipo(e.target.value)} className={styles.select}>
+                  <option value="">Tipo de cadastro</option>
+                  <option value="cliente">Cliente</option>
+                  <option value="funcionario">Funcionário</option>
+                </select>
+
+                <Input placeholder="CEP" type="text" value={cep} onChange={(e) => setCep(e.target.value)} />
+              </div>
+            </div>
+
+            {/* Inputs de texto */}
+            <div className={styles.sectionInputs}>
+              <Input placeholder="Digite seu nome" type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
+              <Input placeholder="Digite seu email" type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input placeholder="Digite seu CPF" type="text" value={cpf} onChange={(e) => setCpf(e.target.value)} />
+              <Input placeholder="Digite sua senha" type="password" value={senha} onChange={(e) => setSenha(e.target.value)} />
+              <Input placeholder="Logradouro" type="text" value={logradouro} onChange={(e) => setLogradouro(e.target.value)} />
+              <Input placeholder="Número" type="text" value={numero} onChange={(e) => setNumero(e.target.value)} />
+              <Input placeholder="Complemento" type="text" value={complemento} onChange={(e) => setComplemento(e.target.value)} />
+              <Input placeholder="Bairro" type="text" value={bairro} onChange={(e) => setBairro(e.target.value)} />
+              <Input placeholder="Cidade" type="text" value={cidade} onChange={(e) => setCidade(e.target.value)} />
+              <Input placeholder="UF" type="text" value={uf} onChange={(e) => setUf(e.target.value)} />
+              <Input placeholder="Telefone Residencial" type="text" value={telefoneResidencial} onChange={(e) => setTelefoneResidencial(e.target.value)} />
+              <Input placeholder="Telefone Celular" type="text" value={telefoneCelular} onChange={(e) => setTelefoneCelular(e.target.value)} />
+            </div>
+
+            <Button type="submit" loading={loading} className={styles.button}>
               Cadastrar
             </Button>
-            
+
             <Link href="/" legacyBehavior>
               <a className={styles.text}>Já possui uma conta? Faça o login</a>
             </Link>
@@ -148,3 +164,4 @@ export default function SignUp() {
     </>
   );
 }
+

@@ -1,6 +1,5 @@
-@import "~react-datepicker/dist/react-datepicker.css";
-
 .containerCenter{
+  padding-bottom: 10%;
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -10,13 +9,14 @@
 }
 
 .login{
-  margin-top: 2rem;
+  // margin-top: 2rem;
+  margin-right: 2rem;
   width: 550px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 2rem 1.5rem;
+  // padding: 2rem 1.5rem;
 
   h1{
     color: var(--white);

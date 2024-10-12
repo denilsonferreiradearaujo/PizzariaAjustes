@@ -18,14 +18,14 @@ interface ProdutoRequest {
 }
 
 class CreateProductService {
-    private async produtoJaExiste(nome: string, categoriaId: number) {
+    async produtoJaExiste(nome: string, categoriaId: number) {
         const produto = await prismaClient.produto.findFirst({
             where: { nome, categoriaId },
         });
         return !!produto;
     }
 
-    private async criarTamanhos(produtoId: number, tamanhos: TamanhoRequest[] | null) {
+    async criarTamanhos(produtoId: number, tamanhos: TamanhoRequest[] | null) {
         if (tamanhos && tamanhos.length > 0) {
             // Se tamanhos foram fornecidos, adicioná-los
             return await prismaClient.tamanho.createMany({
@@ -38,7 +38,7 @@ class CreateProductService {
         return null; // Se não houver tamanhos, ignora
     }
 
-    private async criarValores(produtoId: number, valores: ValorRequest[]) {
+    async criarValores(produtoId: number, valores: ValorRequest[]) {
         return await prismaClient.valor.createMany({
             data: valores.map((v) => ({
                 produtoId,

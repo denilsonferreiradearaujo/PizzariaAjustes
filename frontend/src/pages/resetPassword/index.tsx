@@ -5,9 +5,10 @@ import { useRouter } from "next/router"; // Importar useRouter para capturar o t
 
 import Head from "next/head";
 import Image from "next/image";
-import styles from '../../../styles/Home.module.scss'
+// import styles from '../../../styles/Home.module.scss';
+import styles from '../../pages/login/style.module.scss';
 
-import logoImg from '../../../public/logo.svg';
+import logoImg from '../../../public/logo.png';
 
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";

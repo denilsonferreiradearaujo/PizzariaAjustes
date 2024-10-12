@@ -12,13 +12,13 @@
     color: var(--white);
 }
 
-.form{
+.form {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     margin: 1rem 0;
 }
 
-.input{
+.input {
     background-color: var(--dark-900);
     border: 0;
     padding: 1rem;
@@ -26,15 +26,51 @@
     border-radius: 0.3rem;
     color: var(--white);
     border: 1px solid var(--gray-100);
-    margin-bottom: 1rem;
+    margin-bottom: 0; /* Remove a margem inferior para alinhamento */
+    flex: 1; /* Faz o input ocupar o espaço disponível */
 }
-
-.buttonAdd{
+.buttonAdd {
     height: 40px;
     border: 0;
     background-color: var(--green-900);
     font-weight: bold;
+    font-size: 1rem;
+    border-radius: 0.3rem;
+    color: var(--dark-700);
+    margin-left: 0.5rem; /* Espaçamento entre o input e o botão */
+    flex-basis: 20%; /* Define o botão como 5% do espaço */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0; /* Remove o padding interno */
+    // width: 10%;
+}
+
+.buttonAdd::before {
+    content: '💾'; /* Aqui você pode usar o ícone desejado */
+    font-size: 1.2rem;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.buttonCancel{
+    height: 40px;
+    border: 0;
+    background-color: '#1b1b2e';
+    font-weight: bold;
     font-size: 1.2rem;
     border-radius: 0.3rem;
     color: var(--dark-700);
+    margin-top: 10px;
+}
+
+.list {
+    list-style-type: none; /* Remove os marcadores das listas */
+    padding: 0;
+    margin: 0;
+
+    li {
+        text-decoration: none; /* Remove qualquer sublinhado ou decoração de texto */
+        margin-bottom: 1rem; /* Adiciona um espaçamento entre os itens, se desejar */
+    }
 }
