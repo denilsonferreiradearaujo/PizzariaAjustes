@@ -24,6 +24,7 @@
     "express-async-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.15",
-    "prisma": "^5.19.1"
+    "prisma": "^5.19.1",
+    "react-modal": "^3.16.1"
   }
 }

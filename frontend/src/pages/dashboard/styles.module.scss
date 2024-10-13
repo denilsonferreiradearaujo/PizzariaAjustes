@@ -1,5 +1,5 @@
 .container{
-    max-width: 720px;
+    max-width: 1400px;
     margin: 1.6rem auto;
     padding: 0 2rem;
 
@@ -11,6 +11,7 @@
 
 .container h1{
     color: var(--white);
+    margin-bottom: 3%;
 }
 
 .containerHeader{
@@ -21,6 +22,7 @@
         background: transparent;
         border: 0;
         margin-left: 1rem;
+        margin-bottom: 3%;
     }
 }
 
@@ -66,4 +68,83 @@
 
 
 
+
+
+.headColumns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    width: 48%;
+}
+
+
+
+
+
+
+
+
+.columns {
+    display: flex; // Para alinhar colunas lado a lado
+    justify-content: space-between; // Espaço entre as colunas
+  }
+  
+  .column {
+    width: 48%; // Define a largura das colunas
+  }
+  
+  .card {
+    background-color: #f9f9f9; // Cor de fundo dos cards
+    border: 1px solid #ccc; // Borda leve
+    border-radius: 8px; // Bordas arredondadas
+    padding: 16px;
+    margin-bottom: 16px; // Espaço entre os cards
+    text-align: left; // Alinhamento geral do conteúdo
+    font-weight: bold; // Texto em negrito
+    // cursor: pointer; // Muda o cursor para indicar interatividade
+  
+    h3.cardTitle {
+      text-align: center; // Centraliza o h3
+      font-weight: bold; // Negrito no título
+      margin-bottom: 7px;
+    }
+  
+    p.cardText {
+      text-align: justify; // Parágrafos justificados
+      margin: 2px 0;
+    }
+  }
+  
+  // Estilo adicional para os itens do produto dentro do card
+  .produtoItem {
+    padding: 8px; // Espaçamento interno
+    border-top: 1px solid #ccc; // Linha separadora
+    margin-top: 8px; // Espaço acima dos itens
+  }
+  
+
+
+  
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.finishButton {
+    background-color: #3fffa3; /* Cor de fundo */
+    color: white; /* Cor do texto */
+    border: none; /* Sem borda */
+    padding: 8px 12px; /* Espaçamento interno */
+    cursor: pointer; /* Muda o cursor para indicar que é clicável */
+    border-radius: 4px; /* Bordas arredondadas */
+    transition: background-color 0.3s; /* Efeito de transição para a cor de fundo */
+
+    &:hover {
+        background-color: #32d78d; /* Cor ao passar o mouse */
+    }
+}
 
