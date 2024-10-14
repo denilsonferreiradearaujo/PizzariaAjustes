@@ -6,40 +6,20 @@
 //       include: {
 //         Pessoa: {
 //           select: {
-//             id: true,
-//             nome: true,
-//             email: true,
-//             genero: true,
-//             dataNasc: true,
-//             cpf: true,
-//             tipo: true
+//             nome: true, // Trazer o nome da pessoa
 //           }
 //         },
 //         TaxaEntrega: {
 //           select: {
-//             id: true,
-//             distanciaMin: true,
-//             distanciaMax: true,
-//             valor: true
+//             valor: true, // Trazer o valor da taxa de entrega
 //           }
 //         },
 //         items: {
-//           select: {
-//             id: true,
-//             produtoId: true,
-//             quantidade: true,
-//             idValor: true,
-//             Produto: {
-//               select: {
-//                 nome: true
-//               }
-//             }
+//           include: {
+//             Produto: true, // Incluir informações do produto
 //           }
 //         }
 //       },
-//       orderBy: {
-//         dataCreate: 'desc'  // Ordenar pelos pedidos mais recentes
-//       }
 //     });
 
 //     return pedidos;
@@ -47,13 +27,6 @@
 // }
 
 // export { ListAllPedidosService };
-
-
-
-
-
-
-
 
 
 
@@ -75,18 +48,36 @@ class ListAllPedidosService {
         },
         items: {
           include: {
-            Produto: true, // Incluir informações do produto
+            Produto: {
+              select: {
+                nome: true, // Nome do produto
+                valores: {  // Ajuste aqui: o nome da relação é 'valores'
+                  select: {
+                    preco: true // Inclui o preço do produto da tabela Valor
+                  }
+                }
+              }
+            },
           }
         }
       },
-      // where: {
-      //   status: {
-      //     not: 'Finalizado', // Buscar apenas pedidos que não estão finalizados
-      //   }
-      // }
     });
 
-    return pedidos;
+    // Calcular o valor total de cada pedido
+    const pedidosComTotal = pedidos.map(pedido => {
+      const valorTotal = pedido.items.reduce((acc, item) => {
+        // Converte o Decimal para número usando o método .toNumber()
+        const preco = item.Produto.valores?.[0]?.preco?.toNumber() || 0;
+        return acc + preco * item.quantidade;
+      }, 0);
+
+      return {
+        ...pedido,
+        valorTotal: valorTotal.toFixed(2) // Adicionar o total calculado
+      };
+    });
+
+    return pedidosComTotal;
   }
 }
 

@@ -148,3 +148,20 @@
     }
 }
 
+
+
+.flexContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.totalValue {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+.finishButton {
+    /* Estilização do botão finalizar, se necessário */
+}

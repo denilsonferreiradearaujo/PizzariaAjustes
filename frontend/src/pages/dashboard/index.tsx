@@ -28,6 +28,7 @@ type OrderProps = {
     dataCreate: Date,
     dataUpdate: Date,
     valTotal: string,
+    valorTotal: string,
 }
 
 interface HomeProps {
@@ -94,13 +95,22 @@ export default function DashBoard({ orders }: HomeProps) {
                                     <section key={item.id} className={styles.card}>
                                         <div className={styles.cardHeader}>
                                             <h3 className={styles.cardTitle}>Número da Mesa / Pedido: {item.numMesa}</h3>
-                                            <button
-                                                className={styles.finishButton}
-                                                onClick={() => handleFinishItem(item.id)}
-                                            >
-                                                Finalizar
-                                            </button>
+
+                                            <div className={styles.flexContainer}>
+                                                <button
+                                                    className={styles.finishButton}
+                                                    onClick={() => handleFinishItem(item.id)}
+                                                >
+                                                    Finalizar
+                                                </button>
+
+                                                {/* Exibindo o valor total do pedido */}
+                                                <p className={styles.totalValue}>
+                                                    Total: R$ {parseFloat(item.valorTotal).toFixed(2)}
+                                                </p>
+                                            </div>
                                         </div>
+
                                         {/* Exibir atributos adicionais */}
                                         <p className={styles.cardText}>Data de Criação: {new Date(item.dataCreate).toLocaleString()}</p>
                                         {item.items.map((produto: OrderItemProps) => (
@@ -125,7 +135,16 @@ export default function DashBoard({ orders }: HomeProps) {
                                     <section key={item.id} className={styles.card}>
                                         <div className={styles.cardHeader}>
                                             <h3 className={styles.cardTitle}>Número da Mesa / Pedido: {item.numMesa}</h3>
+                                            <div className={styles.flexContainer}>
+                                                {/* Exibindo o valor total do pedido */}
+                                                <p className={styles.totalValue}>
+                                                    Total: R$ {parseFloat(item.valorTotal).toFixed(2)}
+                                                </p>
+                                            </div>
                                         </div>
+
+
+
                                         {/* Exibir atributos adicionais */}
                                         <p className={styles.cardText}>Data de Criação: {new Date(item.dataCreate).toLocaleString()}</p>
                                         <p className={styles.cardText}>Data de Atualização: {item.dataUpdate ? new Date(item.dataUpdate).toLocaleString() : ''}</p>
