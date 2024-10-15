@@ -3,9 +3,10 @@
   grid-template-columns: repeat(5, 1fr); // 5 colunas
   gap: 15px; // Espaçamento entre os cards
   padding: 20px;
-  margin-left: 210px;
+  margin-left: 117px;
   margin-right: 210px;
-  
+  padding-bottom: 30px; // Adiciona padding na parte inferior para espaçamento
+
   @media (max-width: 1200px) {
     grid-template-columns: repeat(4, 1fr); // Ajusta para 4 colunas em telas menores
   }
@@ -24,18 +25,22 @@
 }
 
 .card {
+  display: flex; // Habilita o Flexbox
+  flex-direction: column; // Organiza os itens na coluna
+  justify-content: space-between; // Distribui o espaço entre os itens
   background-color: #f9f9f9; // Cor de fundo dos cards
   border: 1px solid #ccc; // Borda leve
   border-radius: 8px; // Bordas arredondadas
-  padding: 16px;
-  text-align: left; // Alinhamento geral do conteúdo
+  padding: 17px;
+  text-align: center; // Alinhamento geral do conteúdo
   font-weight: bold; // Texto em negrito
-  height: 180px;
+  height: auto; // Ajusta a altura do card para se adaptar ao conteúdo
+  margin-bottom: 20px; // Adiciona margem inferior para espaçamento entre os cards
 
   h3.cardTitle {
     text-align: center; // Centraliza o h3
     font-weight: bold; // Negrito no título
-    margin-bottom: 10px;
+    margin-top: 10px; // Adiciona espaço acima do título
   }
 
   p.cardText {
@@ -45,6 +50,7 @@
   }
 }
 
+// Resto do seu código permanece inalterado
 .header {
   width: 100%;
   display: flex;
@@ -55,6 +61,7 @@
   border: 1px solid #ffffff;
   height: 80px;
 }
+
 
 .localizacao {
   margin-left: 215px; /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
@@ -88,9 +95,12 @@
 }
 
 .paginacao {
+  display: flex; /* Ativa o Flexbox */
+  justify-content: space-between; /* Distribui os botões uniformemente */
   align-items: center; /* Centraliza verticalmente */
   margin-top: 35px; /* Aumente o valor para mover mais para baixo */
-  margin-left: 207px; /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
+  margin-left: 217px; /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
+  margin-right: 217px; /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
 }
 
 .customButton {
@@ -120,6 +130,16 @@
   margin: 2px;
 }
 
+.clickedButton2 {
+  background-color: #c8102e;
+  color: #ffffff;
+  padding: 4px 14px;
+  font-size: 14px;
+  gap: 12px;
+  border-radius: 15px;
+  margin: 2px;
+}
+
 .logo img {
   width: 170px; /* Ajuste o tamanho da imagem */
   height: auto; /* Mantém a proporção da imagem */
@@ -129,7 +149,7 @@
 .nav {
   display: flex;
   gap: 20px;
-  padding-right: 200px; /* Padding fixo à direita */
+  padding-right: 207px; /* Padding fixo à direita */
 }
 
 .navLogo {
