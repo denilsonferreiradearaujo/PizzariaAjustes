@@ -27,10 +27,10 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@prisma/client@^5.19.1":
-  version "5.19.1"
-  resolved "https://registry.npmjs.org/@prisma/client/-/client-5.19.1.tgz"
-  integrity sha512-x30GFguInsgt+4z5I4WbkZP2CGpotJMUXy+Gl/aaUjHn2o1DnLYNTA+q9XdYmAQZM8fIIkvUiA2NpgosM3fneg==
+"@prisma/client@^5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@prisma/client/-/client-5.20.0.tgz"
+  integrity sha512-CLv55ZuMuUawMsxoqxGtLT3bEZoa2W8L3Qnp6rDIFWy+ZBrUcOFKdoeGPSnbBqxc3SkdxJrF+D1veN/WNynZYA==
 
 "@prisma/debug@5.19.1":
   version "5.19.1"

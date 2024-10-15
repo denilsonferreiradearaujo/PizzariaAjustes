@@ -10,7 +10,7 @@ import { ResetPasswordUserController } from './controllers/user/ResetPasswordUse
 import { CreateCategoryController } from "./controllers/category/CreateCategoryController";
 import { ListCategoryController } from "./controllers/category/ListCategoryController";
 import { UpdateCategoryController } from "./controllers/category/UpdateCategoryController";
-
+import { DeleteCategoryController } from "./controllers/category/DeleteCategoryController"; // Importação do controlador de exclusão
 import { CreateProductController } from "./controllers/product/CreateProductController";
 import { ListProductController } from "./controllers/product/ListProductController";
 import { UpdateProductController } from "./controllers/product/UpdateProductController";
@@ -31,19 +31,20 @@ import { isAuthorized } from "./middlewares/isAuthorized"; // isAuthorized(['fun
 const router = Router();
 
 // Rotas User
-router.post('/users', new CreateUserController().handle)
-router.post('/login', new AuthUserController().handle)  
+router.post('/users', new CreateUserController().handle);
+router.post('/login', new AuthUserController().handle);  
 // router.post('/updateUser', new UpdateUserController().handle)  - [RF002] / [RF003] - Exclusão / desativar / Alteração dados cadastrais cliente 
-router.get('/users/:pessoa_id', isAuthenticated, new DetailUserController().handle) // lapizinho manda pra essa
-router.get('/allUsers', isAuthenticated,  new DetailAllUserController().handle) // Todos os usuarios
-router.post('/forgotPassword', new ForgotPasswordController().handle)
-router.post('/resetPassword/:token', new ResetPasswordUserController().handle)
+router.get('/users/:pessoa_id', isAuthenticated, new DetailUserController().handle); // lapizinho manda pra essa
+router.get('/allUsers', isAuthenticated,  new DetailAllUserController().handle); // Todos os usuarios
+router.post('/forgotPassword', new ForgotPasswordController().handle);
+router.post('/resetPassword/:token', new ResetPasswordUserController().handle);
 
 // Rotas categoria
-router.post('/category' ,new CreateCategoryController().handle)
-router.get('/listCategory' ,new ListCategoryController().handle)
-router.post('/updateCategory/:id' ,new UpdateCategoryController().handle)
-    
+router.post('/category', new CreateCategoryController().handle);
+router.get('/listCategory', new ListCategoryController().handle);
+router.post('/updateCategory/:id', new UpdateCategoryController().handle);
+router.delete('/category/:id', new DeleteCategoryController().handle);
+
 // Rotas produto
 router.post('/createProduct', new CreateProductController().handle);
 router.get('/listProduct', new ListProductController().handle);
@@ -56,9 +57,8 @@ router.get('/taxasEntrega', new ListAllTaxaEntregaController().handle);
 router.post('/updateTaxaEntrega/:id', new UpdateTaxaEntregaController().handle);
 
 // Rotas dos pedidos
-router.post('/createPedido', new CreatePedidoController().handle) // [RF007] - Solicitação de pedido via delivery  
+router.post('/createPedido', new CreatePedidoController().handle); // [RF007] - Solicitação de pedido via delivery  
 router.get('/listPedidos', new ListAllPedidosController().handle); // [RF004] - Visualização de histórico de pedidos ( tela da produção )
 router.put("/pedido/status/:id", new UpdatePedidoStatusController().handle); // [RF023] - Atualização de pedido delivery  
-
 
 export { router };
