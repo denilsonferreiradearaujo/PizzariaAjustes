@@ -15,26 +15,23 @@ interface Categoria {
 
 export default function Category() {
   const [nome, setNome] = useState('');
-  const [categorias, setCategorias] = useState<Categoria[]>([]); // Estado para armazenar as categorias
-  const [filteredCategorias, setFilteredCategorias] = useState<Categoria[]>([]); // Estado para armazenar as categorias filtradas
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [filteredCategorias, setFilteredCategorias] = useState<Categoria[]>([]);
 
-  // Função para buscar as categorias na API
   async function fetchCategorias() {
     const apiCliente = setupAPICliente();
     const response = await apiCliente.get('/listCategory');
     setCategorias(response.data);
-    setFilteredCategorias(response.data); // Inicialmente, as categorias filtradas são todas
+    setFilteredCategorias(response.data);
   }
 
-  // useEffect para buscar as categorias quando o componente for montado
   useEffect(() => {
     fetchCategorias();
   }, []);
 
-  // Função para lidar com o filtro de categorias
   useEffect(() => {
     const filtered = categorias.filter(categoria =>
-      categoria.nome.toLowerCase().includes(nome.toLowerCase()) // Filtra por nome da categoria
+      categoria.nome.toLowerCase().includes(nome.toLowerCase())
     );
     setFilteredCategorias(filtered);
   }, [nome, categorias]);
@@ -48,26 +45,32 @@ export default function Category() {
     }
 
     const apiCliente = setupAPICliente();
-    await apiCliente.post('/category', {
-      nome: nome,
-    });
+    await apiCliente.post('/category', { nome });
 
     toast.success('Categoria cadastrada com sucesso');
     setNome('');
-    await fetchCategorias(); // Atualiza a lista após cadastro
+    await fetchCategorias();
   }
 
-  // Função para salvar a edição
   const salvarEdicao = async (id: number, novoNome: string) => {
     const apiCliente = setupAPICliente();
     try {
-      await apiCliente.post(`/updateCategory/${id}`, {
-        nome: novoNome,
-      });
+      await apiCliente.post(`/updateCategory/${id}`, { nome: novoNome });
       toast.success('Categoria atualizada com sucesso');
-      await fetchCategorias(); // Atualiza a lista após edição
+      await fetchCategorias();
     } catch (error) {
       toast.error('Erro ao atualizar a categoria');
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    const apiCliente = setupAPICliente();
+    try {
+      await apiCliente.delete(`/category/${id}`); // Certifique-se de que a rota DELETE esteja correta
+      toast.success('Categoria excluída com sucesso');
+      await fetchCategorias(); // Atualiza a lista após exclusão
+    } catch (error) {
+      toast.error('Erro ao excluir a categoria');
     }
   };
 
@@ -122,6 +125,12 @@ export default function Category() {
                       onClick={() => salvarEdicao(categoria.id, categoria.nome)}
                     >
                       Editar
+                    </button>
+                    <button
+                      className={styles.buttonDelete} // Adicione uma classe de estilo se necessário
+                      onClick={() => handleDelete(categoria.id)}
+                    >
+                      
                     </button>
                   </div>
                 </li>
