@@ -142,7 +142,7 @@ model SaboresPizza {
 model Tamanho {
   id         Int        @id @default(autoincrement())
   produtoId  Int
-  tamanho    String     @db.VarChar(45)
+  tamanho    String?     @db.VarChar(45)
   dataCreate DateTime   @default(now()) @map("data_create")
   dataUpdate DateTime?  @map("data_update")
   Produto    Produto    @relation(fields: [produtoId], references: [id], onDelete: NoAction)

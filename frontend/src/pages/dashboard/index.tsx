@@ -143,8 +143,6 @@ export default function DashBoard({ orders }: HomeProps) {
                                             </div>
                                         </div>
 
-
-
                                         {/* Exibir atributos adicionais */}
                                         <p className={styles.cardText}>Data de Criação: {new Date(item.dataCreate).toLocaleString()}</p>
                                         <p className={styles.cardText}>Data de Atualização: {item.dataUpdate ? new Date(item.dataUpdate).toLocaleString() : ''}</p>
