@@ -1,0 +1,30 @@
+[
+    {
+      "id": 1,
+      "name": "Pizza Calabresa",
+      "description": "Fatias de calabresa acompanhadas de cebola, queijo e molho especial.",
+      "price": "25.90",
+      "image": "/calabreza.png"
+    },
+    {
+      "id": 2,
+      "name": "Pizza Queijo",
+      "description": "Deliciosa pizza com muito queijo e molho de tomate.",
+      "price": "22.90",
+      "image": "/queijo.png"
+    },
+    {
+      "id": 3,
+      "name": "Pizza Queijo",
+      "description": "Pepperoni servido sobre generosa camada de queijo.",
+      "price": "27.90",
+      "image": "/queijo.png"
+    },
+    {
+      "id": 4,
+      "name": "Pizza Rucula",
+      "description": "Molho de tomate, presunto, ovos, cebola, azeitona e queijo.",
+      "price": "29.90",
+      "image": "/rucula.png"
+    }
+]
