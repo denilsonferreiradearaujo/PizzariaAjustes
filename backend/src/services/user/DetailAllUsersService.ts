@@ -8,6 +8,7 @@ class DetailAllUsersService {
         id: true,
         nome: true,
         email: true,
+        tipo: true,
         logins: {
           select: {
             tipoLogin: true,
