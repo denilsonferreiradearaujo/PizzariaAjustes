@@ -4,7 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import logoImg from '../../public/logo.png';
 import baner from '../../public/baner.jpg';
-import calabresaImg from '../../public/calabresa.png'
+import calabresaImg from '../../public/calabresa.png' // Pizzas Salgadas
 import alohoPoroImg from '../../public/alhoPorocomSalada.png'
 import portuguesaImg from '../../public/Portuguesa.png'
 import baconImg from '../../public/bacon.png'
@@ -12,9 +12,27 @@ import brasileiraImg from '../../public/brasileira.png'
 import brocolisImg from '../../public/brocolis.png'
 import camaraoImg from '../../public/camarao.png'
 import espanholaImg from '../../public/espanhola.png'
-import erroImg from '../../public/naoFoi.png'
 import lomboImg from '../../public/lombocomCatupiry.png'
 import margueridtaImg from '../../public/marguerita.png'
+import morangChoc from '../../public/chocolateMorango.png' // Pizzas Doces
+import confete from '../../public/pizzaConfete.png'
+import pacoca from '../../public/PizzaPacoca.jpeg'
+import brigadeirao from '../../public/brigadeiro.png'
+import amendoin from '../../public/pizzaAmendoin.png'
+import cocaCola2L from '../../public/coca2L.jpeg' // Bebidas
+import cocaColaLata from '../../public/cocaLata.png'
+import fantaGuarana from '../../public/fantaGuarana2L.png'
+import FantaLaranja from '../../public/fantaLaranja2L.png'
+import fantaUvaLata from '../../public/fantaUva.png'
+import guaranaJesus from '../../public/guaranaJesusLata.png'
+import laranja1L from '../../public/laranja1L.png'
+import maguary2L from '../../public/maguary.png'
+import pepsiNaLata from '../../public/pepsiLata.png'
+import sodaLata from '../../public/soda.png'
+import sprite from '../../public/spriteLata.png'
+import tampico2L from '../../public/tampico.png'
+import twistNaLata from '../../public/twistLata.png'
+import erroImg from '../../public/naoFoi.png'
 import Button from '@mui/material/Button';
 import { setupAPICliente } from '../../../frontend/src/services/api';
 
@@ -25,7 +43,7 @@ import Link from "next/link";
 // Função para retornar a imagem correta
 function getImageForProduct(nome: string) {
   switch (nome) {
-    case 'Pizza de Marguerita':
+    case 'Pizza de Marguerita': // Pizzas Salgadas
       return margueridtaImg;
     case 'Pizza de Calabresa':
       return calabresaImg;
@@ -41,6 +59,44 @@ function getImageForProduct(nome: string) {
       return camaraoImg;
       case 'Pizza Espanhola':
       return espanholaImg;
+      case 'Pizza de Confete':
+      return confete;
+      case 'Pizza de Morango com Chocolate': // Pizzas Doces
+      return morangChoc;
+      case 'Pizza de Paçoca':
+      return pacoca;
+      case 'Pizza de Brigadeiro':
+      return brigadeirao;
+      case 'Pizza de Brigadeiro':
+      return brigadeirao;
+      case 'Pizza de Amendoin':
+      return amendoin;
+      case 'Coca Cola 2L': // Bebidas
+      return cocaCola2L;
+      case 'Coca Cola Lata':
+      return cocaColaLata;
+      case 'Fanta Guarana 2L':
+      return fantaGuarana;
+      case 'Fanta Laranja 2L':
+      return FantaLaranja;
+      case 'Fanta Uva Lata':
+      return fantaUvaLata;
+      case 'Guarana Jesus Lata':
+      return guaranaJesus;
+      case 'Suco de Laranja Natural 1L':
+      return laranja1L;
+      case 'Suco Maguary de Laranja 2L':
+      return maguary2L;
+      case 'Pepsi Lata':
+      return pepsiNaLata;
+      case 'Soda Lata':
+      return sodaLata;
+      case 'Sprite Lata':
+      return sprite;
+      case 'Tampico 2L':
+      return tampico2L;
+      case 'Pepsi Twist Lata':
+      return twistNaLata;
     default:
       return erroImg; // Imagem padrão para pizzas doces ou outros itens
   }
