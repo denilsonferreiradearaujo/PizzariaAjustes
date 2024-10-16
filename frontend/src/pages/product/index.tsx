@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
-import Head from 'next/head'
+import Head from 'next/head';
 import { Header } from '@/src/components/Header';
 import styles from '../product/style.module.scss';
 import { toast } from 'react-toastify';
@@ -8,15 +8,15 @@ import { canSSRAuth } from '@/src/utils/canSSRAuth';
 import { setupAPICliente } from '../../services/api';
 
 type ItemProps = {
-  id: string,
-  name: string
-}
+  id: string;
+  nome: string; // Alterado para 'nome'
+};
 
 interface CategoryProps {
   categoryList: ItemProps[];
 }
 
-export default function Product({categoryList}: CategoryProps){
+export default function Product({ categoryList }: CategoryProps) {
   const [name, setName] = useState<string>('');
   const [price, setPrice] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -24,13 +24,13 @@ export default function Product({categoryList}: CategoryProps){
   const [categorySelected, setCategorySelected] = useState(0);
 
   // Estados para tamanhos e valores
-  const [sizes, setSizes] = useState<string[]>(['']); // Array de strings para tamanhos
-  const [values, setValues] = useState<{ preco: string, tamanho: boolean, status: boolean }[]>([
-    { preco: '', tamanho: false, status: true }
+  const [sizes, setSizes] = useState<string[]>(['']);
+  const [values, setValues] = useState<{ preco: string; tamanho: boolean; status: boolean }[]>([
+    { preco: '', tamanho: false, status: true },
   ]);
 
-  function handleChangeCategory(event: ChangeEvent<HTMLSelectElement>){
-    setCategorySelected(Number(event.target.value))
+  function handleChangeCategory(event: ChangeEvent<HTMLSelectElement>) {
+    setCategorySelected(Number(event.target.value));
   }
 
   function handleSizeChange(index: number, value: string) {
@@ -63,27 +63,28 @@ export default function Product({categoryList}: CategoryProps){
     setValues(updatedValues);
   }
 
-  async function handleRegister(event: FormEvent){
+  async function handleRegister(event: FormEvent) {
     event.preventDefault();
 
     try {
-      if(name === "" || price === "" || description === ""){
-        toast.error("Preencha todos os campos!");
+      if (name === '' || price === '' || description === '') {
+        toast.error('Preencha todos os campos!');
         return;
       }
 
       const selectedCategoryId = categories[categorySelected].id;
-      
+
       // Montar os dados a serem enviados
       const data = {
         nome: name,
+        descricao: description, // Certifique-se de que o backend espera esse campo
         categoriaId: parseInt(selectedCategoryId, 10),
-        tamanhos: sizes.filter(size => size !== "").map(size => ({ tamanho: size })),
-        valores: values.map(value => ({
+        tamanhos: sizes.filter((size) => size !== '').map((size) => ({ tamanho: size })),
+        valores: values.map((value) => ({
           preco: parseFloat(value.preco),
           tamanho: value.tamanho,
           status: value.status,
-        }))
+        })),
       };
 
       const apiCliente = setupAPICliente();
@@ -108,18 +109,17 @@ export default function Product({categoryList}: CategoryProps){
       </Head>
 
       <div>
-        <Header/>
+        <Header />
 
         <main className={styles.container}>
           <h1>Novo produto</h1>
 
           <form className={styles.form} onSubmit={handleRegister}>
-
             {/* Categoria */}
             <select value={categorySelected} onChange={handleChangeCategory}>
               {categories.map((item, index) => (
                 <option key={item.id} value={index}>
-                  {item.name}
+                  {item.nome} {/* Alterado para 'item.nome' */}
                 </option>
               ))}
             </select>
@@ -161,10 +161,14 @@ export default function Product({categoryList}: CategoryProps){
                   value={size}
                   onChange={(e) => handleSizeChange(index, e.target.value)}
                 />
-                <button type='button' onClick={() => removeSizeField(index)}>Remover</button>
+                <button type='button' onClick={() => removeSizeField(index)}>
+                  Remover
+                </button>
               </div>
             ))}
-            <button type='button' onClick={addSizeField}>Adicionar Tamanho</button>
+            <button type='button' onClick={addSizeField}>
+              Adicionar Tamanho
+            </button>
 
             {/* Valores */}
             <h2>Valores</h2>
@@ -193,10 +197,14 @@ export default function Product({categoryList}: CategoryProps){
                   />
                   Ativo
                 </label>
-                <button type='button' onClick={() => removeValueField(index)}>Remover</button>
+                <button type='button' onClick={() => removeValueField(index)}>
+                  Remover
+                </button>
               </div>
             ))}
-            <button type='button' onClick={addValueField}>Adicionar Valor</button>
+            <button type='button' onClick={addValueField}>
+              Adicionar Valor
+            </button>
 
             <button className={styles.buttonAdd} type='submit'>
               Cadastrar
@@ -205,16 +213,16 @@ export default function Product({categoryList}: CategoryProps){
         </main>
       </div>
     </>
-  )
+  );
 }
 
-// export const getServerSideProps = canSSRAuth(async (ctx) => {
-//   const apiCliente = setupAPICliente(ctx);
-//   const response = await apiCliente.get('/createProduct');
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+  const apiCliente = setupAPICliente(ctx);
+  const response = await apiCliente.get('/createProduct');
 
-//   return {
-//     props: {
-//       categoryList: response.data
-//     }
-//   }
-// })
+  return {
+    props: {
+      categoryList: response.data
+    }
+  }
+})
