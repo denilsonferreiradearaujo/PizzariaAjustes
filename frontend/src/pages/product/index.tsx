@@ -3,13 +3,12 @@ import Head from 'next/head';
 import { Header } from '@/src/components/Header';
 import styles from '../product/style.module.scss';
 import { toast } from 'react-toastify';
-
 import { canSSRAuth } from '@/src/utils/canSSRAuth';
 import { setupAPICliente } from '../../services/api';
 
 type ItemProps = {
   id: string;
-  nome: string; // Alterado para 'nome'
+  nome: string;
 };
 
 interface CategoryProps {
@@ -23,7 +22,6 @@ export default function Product({ categoryList }: CategoryProps) {
   const [categories, setCategories] = useState(categoryList || []);
   const [categorySelected, setCategorySelected] = useState(0);
 
-  // Estados para tamanhos e valores
   const [sizes, setSizes] = useState<string[]>(['']);
   const [values, setValues] = useState<{ preco: string; tamanho: boolean; status: boolean }[]>([
     { preco: '', tamanho: false, status: true },
@@ -74,10 +72,9 @@ export default function Product({ categoryList }: CategoryProps) {
 
       const selectedCategoryId = categories[categorySelected].id;
 
-      // Montar os dados a serem enviados
       const data = {
         nome: name,
-        descricao: description, // Certifique-se de que o backend espera esse campo
+        descricao: description,
         categoriaId: parseInt(selectedCategoryId, 10),
         tamanhos: sizes.filter((size) => size !== '').map((size) => ({ tamanho: size })),
         valores: values.map((value) => ({
@@ -115,16 +112,14 @@ export default function Product({ categoryList }: CategoryProps) {
           <h1>Novo produto</h1>
 
           <form className={styles.form} onSubmit={handleRegister}>
-            {/* Categoria */}
-            <select value={categorySelected} onChange={handleChangeCategory}>
+            <select value={categorySelected} onChange={handleChangeCategory} className={styles.select}>
               {categories.map((item, index) => (
                 <option key={item.id} value={index}>
-                  {item.nome} {/* Alterado para 'item.nome' */}
+                  {item.nome}
                 </option>
               ))}
             </select>
 
-            {/* Nome do Produto */}
             <input
               type='text'
               placeholder='Digite o nome do produto'
@@ -133,7 +128,6 @@ export default function Product({ categoryList }: CategoryProps) {
               onChange={(e) => setName(e.target.value)}
             />
 
-            {/* Preço do Produto */}
             <input
               type='text'
               placeholder='Preço do produto'
@@ -142,7 +136,6 @@ export default function Product({ categoryList }: CategoryProps) {
               onChange={(e) => setPrice(e.target.value)}
             />
 
-            {/* Descrição do Produto */}
             <textarea
               placeholder='Descreva o produto'
               className={styles.input}
@@ -150,7 +143,6 @@ export default function Product({ categoryList }: CategoryProps) {
               onChange={(e) => setDescription(e.target.value)}
             />
 
-            {/* Tamanhos */}
             <h2>Tamanhos</h2>
             {sizes.map((size, index) => (
               <div key={index} className={styles.sizeContainer}>
@@ -161,16 +153,15 @@ export default function Product({ categoryList }: CategoryProps) {
                   value={size}
                   onChange={(e) => handleSizeChange(index, e.target.value)}
                 />
-                <button type='button' onClick={() => removeSizeField(index)}>
+                <button type='button' className={styles.buttonRemove} onClick={() => removeSizeField(index)}>
                   Remover
                 </button>
               </div>
             ))}
-            <button type='button' onClick={addSizeField}>
+            <button type='button' className={styles.buttonAdd} onClick={addSizeField}>
               Adicionar Tamanho
             </button>
 
-            {/* Valores */}
             <h2>Valores</h2>
             {values.map((value, index) => (
               <div key={index} className={styles.valueContainer}>
@@ -181,32 +172,34 @@ export default function Product({ categoryList }: CategoryProps) {
                   value={value.preco}
                   onChange={(e) => handleValueChange(index, 'preco', e.target.value)}
                 />
-                <label>
-                  <input
-                    type='checkbox'
-                    checked={value.tamanho}
-                    onChange={(e) => handleValueChange(index, 'tamanho', e.target.checked)}
-                  />
-                  Tamanho
-                </label>
-                <label>
-                  <input
-                    type='checkbox'
-                    checked={value.status}
-                    onChange={(e) => handleValueChange(index, 'status', e.target.checked)}
-                  />
-                  Ativo
-                </label>
-                <button type='button' onClick={() => removeValueField(index)}>
+                <div className={styles.checkboxContainer}>
+                  <label>
+                    <input
+                      type='checkbox'
+                      checked={value.tamanho}
+                      onChange={(e) => handleValueChange(index, 'tamanho', e.target.checked)}
+                    />
+                    Tamanho
+                  </label>
+                  <label>
+                    <input
+                      type='checkbox'
+                      checked={value.status}
+                      onChange={(e) => handleValueChange(index, 'status', e.target.checked)}
+                    />
+                    Ativo
+                  </label>
+                </div>
+                <button type='button' className={styles.buttonRemove} onClick={() => removeValueField(index)}>
                   Remover
                 </button>
               </div>
             ))}
-            <button type='button' onClick={addValueField}>
+            <button type='button' className={styles.buttonAdd} onClick={addValueField}>
               Adicionar Valor
             </button>
 
-            <button className={styles.buttonAdd} type='submit'>
+            <button className={styles.buttonSubmit} type='submit'>
               Cadastrar
             </button>
           </form>
@@ -218,7 +211,7 @@ export default function Product({ categoryList }: CategoryProps) {
 
 export const getServerSideProps = canSSRAuth(async (ctx) => {
   const apiCliente = setupAPICliente(ctx);
-  const response = await apiCliente.get('/listCategory'); // Alterado para 'get' e rota correta
+  const response = await apiCliente.get('/listCategory');
 
   return {
     props: {
