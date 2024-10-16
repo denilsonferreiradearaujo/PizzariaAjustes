@@ -82,7 +82,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 email,
                 senha
             })
-            console.log("chegou aqui no mobile", response.data);
+            console.log("chegou aqui no mobile-01", response.data);
 
             const { id, nome, token } = response.data;
 
@@ -102,6 +102,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             })
 
             setLoadingAuth(false);
+            console.log("chegou aqui no mobile-03", response.data);
 
         } catch (err) {
             console.log('Erro ao acessar', err)
