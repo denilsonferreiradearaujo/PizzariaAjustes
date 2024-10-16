@@ -1,91 +1,73 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { canSSRAuth } from "@/src/utils/canSSRAuth";
 import Head from "next/head";
 import styles from "./styles.module.scss";
-
 import { Header } from "@/src/components/Header";
 import { FiRefreshCcw } from "react-icons/fi";
-
 import { setupAPICliente } from '../../services/api';
 
-import { ModalOrder } from "@/src/components/ModalOrder";
-
-import Modal from "react-modal";
+type OrderItemProps = {
+    id: string,
+    quantidade: number,
+    Produto: {
+        id: string,
+        nome: string,
+        preco: number,
+        tamanho: string,
+    }
+};
 
 type OrderProps = {
     id: string,
-    table: string,
-    status: boolean,
+    Pessoa: string,
+    numMesa: number,
+    status: string,
     draft: boolean,
-    name: string | null, 
+    name: string | null,
+    items: OrderItemProps[];
+    dataCreate: Date,
+    dataUpdate: Date,
+    valTotal: string,
+    valorTotal: string,
 }
 
 interface HomeProps {
     orders: OrderProps[];
 }
 
-export type OrderItemProps = {
-    id: string,
-    amount: number,
-    order_id: string,
-    product_id: string,
-    product: {
-        id: string,
-        name: string,
-        description: string,
-        price: string,
-        banner: string,
-    }
-    order:{
-        id: string,
-        table: string | number,
-        status: boolean,
-        name: string | null,
-    }
-}
-
 export default function DashBoard({ orders }: HomeProps) {
     const [orderList, setOrderList] = useState(orders || []);
-    const [modalItem, setModalItem] = useState<OrderItemProps[] | undefined>();
-    const [modalVisible, setModalVisible] = useState(false);
 
-    function handleCloseModal() {
-        setModalVisible(false);
-    }
-
-    async function handleOpenModalView(id: string) {
-        const apiCliente = setupAPICliente();
-
-        const response = await apiCliente.get('/pedido/status/:id', {
-            params: {
-                order_id: id,
-            }
-        });
-
-        setModalItem(response.data);
-        setModalVisible(true);
-    }
-
-    async function handleFinishItem(id: string){
-        const apiCliente = setupAPICliente();
-        await apiCliente.put('/order/finish', {
-            order_id: id,
-        })
-
-        const response = await apiCliente.get('/orders');
-
-        setOrderList(response.data);
-
-        setModalVisible(false);
-    }
-
-    async function handleRefresh(){
+    // Atualiza a lista de pedidos
+    async function handleRefresh() {
         const apiCliente = setupAPICliente();
         const response = await apiCliente.get('/listPedidos');
+        console.log(response.data); // Adicione isso para verificar os dados
         setOrderList(response.data);
     }
 
-    Modal.setAppElement('#__next');
+    async function handleFinishItem(id: string) {
+        const apiCliente = setupAPICliente();
+        await apiCliente.put(`/pedido/status/${id}`, { status: "Finalizado" });
+        handleRefresh(); // Chama a atualização da lista de pedidos após finalizar um pedido
+    }
+
+    // Usar useEffect para atualizar a página automaticamente a cada 30 segundos
+    useEffect(() => {
+        const interval = setInterval(() => {
+            handleRefresh();
+        }, 10000); // 10000ms = 10 segundos
+
+        // Limpar o intervalo quando o componente for desmontado
+        return () => clearInterval(interval);
+    }, []);
+
+    // Filtrar pedidos em aberto e finalizados
+    const pedidosEmAberto = orderList.filter(item => item.status === 'Aberto');
+    const pedidosFinalizados = orderList.filter(item => item.status === 'Finalizado');
+
+    console.log('Pedidos em Aberto:', pedidosEmAberto);
+    console.log('Pedidos Finalizados:', pedidosFinalizados);
 
     return (
         <>
@@ -97,39 +79,87 @@ export default function DashBoard({ orders }: HomeProps) {
                 <Header />
                 <main className={styles.container}>
                     <div className={styles.containerHeader}>
-                        <h1>Últimos pedidos</h1>
+                        <h1>Acompanhamento dos pedidos</h1>
                         <button onClick={handleRefresh}>
                             <FiRefreshCcw size={25} color="#3fffa3" />
                         </button>
                     </div>
 
-                    <article className={styles.listOrders}>
+                    <div className={styles.headColumns}>
+                        <div className={styles.column}>
+                            <h2>Pedidos em Aberto:</h2>
+                            {pedidosEmAberto.length === 0 ? (
+                                <span className={styles.emptyList}>Nenhum pedido em aberto...</span>
+                            ) : (
+                                pedidosEmAberto.map(item => (
+                                    <section key={item.id} className={styles.card}>
+                                        <div className={styles.cardHeader}>
+                                            <h3 className={styles.cardTitle}>Número da Mesa / Pedido: {item.numMesa}</h3>
 
-                        {orderList.length === 0 &&(
-                            <span className={styles.emptyList}>Você não possui pedidos em aberto...</span>
-                        )} 
+                                            <div className={styles.flexContainer}>
+                                                <button
+                                                    className={styles.finishButton}
+                                                    onClick={() => handleFinishItem(item.id)}
+                                                >
+                                                    Finalizar
+                                                </button>
 
-                        {orderList.map(item => (
-                            <section key={item.id} className={styles.orderItem}>
-                                <button onClick={() => handleOpenModalView(item.id)}>
-                                    <div className={styles.tag}></div>
-                                    <span>Mesa {item.table}</span>
-                                </button>
-                            </section>
-                        ))}
+                                                {/* Exibindo o valor total do pedido */}
+                                                <p className={styles.totalValue}>
+                                                    Total: R$ {parseFloat(item.valorTotal).toFixed(2)}
+                                                </p>
+                                            </div>
+                                        </div>
 
-                    </article>
+                                        {/* Exibir atributos adicionais */}
+                                        <p className={styles.cardText}>Data de Criação: {new Date(item.dataCreate).toLocaleString()}</p>
+                                        {item.items.map((produto: OrderItemProps) => (
+                                            <div key={produto.id} className={styles.produtoItem}>
+                                                <p className={styles.cardText}>Produto: {produto.Produto.nome}</p>
+                                                <p className={styles.cardText}>Quantidade: {produto.quantidade}</p>
+                                                <p className={styles.cardText}>Valor: R$ {parseFloat(item.valTotal).toFixed(2)}</p>
+                                                <p className={styles.cardText}>Tamanho: {produto.Produto.tamanho}</p>
+                                            </div>
+                                        ))}
+                                    </section>
+                                ))
+                            )}
+                        </div>
+
+                        <div className={styles.column}>
+                            <h2>Pedidos Finalizados:</h2>
+                            {pedidosFinalizados.length === 0 ? (
+                                <span className={styles.emptyList}>Nenhum pedido finalizado...</span>
+                            ) : (
+                                pedidosFinalizados.map(item => (
+                                    <section key={item.id} className={styles.card}>
+                                        <div className={styles.cardHeader}>
+                                            <h3 className={styles.cardTitle}>Número da Mesa / Pedido: {item.numMesa}</h3>
+                                            <div className={styles.flexContainer}>
+                                                {/* Exibindo o valor total do pedido */}
+                                                <p className={styles.totalValue}>
+                                                    Total: R$ {parseFloat(item.valorTotal).toFixed(2)}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Exibir atributos adicionais */}
+                                        <p className={styles.cardText}>Data de Criação: {new Date(item.dataCreate).toLocaleString()}</p>
+                                        <p className={styles.cardText}>Data de Atualização: {item.dataUpdate ? new Date(item.dataUpdate).toLocaleString() : ''}</p>
+                                        {item.items.map((produto: OrderItemProps) => (
+                                            <div key={produto.id} className={styles.produtoItem}>
+                                                <p className={styles.cardText}>Produto: {produto.Produto.nome}</p>
+                                                <p className={styles.cardText}>Quantidade: {produto.quantidade}</p>
+                                                <p className={styles.cardText}>Valor: R$ {parseFloat(item.valTotal).toFixed(2)}</p>
+                                                <p className={styles.cardText}>Tamanho: {produto.Produto.tamanho}</p>
+                                            </div>
+                                        ))}
+                                    </section>
+                                ))
+                            )}
+                        </div>
+                    </div>
                 </main>
-
-                {modalVisible && modalItem && (
-                    <ModalOrder 
-                        isOpen={modalVisible}
-                        onRequestClose={handleCloseModal}
-                        order={modalItem}
-                        handleFinishOrder = {handleFinishItem}
-                    />
-                )}
-
             </div>
         </>
     );
@@ -137,7 +167,6 @@ export default function DashBoard({ orders }: HomeProps) {
 
 export const getServerSideProps = canSSRAuth(async (ctx) => {
     const apiCliente = setupAPICliente(ctx);
-
     const response = await apiCliente.get('/listPedidos');
 
     return {

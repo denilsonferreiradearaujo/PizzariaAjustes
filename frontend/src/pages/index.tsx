@@ -1,14 +1,50 @@
 import { useContext, useState, useEffect } from "react";
+import { Footer } from '../components/Footer';
 import Head from "next/head";
 import Image from "next/image";
 import logoImg from '../../public/logo.png';
 import baner from '../../public/baner.jpg';
+import calabresaImg from '../../public/calabresa.png'
+import alohoPoroImg from '../../public/alhoPorocomSalada.png'
+import portuguesaImg from '../../public/Portuguesa.png'
+import baconImg from '../../public/bacon.png'
+import brasileiraImg from '../../public/brasileira.png'
+import brocolisImg from '../../public/brocolis.png'
+import camaraoImg from '../../public/camarao.png'
+import espanholaImg from '../../public/espanhola.png'
+import erroImg from '../../public/naoFoi.png'
+import lomboImg from '../../public/lombocomCatupiry.png'
+import margueridtaImg from '../../public/marguerita.png'
 import Button from '@mui/material/Button';
 import { setupAPICliente } from '../../../frontend/src/services/api';
 
 import styles from '../../styles/Home.module.scss';
 import { AuthContext } from "../contexts/AuthContext";
 import Link from "next/link";
+
+// Função para retornar a imagem correta
+function getImageForProduct(nome: string) {
+  switch (nome) {
+    case 'Pizza de Marguerita':
+      return margueridtaImg;
+    case 'Pizza de Calabresa':
+      return calabresaImg;
+    case 'Pizza de Alho Poró':
+      return alohoPoroImg;
+    case 'Pizza de Bacon':
+      return baconImg;
+      case 'Pizza Brasileira':
+      return brasileiraImg;
+      case 'Pizza de Brócolis':
+      return brocolisImg;
+      case 'Pizza de Camarão':
+      return camaraoImg;
+      case 'Pizza Espanhola':
+      return espanholaImg;
+    default:
+      return erroImg; // Imagem padrão para pizzas doces ou outros itens
+  }
+}
 
 // Componente principal
 export default function Home() {
@@ -97,15 +133,26 @@ export default function Home() {
         ) : produtos.length > 0 ? (
           produtos.map((produto) => (
             <div key={produto.id} className={styles.card}>
+              {/* Aqui a função decide qual imagem mostrar */}
+              <Image 
+                src={getImageForProduct(produto.nome)} 
+                alt={`Imagem de ${produto.nome}`} 
+                width={150} 
+                height={150} 
+              />
               <h3 className={styles.cardTitle}>{produto.nome}</h3>
-              <p className={styles.cardText}>Categoria: {produto.Categoria.nome}</p>
+              <p className={styles.cardText}>Categoria:{produto.Categoria.nome}</p>
               <p className={styles.cardText}>Preço: R$ {produto.valores[0].preco}</p>
+              <Button className={styles.clickedButton2}>
+                Adcionar
+              </Button>
             </div>
           ))
         ) : (
           <p>Nenhum produto encontrado</p>
         )}
       </div>
+      <Footer/>
     </>
   );
 }
