@@ -29,6 +29,10 @@ export function Header(){
                         <a>Cardápio</a>
                     </Link>
 
+                    <Link legacyBehavior href='/listUsers'>
+                        <a>Usuários</a>
+                    </Link>
+
                     <button onClick={signOut}>
                         <FiLogOut color='#413F46' size={24}/>
                     </button>
