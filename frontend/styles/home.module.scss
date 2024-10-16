@@ -54,9 +54,11 @@
 .header {
   width: 100%;
   display: flex;
-  justify-content: space-between; /* Distribui logo à esquerda e botões à direita */
+  justify-content: space-between;
+  /* Distribui logo à esquerda e botões à direita */
   align-items: center;
-  padding: 0 0px; /* Espaçamento fixo entre a esquerda e a direita */
+  padding: 0 0px;
+  /* Espaçamento fixo entre a esquerda e a direita */
   background-color: var(--gray-900);
   border: 1px solid #ffffff;
   height: 80px;
@@ -64,19 +66,23 @@
 
 
 .localizacao {
-  margin-left: 215px; /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
+  margin-left: 215px;
+  /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
 }
 
 .carrinho {
-  padding-right: 250px; /* Padding fixo à direita */
+  padding-right: 250px;
+  /* Padding fixo à direita */
 }
 
 .subHeader {
   width: 100%;
   display: flex;
-  justify-content: space-between; /* Distribui logo à esquerda e botões à direita */
+  justify-content: space-between;
+  /* Distribui logo à esquerda e botões à direita */
   align-items: center;
-  padding: 0 0px; /* Espaçamento fixo entre a esquerda e a direita */
+  padding: 0 0px;
+  /* Espaçamento fixo entre a esquerda e a direita */
   background-color: var(--gray-900);
   border: 1px solid #d1cfcf;
   height: 70px;
@@ -85,27 +91,38 @@
 .logo {
   display: flex;
   align-items: center;
-  margin-left: 215px; /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
+  margin-left: 215px;
+  /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
 }
 
 .baner {
   display: flex;
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
+  justify-content: center;
+  /* Centraliza horizontalmente */
+  align-items: center;
+  /* Centraliza verticalmente */
 }
 
 .paginacao {
-  display: flex; /* Ativa o Flexbox */
-  justify-content: space-between; /* Distribui os botões uniformemente */
-  align-items: center; /* Centraliza verticalmente */
-  margin-top: 35px; /* Aumente o valor para mover mais para baixo */
-  margin-left: 217px; /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
-  margin-right: 217px; /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
+  display: flex;
+  /* Ativa o Flexbox */
+  justify-content: space-between;
+  /* Distribui os botões uniformemente */
+  align-items: center;
+  /* Centraliza verticalmente */
+  margin-top: 35px;
+  /* Aumente o valor para mover mais para baixo */
+  margin-left: 217px;
+  /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
+  margin-right: 217px;
+  /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
 }
 
 .customButton {
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
+  justify-content: center;
+  /* Centraliza horizontalmente */
+  align-items: center;
+  /* Centraliza verticalmente */
   background-color: #ffffff;
   color: #000000;
   padding: 10px 20px;
@@ -141,21 +158,26 @@
 }
 
 .logo img {
-  width: 170px; /* Ajuste o tamanho da imagem */
-  height: auto; /* Mantém a proporção da imagem */
-  margin-right: -110px; /* Define o espaçamento à direita da imagem, se necessário */
+  width: 170px;
+  /* Ajuste o tamanho da imagem */
+  height: auto;
+  /* Mantém a proporção da imagem */
+  margin-right: -110px;
+  /* Define o espaçamento à direita da imagem, se necessário */
 }
 
 .nav {
   display: flex;
   gap: 20px;
-  padding-right: 207px; /* Padding fixo à direita */
+  padding-right: 207px;
+  /* Padding fixo à direita */
 }
 
 .navLogo {
   display: flex;
   gap: 20px;
-  padding-right: 280px; /* Padding fixo à direita */
+  padding-right: 280px;
+  /* Padding fixo à direita */
 }
 
 .button {
@@ -176,4 +198,17 @@
   .login {
     width: 90%;
   }
+}
+
+.modalBox {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;  /* Ajuste para definir o tamanho adequado */
+  max-width: 800px;  /* Limite de largura */
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }

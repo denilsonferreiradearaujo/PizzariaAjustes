@@ -35,6 +35,8 @@ import twistNaLata from '../../public/twistLata.png'
 import erroImg from '../../public/naoFoi.png'
 import Button from '@mui/material/Button';
 import { setupAPICliente } from '../../../frontend/src/services/api';
+import Modal from '@mui/material/Modal';
+import Box from '@mui/material/Box';
 
 import styles from '../../styles/Home.module.scss';
 import { AuthContext } from "../contexts/AuthContext";
@@ -51,13 +53,13 @@ function getImageForProduct(nome: string) {
       return alohoPoroImg;
     case 'Pizza de Bacon':
       return baconImg;
-      case 'Pizza Brasileira':
+    case 'Pizza Brasileira':
       return brasileiraImg;
-      case 'Pizza de Brócolis':
+    case 'Pizza de Brócolis':
       return brocolisImg;
-      case 'Pizza de Camarão':
+    case 'Pizza de Camarão':
       return camaraoImg;
-      case 'Pizza Espanhola':
+    case 'Pizza Espanhola':
       return espanholaImg;
       case 'Pizza de Confete':
       return confete;
@@ -107,6 +109,11 @@ export default function Home() {
   const [clickedButton, setClickedButton] = useState<number | null>(null);
   const [produtos, setProdutos] = useState<any[]>([]);  // Estado para armazenar os produtos
   const [loading, setLoading] = useState<boolean>(false);
+  const [showMap, setShowMap] = useState<boolean>(false);
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   // Função para capturar o clique e buscar produtos da categoria
   const handleClick = async (categoriaId: number) => {
@@ -134,12 +141,11 @@ export default function Home() {
           <Image src={logoImg} alt="Logo Pizzaria" width={200} height={500} />
         </div>
         <div className={styles.nav}>
-          <Link href="/index" legacyBehavior>
-            <a className={styles.button}>Colaborador</a>
-          </Link>
+
           <Link href="/login" legacyBehavior>
             <a className={styles.button}>Acessar</a>
           </Link>
+
           <Link href="/signup" legacyBehavior>
             <a className={styles.button}>Cadastrar</a>
           </Link>
@@ -147,17 +153,52 @@ export default function Home() {
       </header>
 
       <div className={styles.subHeader}>
-        <Link href="/" legacyBehavior>
-          <a className={styles.localizacao}>Loja Sumaré 📍</a>
+        <Link href="#" legacyBehavior>
+          <a className={styles.localizacao} onClick={handleOpen}>
+            Loja Sumaré 📍
+          </a>
         </Link>
         <div className={styles.carrinho}>
           🛒
         </div>
       </div>
 
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="map-modal"
+        aria-describedby="map-modal-description"
+      >
+        <Box className={styles.modalBox}>
+          <iframe
+            width="100%"
+            height="450"
+            style={{ border: "0" }}
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3662.322653421742!2d-47.26300282545686!3d-22.834092479134377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8bd1ab1fc77f3%3A0xf2ff0cd47cdcb7d8!2sEscola%20SENAI%20%22Dr.%20Celso%20Charuri%22!5e0!3m2!1sen!2sbr!4v1697399239926!5m2!1sen!2sbr"
+          />
+        </Box>
+      </Modal>
+
       <div className={styles.baner}>
         <Image src={baner} alt="Logo Pizzaria" width={1100} height={400} />
       </div>
+
+      {showMap && (
+        <div className={styles.mapContainer}>
+          <iframe
+            width="400"
+            height="300"
+            src="https://maps.google.com/maps?q=sumaré&t=&z=13&ie=UTF8&iwloc=&output=embed"
+            frameBorder="0"
+            scrolling="no"
+            marginHeight={0}
+            marginWidth={0}
+          />
+        </div>
+      )}
 
       <div className={styles.paginacao}>
         <Button
@@ -190,11 +231,11 @@ export default function Home() {
           produtos.map((produto) => (
             <div key={produto.id} className={styles.card}>
               {/* Aqui a função decide qual imagem mostrar */}
-              <Image 
-                src={getImageForProduct(produto.nome)} 
-                alt={`Imagem de ${produto.nome}`} 
-                width={150} 
-                height={150} 
+              <Image
+                src={getImageForProduct(produto.nome)}
+                alt={`Imagem de ${produto.nome}`}
+                width={150}
+                height={150}
               />
               <h3 className={styles.cardTitle}>{produto.nome}</h3>
               <p className={styles.cardText}>Categoria:{produto.Categoria.nome}</p>
@@ -208,7 +249,7 @@ export default function Home() {
           <p>Nenhum produto encontrado</p>
         )}
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }
