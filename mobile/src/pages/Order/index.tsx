@@ -20,18 +20,18 @@ type RouteDetailParams ={
 
 export type CategoryProps ={
     id: string,
-    name: string,
+    nome: string,
 }
 
 type ProductProps ={
     id: string,
-    name: string,
+    nome: string,
 }
 
 type ItemProps ={
     id: string,
     product_id: string,
-    name: string,
+    nome: string,
     amount: string | number,
 }
 
@@ -55,7 +55,7 @@ export default function Order(){
 
     useEffect(() => {
         async function loadInfo(){
-            const response = await api.get('/category')
+            const response = await api.get('/listCategory')
             setCategory(response.data);
             setCategorySelected(response.data[0])
         }
@@ -64,7 +64,7 @@ export default function Order(){
 
     useEffect(() => {
         async function loadProducts(){
-            const response = await api.get('/category/product',{
+            const response = await api.get('/listProduct',{
                 params:{
                     category_id: categorySelected?.id
                 }
@@ -79,11 +79,12 @@ export default function Order(){
 
     async function handleCloseOrder(){
         try{
-            await api.delete('/order', {
-                params:{
-                    order_id: route.params?.order_id
-                }
-            })
+            order_id: route.params?.order_id
+            // await api.delete('/order', {
+            //     params:{
+            //         order_id: route.params?.order_id
+            //     }
+            // })
 
             navigation.goBack();
 
@@ -111,7 +112,7 @@ export default function Order(){
             let data = {
                 id: response.data.id,
                 product_id: productSelected?.id,
-                name: productSelected?.name,
+                nome: productSelected?.nome,
                 amount: amount,
             }
 
@@ -157,7 +158,7 @@ export default function Order(){
             {category.length !== 0 && (
                 <TouchableOpacity style={styles.input} onPress={ ()=> setModalCategoryVisible(true)}>
                     <Text style={{color: '#fff', fontSize: 15}}>
-                        {categorySelected?.name}
+                        {categorySelected?.nome}
                     </Text>
                 </TouchableOpacity>
             )}
@@ -165,7 +166,7 @@ export default function Order(){
             {products.length !== 0 && (
                 <TouchableOpacity style={styles.input} onPress={ ()=> setModalProductVisible(true)}>
                     <Text style={{color: '#fff', fontSize: 15}}>
-                        {productSelected?.name}
+                        {productSelected?.nome}
                     </Text>
                 </TouchableOpacity>
             )}
