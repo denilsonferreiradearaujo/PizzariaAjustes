@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
+import { Footer } from '../../components/Footer';
 import Head from 'next/head';
 import { Header } from '@/src/components/Header';
 import styles from '../product/style.module.scss';
@@ -109,7 +110,7 @@ export default function Product({ categoryList }: CategoryProps) {
         <Header />
 
         <main className={styles.container}>
-          <h1>Novo produto</h1>
+          <h1 className={styles.titulo}>Novo produto</h1>
 
           <form className={styles.form} onSubmit={handleRegister}>
             <select value={categorySelected} onChange={handleChangeCategory} className={styles.select}>
@@ -143,7 +144,7 @@ export default function Product({ categoryList }: CategoryProps) {
               onChange={(e) => setDescription(e.target.value)}
             />
 
-            <h2>Tamanhos</h2>
+            <h2 className={styles.titulo}>Tamanhos</h2>
             {sizes.map((size, index) => (
               <div key={index} className={styles.sizeContainer}>
                 <input
@@ -153,16 +154,16 @@ export default function Product({ categoryList }: CategoryProps) {
                   value={size}
                   onChange={(e) => handleSizeChange(index, e.target.value)}
                 />
-                <button type='button' className={styles.buttonRemove} onClick={() => removeSizeField(index)}>
+                {/* <button type='button' className={styles.buttonRemove} onClick={() => removeSizeField(index)}>
                   Remover
-                </button>
+                </button> */}
               </div>
             ))}
-            <button type='button' className={styles.buttonAdd} onClick={addSizeField}>
+            {/* <button type='button' className={styles.buttonAdd} onClick={addSizeField}>
               Adicionar Tamanho
-            </button>
+            </button> */}
 
-            <h2>Valores</h2>
+            <h2 className={styles.titulo}>Valores</h2>
             {values.map((value, index) => (
               <div key={index} className={styles.valueContainer}>
                 <input
@@ -172,32 +173,15 @@ export default function Product({ categoryList }: CategoryProps) {
                   value={value.preco}
                   onChange={(e) => handleValueChange(index, 'preco', e.target.value)}
                 />
-                <div className={styles.checkboxContainer}>
-                  <label>
-                    <input
-                      type='checkbox'
-                      checked={value.tamanho}
-                      onChange={(e) => handleValueChange(index, 'tamanho', e.target.checked)}
-                    />
-                    Tamanho
-                  </label>
-                  <label>
-                    <input
-                      type='checkbox'
-                      checked={value.status}
-                      onChange={(e) => handleValueChange(index, 'status', e.target.checked)}
-                    />
-                    Ativo
-                  </label>
-                </div>
-                <button type='button' className={styles.buttonRemove} onClick={() => removeValueField(index)}>
+                
+                {/* <button type='button' className={styles.buttonRemove} onClick={() => removeValueField(index)}>
                   Remover
-                </button>
+                </button> */}
               </div>
             ))}
-            <button type='button' className={styles.buttonAdd} onClick={addValueField}>
+            {/* <button type='button' className={styles.buttonAdd} onClick={addValueField}>
               Adicionar Valor
-            </button>
+            </button> */}
 
             <button className={styles.buttonSubmit} type='submit'>
               Cadastrar
@@ -205,6 +189,7 @@ export default function Product({ categoryList }: CategoryProps) {
           </form>
         </main>
       </div>
+      <Footer />
     </>
   );
 }

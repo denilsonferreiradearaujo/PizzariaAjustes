@@ -1,19 +1,21 @@
 .footerContainer {
     width: 100%;
     position: absolute;
-    background-color: #413F46; // Cor de fundo
+    background-color: #272626; // Cor de fundo
     color: #ffffff; // Cor do texto
-    padding: 20px 0; // Espaçamento vertical
+    padding: 100px 0; // Espaçamento vertical
     text-align: center; // Centraliza o texto
+    margin-top: 140px; // Espaçamento acima da navegação
 
     .footerContent {
+        margin-top: -100px; // Espaçamento acima da navegação
         display: flex;
         flex-direction: column; // Empilha os elementos verticalmente
         align-items: center; // Centraliza horizontalmente
     }
 
     .footerNav {
-        margin-top: 10px; // Espaçamento acima da navegação
+        margin-top: 100px; // Espaçamento acima da navegação
         a {
             color: #ffffff; // Cor do link
             margin: 0 15px; // Espaçamento horizontal entre os links
@@ -26,3 +28,14 @@
         }
     }
 }
+
+.imgSenai{
+    margin-top: 90px;
+    justify-items: auto;
+    align-items: center;
+}
+
+.direitos{
+    margin-top: 100px;
+}
+
