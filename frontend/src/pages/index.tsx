@@ -238,7 +238,6 @@ export default function Home() {
                 height={150}
               />
               <h3 className={styles.cardTitle}>{produto.nome}</h3>
-              <p className={styles.cardText}>Categoria:{produto.Categoria.nome}</p>
               <p className={styles.cardText}>Preço: R$ {produto.valores[0].preco}</p>
               <Button className={styles.clickedButton2}>
                 Adcionar
@@ -246,7 +245,7 @@ export default function Home() {
             </div>
           ))
         ) : (
-          <p>Nenhum produto encontrado</p>
+          <p className={styles.espacoFooter}>Nenhum produto encontrado</p>
         )}
       </div>
       <Footer />
