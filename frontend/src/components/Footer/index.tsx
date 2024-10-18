@@ -1,6 +1,6 @@
 import styles from './home.module.scss'; // Certifique-se de que o caminho esteja correto
 import Link from 'next/link';
-import imgSenai from '../../../public/senai.jpg'
+import imgSsaborEArt from '../../../public/logoFooter.png'
 import Image from "next/image";
 
 export function Footer() {
@@ -20,7 +20,7 @@ export function Footer() {
                 </nav>
 
                 <div className={styles.imgSenai}>
-                    <Image src={imgSenai} alt="Logo Pizzaria" width={200} height={60} />
+                    <Image src={imgSsaborEArt} alt="Logo Pizzaria" width={260} height={130} />
                 </div>
 
                 <div className={styles.direitos}>
