@@ -1,3 +1,8 @@
+
+// Criar uma migration: yarn ou npx prisma migrate dev
+
+// Atualizar uma migração: npx prisma migrate dev --name nome-da-migracao
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -49,10 +54,10 @@ model Login {
 }
 
 model Telefone {
-  id        Int               @id @default(autoincrement())
-  numero    String            @db.VarChar(11)
-  tipo      String            @db.VarChar(45)
-  pessoas   TelefonePessoa[]
+  id                Int     @id @default(autoincrement())
+  telefoneResidencial String?
+  telefoneCelular   String?
+  pessoas           TelefonePessoa[]
 }
 
 model TelefonePessoa {
