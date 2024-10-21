@@ -152,7 +152,7 @@ model Valor {
   produtoId  Int
   tamanhoId  Int?
   preco      Decimal    @db.Decimal(12, 2)
-  status     Int        @default(1)
+  status     Boolean    @default(true)
   dataCreate DateTime   @default(now()) @map("dataCreate")
   dataUpdate DateTime?  @map("dataUpdate")
   Produto    Produto    @relation(fields: [produtoId], references: [id], onDelete: NoAction)
