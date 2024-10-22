@@ -20,7 +20,7 @@ model Pessoa {
   cpf         String            @db.VarChar(11)
   email       String            @db.VarChar(100)
   tipo        String            @db.VarChar(45)
-  status      Int               @default(1)
+  status      Boolean           @default(true)
   dataCreate  DateTime          @default(now()) @map("dataCreate")
   dataUpdate  DateTime?         @map("dataUpdate")
   enderecos   Endereco[]

@@ -149,6 +149,7 @@ export default function UserList() {
     try {
       const apiClient = setupAPICliente();
       const response = await apiClient.get(`/users/${userId}`);
+      console.log("console do usuario",response)
       setSelectedUser(response.data);
       setIsModalOpen(true); // Abrir o modal com os detalhes
     } catch (error) {

@@ -9,7 +9,7 @@ interface TamanhoRequest {
 interface ValorRequest {
   id?: number; // O ID do valor é opcional para identificar os existentes e atualizar.
   preco: number;
-  tamanho: boolean;
+  tamanhoId: number; // Alterado para 'number', já que representa um ID.
   status: boolean;
 }
 
@@ -67,7 +67,7 @@ class UpdateProductService {
           where: { id: valor.id },
           data: { 
             preco: valor.preco,
-            tamanho: valor.tamanho,
+            tamanhoId: valor.tamanhoId, // Alterado de 'tamanho' para 'tamanhoId'
             status: valor.status,
             dataUpdate: new Date(), // Atualiza o campo dataUpdate
           },
@@ -78,7 +78,7 @@ class UpdateProductService {
           data: { 
             produtoId, 
             preco: valor.preco, 
-            tamanho: valor.tamanho, 
+            tamanhoId: valor.tamanhoId, // Alterado de 'tamanho' para 'tamanhoId'
             status: valor.status,
             dataCreate: new Date(), // Presumindo que você também tenha um campo dataCreate
           },
