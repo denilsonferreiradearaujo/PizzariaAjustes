@@ -89,7 +89,7 @@ model Pedido {
   dataCreate   DateTime     @default(now()) @map("dataCreate")
   dataUpdate   DateTime?    @map("dataUpdate")
   Pessoa       Pessoa?      @relation(fields: [pessoaId], references: [id], onDelete: NoAction)
-  TaxaEntrega  TaxaEntrega  @relation(fields: [taxaEntregaId], references: [id], onDelete: NoAction)
+  TaxaEntrega  TaxaEntrega?  @relation(fields: [taxaEntregaId], references: [id], onDelete: NoAction)
   items        Item[]
 }
 
