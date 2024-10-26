@@ -5,7 +5,6 @@ import styles from './style.module.scss';
 import { canSSRAuth } from '@/src/utils/canSSRAuth';
 import { setupAPICliente } from '../../services/api';
 import { toast } from 'react-toastify';
-import UserDetailModal from '../../components/UserDetailModal';
 
 type UserProps = {
   id: string;
@@ -15,35 +14,49 @@ type UserProps = {
   tipo: string;
 };
 
-export default function UserList() {
+type UserDetailProps = {
+  id: string;
+  nome: string;
+  email: string;
+  genero: string;
+  cpf: string;
+  dataNasc: string;
+  status: string;
+  enderecos: any[];
+  telefones: {
+    telefoneResidencial: string;
+    telefoneCelular: string;
+  };
+};
+
+export default function detailUser() {
   const [users, setUsers] = useState<UserProps[]>([]);
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserDetailProps | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    async function loadUsers() {
+    async function loadUser() {
       try {
         const apiClient = setupAPICliente();
-        const response = await apiClient.get('/listUsers');
+        const response = await apiClient.get('/users/:pessoa_id');
         setUsers(response.data);
       } catch (error) {
         toast.error('Erro ao carregar os usuários');
       }
     }
-    loadUsers();
+    loadUser();
   }, []);
 
   async function handleUserDetail(userId: string) {
-    console.log("acionou o botao", userId)
-
-    setSelectedUserId(userId);
-    setIsModalOpen(true);
+    try {
+      const apiClient = setupAPICliente();
+      const response = await apiClient.get(`/users/${userId}`);
+      setSelectedUser(response.data);
+      setIsModalOpen(true);
+    } catch (error) {
+      toast.error('Erro ao carregar os detalhes do usuário');
+    }
   }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedUserId(null);
-  };
 
   return (
     <>
@@ -78,25 +91,17 @@ export default function UserList() {
           </tbody>
         </table>
       </div>
-      
-      {selectedUserId && (
-        <UserDetailModal
-          userId={selectedUserId}
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-        />
-      )}
     </>
   );
 }
 
 export const getServerSideProps = canSSRAuth(async (ctx) => {
   const apiCliente = setupAPICliente(ctx);
-  const response = await apiCliente.get('/listUsers');
+  const response = await apiCliente.get('/users/:pessoa_id');
 
   return {
     props: {
-      listUsers: response.data,
+      listUser: response.data,
     },
   };
 });

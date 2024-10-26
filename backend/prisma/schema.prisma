@@ -1,3 +1,8 @@
+
+// Criar uma migration: yarn ou npx prisma migrate dev
+
+// Atualizar uma migração: npx prisma migrate dev --name nome-da-migracao
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,7 +20,7 @@ model Pessoa {
   cpf         String            @db.VarChar(11)
   email       String            @db.VarChar(100)
   tipo        String            @db.VarChar(45)
-  status      Int               @default(1)
+  status      Boolean           @default(true)
   dataCreate  DateTime          @default(now()) @map("dataCreate")
   dataUpdate  DateTime?         @map("dataUpdate")
   enderecos   Endereco[]
@@ -49,10 +54,10 @@ model Login {
 }
 
 model Telefone {
-  id        Int               @id @default(autoincrement())
-  numero    String            @db.VarChar(11)
-  tipo      String            @db.VarChar(45)
-  pessoas   TelefonePessoa[]
+  id                Int     @id @default(autoincrement())
+  telefoneResidencial String?
+  telefoneCelular   String?
+  pessoas           TelefonePessoa[]
 }
 
 model TelefonePessoa {
@@ -77,14 +82,14 @@ model TaxaEntrega {
 model Pedido {
   id           Int          @id @default(autoincrement())
   pessoaId     Int?
-  taxaEntregaId Int
+  taxaEntregaId Int?
   status       String       @db.VarChar(45)
   numMesa      Int          @map("numMesa")
   valTotal     Decimal      @db.Decimal(12, 2) @map("valTotal")
   dataCreate   DateTime     @default(now()) @map("dataCreate")
   dataUpdate   DateTime?    @map("dataUpdate")
   Pessoa       Pessoa?      @relation(fields: [pessoaId], references: [id], onDelete: NoAction)
-  TaxaEntrega  TaxaEntrega  @relation(fields: [taxaEntregaId], references: [id], onDelete: NoAction)
+  TaxaEntrega  TaxaEntrega?  @relation(fields: [taxaEntregaId], references: [id], onDelete: NoAction)
   items        Item[]
 }
 
@@ -147,7 +152,7 @@ model Valor {
   produtoId  Int
   tamanhoId  Int?
   preco      Decimal    @db.Decimal(12, 2)
-  status     Int        @default(1)
+  status     Boolean    @default(true)
   dataCreate DateTime   @default(now()) @map("dataCreate")
   dataUpdate DateTime?  @map("dataUpdate")
   Produto    Produto    @relation(fields: [produtoId], references: [id], onDelete: NoAction)

@@ -34,7 +34,7 @@ const router = Router();
 router.post('/users', new CreateUserController().handle);
 router.post('/login', new AuthUserController().handle);  
 // router.post('/updateUser', new UpdateUserController().handle)  - [RF002] / [RF003] - Exclusão / desativar / Alteração dados cadastrais cliente 
-router.get('/users/:pessoa_id', new DetailUserController().handle); // lapizinho manda pra essa
+router.get('/users/:pessoa_id', new DetailUserController().handle);
 router.get('/listUsers', new DetailAllUserController().handle); // Todos os usuarios
 router.post('/forgotPassword', new ForgotPasswordController().handle);
 router.post('/resetPassword/:token', new ResetPasswordUserController().handle);
