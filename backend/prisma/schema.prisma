@@ -82,14 +82,14 @@ model TaxaEntrega {
 model Pedido {
   id           Int          @id @default(autoincrement())
   pessoaId     Int?
-  taxaEntregaId Int
+  taxaEntregaId Int?
   status       String       @db.VarChar(45)
   numMesa      Int          @map("numMesa")
   valTotal     Decimal      @db.Decimal(12, 2) @map("valTotal")
   dataCreate   DateTime     @default(now()) @map("dataCreate")
   dataUpdate   DateTime?    @map("dataUpdate")
   Pessoa       Pessoa?      @relation(fields: [pessoaId], references: [id], onDelete: NoAction)
-  TaxaEntrega  TaxaEntrega  @relation(fields: [taxaEntregaId], references: [id], onDelete: NoAction)
+  TaxaEntrega  TaxaEntrega?  @relation(fields: [taxaEntregaId], references: [id], onDelete: NoAction)
   items        Item[]
 }
 
