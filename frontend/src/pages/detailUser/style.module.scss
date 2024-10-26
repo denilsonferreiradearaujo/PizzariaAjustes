@@ -1,0 +1,94 @@
+.container {
+    max-width: 720px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--dark-800);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.titulo {
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+    background-color: var(dark-900);
+    border-radius: 0.5rem;
+    overflow: hidden;
+
+    th {
+        padding: 0.8rem;
+        text-align: left;
+        background-color: #D41509;
+        color: var(--white);
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    td {
+        padding: 0.8rem;
+        color: var(--gray-100);
+        border-bottom: 1px solid var(--gray-700);
+
+        &:last-child {
+            border-bottom: none; // Remove a borda da última coluna
+        }
+    }
+
+    .row:hover {
+        background-color: var(--dark-800);
+    }
+}
+
+.buttonDetail {
+    padding: 0.5rem 1rem;
+    background-color: #D41509; // Cor vermelha do botão
+    color: var(--dark-700);
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #A40C0B; // Cor mais escura no hover
+    }
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    max-width: 90%;
+}
+
+.closeButton {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+
+    &:hover {
+        background-color: #005bb5; // Cor mais escura no hover
+    }
+}
