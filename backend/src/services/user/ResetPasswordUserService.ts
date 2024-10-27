@@ -9,8 +9,7 @@ interface ResetPasswordRequest {
 
 class ResetPasswordUserService {
   async execute({ token, senha }: ResetPasswordRequest) {
-    console.log(token);
-    console.log(senha);
+    // console.log(token, senha);
 
     // Verificar se houve envio do token
     if (!token) {
