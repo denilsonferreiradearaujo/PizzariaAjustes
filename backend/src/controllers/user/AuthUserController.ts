@@ -7,7 +7,7 @@ class AuthUserController {
   
 
     const authUserService = new AuthUserService();
-    console.log(req.body, email, senha);
+    // console.log(req.body, email, senha);
     const auth = await authUserService.execute({
       email,
       senha
