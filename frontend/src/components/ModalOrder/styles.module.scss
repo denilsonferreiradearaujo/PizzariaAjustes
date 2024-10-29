@@ -1,52 +1,85 @@
-
 .container {
     width: 620px;
-    background-color: var(--dark-700);
-    color: var(--white);
-}
+    background-color: #f0f0f0; // Cor de fundo mais clara
+    color: #333; // Texto mais escuro
+    padding: 20px;
+    border-radius: 10px; // Arredondar os cantos
 
-.container h2 {
-    margin: 1rem 0;
-}
+    h2 {
+        margin: 1rem 0;
+        text-align: center; // Centralizar o título
+        color: var(--red-900); // Cor do título
+    }
 
-.containerItem{
-    display: flex;
-    flex-direction: column;
-    margin: 1rem 0;
+    .details {
+        display: flex;
+        flex-direction: column;
+        align-items: center; // Centralizar as informações
+        margin: 1.5rem 0;
 
-    strong{
-        color: var(--green-900);
+        span {
+            margin: 0.5rem 0; // Espaçamento entre as linhas
+            font-size: 1.1rem; // Tamanho da fonte
+        }
+
+        strong {
+            color: var(--green-900); // Destaque em verde
+        }
+    }
+
+    h3 {
+        text-align: center; // Centralizar subtítulo
+        margin-top: 1.5rem;
+        color: var(--red-900); // Cor do subtítulo
+    }
+
+    .containerItem {
+        display: flex;
+        flex-direction: column;
+        align-items: center; // Centralizar os itens
+        margin: 1rem 0;
+
+        strong {
+            color: var(--green-900);
+        }
+    }
+
+    .description {
+        margin-top: 0.5rem;
+        word-break: break-all;
+        text-align: center; // Centralizar descrição
+    }
+
+    .buttonOrder {
+        margin-top: 1.5rem;
+        background-color: rgba(0, 0, 0, 0.1); // Fundo leve
+        border: 0;
+        padding: 0.5rem 1rem;
+        border-radius: 0.3rem;
+        color: var(--red-900);
+        font-weight: bold; // Destacar o texto do botão
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.2); // Escurecer ao passar o mouse
+        }
+    }
+
+    .table {
+        font-size: 1.4rem;
+        color: var(--red-900);
+        text-align: center; // Centralizar mesa
     }
 }
 
-.description{
-    margin-top: 0.5rem;
-    // Se chegar a descrição no final do modal, quero que quebre para linha de baixo
-    word-break: break-all;
-}
-
-.buttonOrder {
-    margin-top: 1.5rem;
-    background-color: rgba(0,0,0, 40%);
-    border: 0;
-    padding: 0.5rem 1rem;
-    border-radius: 0.3rem;
-    color: var(--red-900);
-}
-
-.table {
-    font-size: 1.4rem;
-    color: var(--red-900);
-}
-
 @media screen and (max-width: 660px){ 
-    .container{
+    .container {
         width: 460px;
     }
 }
 
 @media screen and (max-width: 510px){ 
-    .container{
+    .container {
         width: 300px;
     }
 }

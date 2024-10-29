@@ -5,31 +5,13 @@ import styles from "./styles.module.scss";
 import { Header } from "@/src/components/Header";
 import { FiRefreshCcw } from "react-icons/fi";
 import { setupAPICliente } from '../../services/api';
-
-type OrderItemProps = {
-    id: string,
-    quantidade: number,
-    Produto: {
-        id: string,
-        nome: string,
-        preco: number,
-        tamanho: string,
-    }
-};
+import { ModalOrder } from '../../components/ModalOrder';
 
 type OrderProps = {
     id: string,
-    Pessoa: string,
     numMesa: number,
     status: string,
-    draft: boolean,
-    name: string | null,
-    items: OrderItemProps[];
-    dataCreate: Date,
-    dataUpdate: Date,
-    valTotal: string,
-    valorTotal: string,
-}
+};
 
 interface HomeProps {
     orders: OrderProps[];
@@ -37,37 +19,40 @@ interface HomeProps {
 
 export default function DashBoard({ orders }: HomeProps) {
     const [orderList, setOrderList] = useState(orders || []);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState<OrderProps | null>(null);
 
-    // Atualiza a lista de pedidos
     async function handleRefresh() {
         const apiCliente = setupAPICliente();
         const response = await apiCliente.get('/listPedidos');
-        console.log(response.data); // Adicione isso para verificar os dados
         setOrderList(response.data);
     }
 
     async function handleFinishItem(id: string) {
         const apiCliente = setupAPICliente();
         await apiCliente.put(`/pedido/status/${id}`, { status: "Finalizado" });
-        handleRefresh(); // Chama a atualização da lista de pedidos após finalizar um pedido
+        handleRefresh();
     }
 
-    // Usar useEffect para atualizar a página automaticamente a cada 30 segundos
+    function handleOpenModal(order: OrderProps) {
+        setSelectedOrder(order);
+        setModalVisible(true);
+    }
+
+    function handleCloseModal() {
+        setModalVisible(false);
+        setSelectedOrder(null);
+    }
+
     useEffect(() => {
         const interval = setInterval(() => {
             handleRefresh();
-        }, 10000); // 10000ms = 10 segundos
-
-        // Limpar o intervalo quando o componente for desmontado
+        }, 10000);
         return () => clearInterval(interval);
     }, []);
 
-    // Filtrar pedidos em aberto e finalizados
     const pedidosEmAberto = orderList.filter(item => item.status === 'Aberto');
     const pedidosFinalizados = orderList.filter(item => item.status === 'Finalizado');
-
-    console.log('Pedidos em Aberto:', pedidosEmAberto);
-    console.log('Pedidos Finalizados:', pedidosFinalizados);
 
     return (
         <>
@@ -92,35 +77,22 @@ export default function DashBoard({ orders }: HomeProps) {
                                 <span className={styles.emptyList}>Nenhum pedido em aberto...</span>
                             ) : (
                                 pedidosEmAberto.map(item => (
-                                    <section key={item.id} className={styles.card}>
-                                        <div className={styles.cardHeader}>
-                                            <h3 className={styles.cardTitle}>Número da Mesa / Pedido: {item.numMesa}</h3>
-
-                                            <div className={styles.flexContainer}>
-                                                <button
-                                                    className={styles.finishButton}
-                                                    onClick={() => handleFinishItem(item.id)}
-                                                >
-                                                    Finalizar
-                                                </button>
-
-                                                {/* Exibindo o valor total do pedido */}
-                                                <p className={styles.totalValue}>
-                                                    Total: R$ {parseFloat(item.valorTotal).toFixed(2)}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        {/* Exibir atributos adicionais */}
-                                        <p className={styles.cardText}>Data de Criação: {new Date(item.dataCreate).toLocaleString()}</p>
-                                        {item.items.map((produto: OrderItemProps) => (
-                                            <div key={produto.id} className={styles.produtoItem}>
-                                                <p className={styles.cardText}>Produto: {produto.Produto.nome}</p>
-                                                <p className={styles.cardText}>Quantidade: {produto.quantidade}</p>
-                                                <p className={styles.cardText}>Valor: R$ {parseFloat(item.valTotal).toFixed(2)}</p>
-                                                <p className={styles.cardText}>Tamanho: {produto.Produto.tamanho}</p>
-                                            </div>
-                                        ))}
+                                    <section
+                                        key={item.id}
+                                        className={`${styles.card} ${styles.pending}`} // Classe para pedidos em aberto
+                                        onClick={() => handleOpenModal(item)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        <h3 className={styles.cardTitle}>Mesa {item.numMesa}</h3>
+                                        <button
+                                            className={styles.finishButton}
+                                            onClick={(e) => {
+                                                e.stopPropagation(); // Impede que o clique no botão finalize o pedido e abra o modal ao mesmo tempo
+                                                handleFinishItem(item.id);
+                                            }}
+                                        >
+                                            Finalizar
+                                        </button>
                                     </section>
                                 ))
                             )}
@@ -132,33 +104,26 @@ export default function DashBoard({ orders }: HomeProps) {
                                 <span className={styles.emptyList}>Nenhum pedido finalizado...</span>
                             ) : (
                                 pedidosFinalizados.map(item => (
-                                    <section key={item.id} className={styles.card}>
-                                        <div className={styles.cardHeader}>
-                                            <h3 className={styles.cardTitle}>Número da Mesa / Pedido: {item.numMesa}</h3>
-                                            <div className={styles.flexContainer}>
-                                                {/* Exibindo o valor total do pedido */}
-                                                <p className={styles.totalValue}>
-                                                    Total: R$ {parseFloat(item.valorTotal).toFixed(2)}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        {/* Exibir atributos adicionais */}
-                                        <p className={styles.cardText}>Data de Criação: {new Date(item.dataCreate).toLocaleString()}</p>
-                                        <p className={styles.cardText}>Data de Atualização: {item.dataUpdate ? new Date(item.dataUpdate).toLocaleString() : ''}</p>
-                                        {item.items.map((produto: OrderItemProps) => (
-                                            <div key={produto.id} className={styles.produtoItem}>
-                                                <p className={styles.cardText}>Produto: {produto.Produto.nome}</p>
-                                                <p className={styles.cardText}>Quantidade: {produto.quantidade}</p>
-                                                <p className={styles.cardText}>Valor: R$ {parseFloat(item.valTotal).toFixed(2)}</p>
-                                                <p className={styles.cardText}>Tamanho: {produto.Produto.tamanho}</p>
-                                            </div>
-                                        ))}
+                                    <section
+                                        key={item.id}
+                                        className={`${styles.card} ${styles.completed}`} // Classe para pedidos finalizados
+                                        onClick={() => handleOpenModal(item)} // Adiciona a ação de clicar para abrir o modal
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        <h3 className={styles.cardTitle}>Mesa {item.numMesa}</h3>
                                     </section>
                                 ))
                             )}
                         </div>
                     </div>
+
+                    {modalVisible && selectedOrder && (
+                        <ModalOrder
+                            isOpen={modalVisible}
+                            onRequestClose={handleCloseModal}
+                            order={selectedOrder}
+                        />
+                    )}
                 </main>
             </div>
         </>

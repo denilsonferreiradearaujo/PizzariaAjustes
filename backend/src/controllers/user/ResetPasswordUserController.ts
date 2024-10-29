@@ -6,11 +6,11 @@ class ResetPasswordUserController {
     const { token } = req.params; // Pegar o token dos parâmetros da URL
     const { senha } = req.body; // A nova senha será enviada no corpo da requisição
 
-    console.log(token, senha)
+    // console.log(token, senha)
 
     const resetPasswordUserService = new ResetPasswordUserService();
 
-    console.log(resetPasswordUserService)
+    // console.log(resetPasswordUserService)
 
     try {
       const result = await resetPasswordUserService.execute({ token, senha });

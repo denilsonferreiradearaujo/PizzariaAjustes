@@ -3,6 +3,7 @@ import { Router } from "express";
 import { CreateUserController } from "./controllers/user/CreateUserController";
 import { AuthUserController } from "./controllers/user/AuthUserController";
 import { DetailUserController } from "./controllers/user/DetailUserController";
+import { UpdateUserController } from "./controllers/user/UpdateUserController";
 import { DetailAllUserController } from "./controllers/user/DetailAllUserController";
 import { ForgotPasswordController } from './controllers/user/ForgotPasswordController';
 import { ResetPasswordUserController } from './controllers/user/ResetPasswordUserController';
@@ -31,10 +32,10 @@ import { isAuthorized } from "./middlewares/isAuthorized"; // isAuthorized(['fun
 const router = Router();
 
 // Rotas User
-router.post('/users', new CreateUserController().handle);
-router.post('/login', new AuthUserController().handle);  
-// router.post('/updateUser', new UpdateUserController().handle)  - [RF002] / [RF003] - Exclusão / desativar / Alteração dados cadastrais cliente 
-router.get('/users/:pessoa_id', new DetailUserController().handle); // lapizinho manda pra essa
+router.post('/users', new CreateUserController().handle); // Cadastra um usuário na plataforma
+router.post('/login', new AuthUserController().handle); // loga o usuário na plataforma
+router.get('/users/:pessoa_id', new DetailUserController().handle); // Exibe os dados do usuário
+router.put('/users/:pessoa_id', new UpdateUserController().handle); // Atualiza os dados do usuário
 router.get('/listUsers', new DetailAllUserController().handle); // Todos os usuarios
 router.post('/forgotPassword', new ForgotPasswordController().handle);
 router.post('/resetPassword/:token', new ResetPasswordUserController().handle);
