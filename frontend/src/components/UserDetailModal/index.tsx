@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { setupAPICliente } from '../../services/api';
 import { toast } from 'react-toastify';
-import styles from '../UserDetailModal/styles.module.scss';
+import styles from './styles.module.scss';
 
 interface UserDetails {
     id: string;
@@ -40,21 +40,23 @@ interface UserDetailModalProps {
 }
 
 const UserDetailModal: React.FC<UserDetailModalProps> = ({ userId, isOpen, onClose }) => {
-    const customStyles = {
-        content: {
-            color: '#1e1e2e',
-            border: '1px solid #000000',
-            borderRadius: '0.5rem',
-            width: '55%',
-            top: '50%',
-            bottom: 'auto',
-            left: '50%',
-            right: 'auto',
-            padding: '30px',
-            transform: 'translate(40%, -100%)',
-            backgroundColor: '#fff'
-        }
-    };
+    // const customStyles = {
+    //     content: {
+    //         color: '#1e1e2e',
+    //         border: '1px solid #000000',
+    //         borderRadius: '0.5rem',
+    //         width: '55%',
+    //         top: '50%',
+    //         bottom: 'auto',
+    //         left: '50%',
+    //         right: 'auto',
+    //         padding: '30px',
+    //         transform: 'translate(40%, -100%)',
+    //         backgroundColor: '#fff'
+    //     }
+    // };
+
+   
 
     const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
     const [formData, setFormData] = useState<UserDetails | null>(null);
@@ -104,13 +106,21 @@ const UserDetailModal: React.FC<UserDetailModalProps> = ({ userId, isOpen, onClo
     };
 
     return (
+        // <Modal
+        //     isOpen={isOpen}
+        //     onRequestClose={onClose}
+        //     contentLabel="Detalhes do Usuário"
+        //     className="modal-content"
+        //     overlayClassName="modal-overlay"
+        //     style={customStyles}
+        // >
+
         <Modal
             isOpen={isOpen}
             onRequestClose={onClose}
             contentLabel="Detalhes do Usuário"
-            className="modal-content"
-            overlayClassName="modal-overlay"
-            style={customStyles}
+            className={styles.modalContent}
+            overlayClassName={styles.modalOverlay}
         >
             {userDetails ? (
                 <form onSubmit={handleSubmit}>
@@ -146,57 +156,62 @@ const UserDetailModal: React.FC<UserDetailModalProps> = ({ userId, isOpen, onClo
                             <option value="Inativo">Inativo</option>
                         </select>
                     </label>
+                    <div className={styles.addressGroup}>
+                        <h3>Endereços</h3>
+                        {userDetails.enderecos.map((endereco, index) => (
+                            <div key={index}>
+                                <label>
+                                    CEP:
+                                    <input type="text" name={`cep_${index}`} value={formData?.enderecos[index]?.cep || ''} onChange={handleChange} />
+                                </label>
+                                <label>
+                                    Logradouro:
+                                    <input type="text" name={`logradouro_${index}`} value={formData?.enderecos[index]?.logradouro || ''} onChange={handleChange} />
+                                </label>
+                                <label>
+                                    Número:
+                                    <input type="text" name={`numero_${index}`} value={formData?.enderecos[index]?.numero || ''} onChange={handleChange} />
+                                </label>
+                                <label>
+                                    Complemento:
+                                    <input type="text" name={`complemento_${index}`} value={formData?.enderecos[index]?.complemento || ''} onChange={handleChange} />
+                                </label>
+                                <label>
+                                    Bairro:
+                                    <input type="text" name={`bairro_${index}`} value={formData?.enderecos[index]?.bairro || ''} onChange={handleChange} />
+                                </label>
+                                <label>
+                                    Cidade:
+                                    <input type="text" name={`cidade_${index}`} value={formData?.enderecos[index]?.cidade || ''} onChange={handleChange} />
+                                </label>
+                                <label>
+                                    UF:
+                                    <input type="text" name={`uf_${index}`} value={formData?.enderecos[index]?.uf || ''} onChange={handleChange} />
+                                </label>
+                            </div>
+                        ))}
+                    </div>
 
-                    <h3>Endereços</h3>
-                    {userDetails.enderecos.map((endereco, index) => (
-                        <div key={index}>
-                            <label>
-                                CEP:
-                                <input type="text" name={`cep_${index}`} value={formData?.enderecos[index]?.cep || ''} onChange={handleChange} />
-                            </label>
-                            <label>
-                                Logradouro:
-                                <input type="text" name={`logradouro_${index}`} value={formData?.enderecos[index]?.logradouro || ''} onChange={handleChange} />
-                            </label>
-                            <label>
-                                Número:
-                                <input type="text" name={`numero_${index}`} value={formData?.enderecos[index]?.numero || ''} onChange={handleChange} />
-                            </label>
-                            <label>
-                                Complemento:
-                                <input type="text" name={`complemento_${index}`} value={formData?.enderecos[index]?.complemento || ''} onChange={handleChange} />
-                            </label>
-                            <label>
-                                Bairro:
-                                <input type="text" name={`bairro_${index}`} value={formData?.enderecos[index]?.bairro || ''} onChange={handleChange} />
-                            </label>
-                            <label>
-                                Cidade:
-                                <input type="text" name={`cidade_${index}`} value={formData?.enderecos[index]?.cidade || ''} onChange={handleChange} />
-                            </label>
-                            <label>
-                                UF:
-                                <input type="text" name={`uf_${index}`} value={formData?.enderecos[index]?.uf || ''} onChange={handleChange} />
-                            </label>
-                        </div>
-                    ))}
+                    <div className={styles.phoneGroup}>
+                        <h3>Telefones</h3>
+                        {userDetails.telefones.map((telefone, index) => (
+                            <div key={index}>
+                                <label>
+                                    Residencial:
+                                    <input type="text" name={`telefoneResidencial_${index}`} value={formData?.telefones[index].Telefone.telefoneResidencial || ''} onChange={handleChange} />
+                                </label>
+                                <label>
+                                    Celular:
+                                    <input type="text" name={`telefoneCelular_${index}`} value={formData?.telefones[index].Telefone.telefoneCelular || ''} onChange={handleChange} />
+                                </label>
+                            </div>
+                        ))}
+                    </div>
 
-                    <h3>Telefones</h3>
-                    {userDetails.telefones.map((telefone, index) => (
-                        <div key={index}>
-                            <label>
-                                Residencial:
-                                <input type="text" name={`telefoneResidencial_${index}`} value={formData?.telefones[index].Telefone.telefoneResidencial || ''} onChange={handleChange} />
-                            </label>
-                            <label>
-                                Celular:
-                                <input type="text" name={`telefoneCelular_${index}`} value={formData?.telefones[index].Telefone.telefoneCelular || ''} onChange={handleChange} />
-                            </label>
-                        </div>
-                    ))}
-
-                    <button type="submit">Salvar</button>
-                    <button className="modal-close" onClick={onClose}>Fechar</button>
+                    <div className={styles.modalButtons}>
+                        <button type="submit" className={styles.saveButton}>Salvar</button>
+                        <button type="button" className={styles.closeButton} onClick={onClose}>Fechar</button>
+                    </div>
                 </form>
             ) : (
                 <p>Carregando detalhes...</p>
