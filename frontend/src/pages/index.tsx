@@ -155,7 +155,7 @@ export default function Home() {
       <div className={styles.subHeader}>
         <Link href="#" legacyBehavior>
           <a className={styles.localizacao} onClick={handleOpen}>
-            Loja Sumaré 📍
+            Loja: Sumaré 📍
           </a>
         </Link>
         <div className={styles.carrinho}>

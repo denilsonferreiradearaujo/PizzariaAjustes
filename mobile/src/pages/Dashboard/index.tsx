@@ -1,178 +1,51 @@
-// import React, { useContext, useState } from "react";
-// import {Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity, Button } from "react-native";
-// import Icon from 'react-native-vector-icons/Feather'; // Importa os ícones da Feather
-
-// import { AuthContext } from "../../contexts/AuthContext";
-
-// import { useNavigation } from "@react-navigation/native";
-
-// import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-// import { StackParamsList } from "../../routes/app.routes";
-
-// import { api } from "../../services/api";
-
-// export default function Dashboard(){
-//     const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
-
-//     const [numMesa, setNumMesa] = useState('');
-
-//     const {signOut} = useContext(AuthContext)
-
-//     async function openOrder(){
-//         if(numMesa === ""){
-//             alert('Informe o número da mesa.')
-//             return;
-//         }
-
-//         const response = await api.post('/createPedido', {
-//             table: Number(numMesa)
-//         })
-
-//         navigation.navigate('Order', {number: numMesa,  order_id: response.data.id});
-
-//         setNumMesa('');
-//     }
-
-//     return(
-//         <SafeAreaView style={styles.container}>
-//             <TouchableOpacity onPress={signOut} style={styles.iconButton}>
-//                 <Icon name='log-out' color='#fff' size={24} />
-//             </TouchableOpacity> 
-
-//             <Text style={styles.title}>Novo pedido</Text>
-//             <TextInput
-//                 placeholder="Numero da mesa"
-//                 placeholderTextColor="#f0f0f0"
-//                 style={styles.input}
-//                 keyboardType="numeric"
-//                 value={numMesa}
-//                 onChangeText={setNumMesa}
-//             />
-//             <TouchableOpacity style={styles.button} onPress={openOrder}>
-//                 <Text style={styles.textButton}>Abrir mesa</Text>
-//             </TouchableOpacity> 
-//         </SafeAreaView>
-//     )
-// }
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         paddingVertical: 15,
-//         backgroundColor: '#1d1d2e',
-//     },
-
-//     iconButton: {
-//         position: 'absolute',
-//         top: 30,
-//         right: 20,
-//         padding: 10,
-//         zIndex: 1, // Garante que o botão fique acima de outros elementos
-//     },
-
-//     title:{
-//         fontSize: 30,
-//         fontWeight: 'bold',
-//         color: '#fff',
-//         marginBottom: 35,
-//     },
-
-//     input:{
-//         width: '90%',
-//         height: 60,
-//         backgroundColor: '#101026',
-//         borderRadius: 4,
-//         paddingHorizontal: 8,
-//         textAlign: 'center',
-//         fontSize: 20,
-//         color: '#fff',
-//     },
-
-//     button: {
-//         width: '90%',
-//         height: 40,
-//         backgroundColor: '#3fffa3',
-//         borderRadius: 4,
-//         marginVertical: 12,
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//     },
-
-//     textButton:{
-//         fontSize: 18,
-//         color: '#101026',
-//         fontWeight: 'bold',
-//     },
-
-// })
-
-
-
 import React, { useContext, useState } from "react";
-import { Text, SafeAreaView, StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import Icon from 'react-native-vector-icons/Feather';
+import { View, Text, SafeAreaView, TouchableOpacity, TextInput, StyleSheet, Button } from 'react-native'
 
-import { AuthContext } from "../../contexts/AuthContext";
-import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { StackParamsList } from "../../routes/app.routes";
+import { AuthContext } from '../../contexts/AuthContexts'
 
-import { api } from "../../services/api";
+import { useNavigation } from '@react-navigation/native'
 
-export default function Dashboard(){
-    const navigation = useNavigation<NativeStackNavigationProp<StackParamsList>>();
-    const [numMesa, setNumMesa] = useState('');
-    const { signOut } = useContext(AuthContext);
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { StackPramsList } from '../../routes/app.routes'
 
-    // async function openOrder(){
-    //     if (numMesa === "") {
-    //         alert('Informe o número da mesa.');
-    //         return;
-    //     }
+export default function Dashboard() {
+  const navigation = useNavigation<NativeStackNavigationProp<StackPramsList>>();
 
-    //     const response = await api.post('/createPedido', {
-    //         table: Number(numMesa)
-    //     });
+    const [number, setNumber] = useState('');
 
-    //     navigation.navigate('Order', { number: numMesa, order_id: response.data.id });
-
-    //     setNumMesa('');
-    // }
     async function openOrder(){
-        if(numMesa === ""){
-            alert('Informe o número da mesa.');
+        if(number === ''){
             return;
         }
-    
-        // Aqui removemos o envio da requisição para criar um pedido.
-        navigation.navigate('Order', { number: numMesa });
-    
-        // Limpando o campo de número da mesa
-        setNumMesa('');
+
+        navigation.navigate('Order', { number: number})
     }
 
-    return(
+    const { signOut } = useContext(AuthContext)
+    return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity onPress={signOut} style={styles.iconButton}>
-                <Icon name='log-out' color='#fff' size={24} />
+            <Text style={styles.title}>Novo Pedido</Text>
+
+            <TextInput
+            placeholder="Número da mesa"
+            placeholderTextColor="#F0F0F0"
+            style={styles.input}
+            keyboardType="numeric"
+            value={number}
+            onChangeText={setNumber}
+            />
+
+            <TouchableOpacity style={styles.button} onPress={openOrder}>
+                <Text style={styles.buttonText}>Abrir Mesa</Text>
             </TouchableOpacity>
 
-            <Text style={styles.title}>Novo pedido</Text>
-            <TextInput
-                placeholder="Numero da mesa"
-                placeholderTextColor="#f0f0f0"
-                style={styles.input}
-                keyboardType="numeric"
-                value={numMesa}
-                onChangeText={setNumMesa}
-            />
-            <TouchableOpacity style={styles.button} onPress={openOrder}>
-                <Text style={styles.textButton}>Abrir mesa</Text>
-            </TouchableOpacity>
+             {/* <Button
+            title='Sair do App'
+            onPress={signOut}
+            />  */}
+
         </SafeAreaView>
-    );
+    )
 }
 
 const styles = StyleSheet.create({
@@ -181,43 +54,36 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingVertical: 15,
-        backgroundColor: '#1d1d2e',
+        backgroundColor: '#FFFFFF'
     },
-    iconButton: {
-        position: 'absolute',
-        top: 30,
-        right: 20,
-        padding: 10,
-        zIndex: 1,
-    },
-    title: {
+    title:{
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#fff',
-        marginBottom: 35,
+        color: '#d41408',
+        marginBottom: 24,
     },
     input: {
         width: '90%',
         height: 60,
-        backgroundColor: '#101026',
+        backgroundColor: "#101026",
         borderRadius: 4,
         paddingHorizontal: 8,
         textAlign: 'center',
-        fontSize: 20,
-        color: '#fff',
+        fontSize: 21,
+        color: '#FFF',
     },
-    button: {
+    button:{
         width: '90%',
         height: 40,
-        backgroundColor: '#3fffa3',
+        backgroundColor: '#d41408',
         borderRadius: 4,
-        marginVertical: 12,
+        marginVertical:12,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
-    textButton: {
+    buttonText:{
         fontSize: 18,
-        color: '#101026',
-        fontWeight: 'bold',
-    },
-});
+        color: '#FFF',
+        fontWeight: 'bold'
+    }
+})
