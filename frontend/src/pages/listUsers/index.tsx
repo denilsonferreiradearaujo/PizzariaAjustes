@@ -6,6 +6,8 @@ import { canSSRAuth } from '@/src/utils/canSSRAuth';
 import { setupAPICliente } from '../../services/api';
 import { toast } from 'react-toastify';
 import UserDetailModal from '../../components/UserDetailModal';
+import React from 'react';
+
 
 type UserProps = {
   id: string;
@@ -13,6 +15,12 @@ type UserProps = {
   email: string;
   cpf: string;
   tipo: string;
+};
+
+interface UserDetailModal {
+  userId: string;
+  isOpen: boolean;
+  onClose: () => void;
 };
 
 export default function UserList() {
@@ -44,6 +52,8 @@ export default function UserList() {
     setIsModalOpen(false);
     setSelectedUserId(null);
   };
+
+
 
   return (
     <>
@@ -78,7 +88,7 @@ export default function UserList() {
           </tbody>
         </table>
       </div>
-      
+
       {selectedUserId && (
         <UserDetailModal
           userId={selectedUserId}
@@ -88,7 +98,8 @@ export default function UserList() {
       )}
     </>
   );
-}
+};
+
 
 export const getServerSideProps = canSSRAuth(async (ctx) => {
   const apiCliente = setupAPICliente(ctx);
