@@ -117,7 +117,7 @@ const UserDetailModal: React.FC<UserDetailModalProps> = ({ userId, isOpen, onClo
                     <h2>Detalhes do Usuário</h2>
                     <label>
                         Nome:
-                        <input type="text" name="nome" value={formData?.nome || ''} onChange={handleChange} />
+                        <input type="text" name="nome" value={formData?.nome || ''} onChange={handleChange} className={styles.label}/>
                     </label>
                     <label>
                         Email:

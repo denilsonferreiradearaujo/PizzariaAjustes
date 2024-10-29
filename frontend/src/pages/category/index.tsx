@@ -121,7 +121,7 @@ export default function Category() {
                       className={styles.input}
                     />
                     <button
-                      className={styles.buttonAdd}
+                      className={styles.buttonEdit}
                       onClick={() => salvarEdicao(categoria.id, categoria.nome)}
                     >
                       Editar
@@ -130,7 +130,7 @@ export default function Category() {
                       className={styles.buttonDelete} // Adicione uma classe de estilo se necessário
                       onClick={() => handleDelete(categoria.id)}
                     >
-                      
+                      Delete
                     </button>
                   </div>
                 </li>

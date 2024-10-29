@@ -113,7 +113,7 @@
     margin-top: 1rem;
     border: none;
     border-radius: 0.3rem;
-    color: var(--dark-700);
+    color: var(#FFC107);
     cursor: pointer;
   }
   
@@ -138,11 +138,11 @@
   }
   
   .buttonSubmit {
-    background-color: #D41509;
+    background-color: #FFC107;
     transition: background-color 0.3s;
   
     &:hover {
-      background-color: #D41509;
+      background-color: #B22222;
     }
   }
   
