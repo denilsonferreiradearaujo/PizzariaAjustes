@@ -1,4 +1,4 @@
-.container{
+.container {
     max-width: 1400px;
     margin: 1.6rem auto;
     padding: 0 2rem;
@@ -8,17 +8,16 @@
     flex-direction: column;
 }
 
-
-.container h1{
+.container h1 {
     color: var(--white);
     margin-bottom: 3%;
 }
 
-.containerHeader{
+.containerHeader {
     display: flex;
     flex-direction: row;
 
-    button{
+    button {
         background: transparent;
         border: 0;
         margin-left: 1rem;
@@ -26,13 +25,13 @@
     }
 }
 
-.listOrders{
+.listOrders {
     display: flex;
     flex-direction: column;
     margin: 1rem 0;
 }
 
-.orderItem{
+.orderItem {
     display: flex;
     flex-direction: row;
     background-color: var(--dark-900);
@@ -40,7 +39,7 @@
     align-items: center;
     border-radius: 0.3rem;
 
-    button{
+    button {
         border: 0;
         background: transparent;
         font-size: 1.2rem;
@@ -48,27 +47,13 @@
         height: 60px;
         align-items: center;
         display: flex;
-    }    
+    }
 }
 
-.tag{
-    width: 9px;
-    background-color: var(--green-900);
-    height: 60px;
-    border-radius: 0.3rem 0 0 0.3rem;
-    margin-right: 1rem;
-}
-
-.emptyList{
+.emptyList {
     font-size: 1.2rem;
     color: var(--gray-100);
 }
-
-
-
-
-
-
 
 .headColumns {
     display: flex;
@@ -79,85 +64,67 @@
     width: 48%;
 }
 
-
-
-
-
-
-
-
-.columns {
-    display: flex; // Para alinhar colunas lado a lado
-    justify-content: space-between; // Espaço entre as colunas
-  }
-  
-  .column {
-    width: 48%; // Define a largura das colunas
-  }
-  
-  .card {
-    background-color: #f9f9f9; // Cor de fundo dos cards
-    border: 1px solid #ccc; // Borda leve
-    border-radius: 8px; // Bordas arredondadas
-    padding: 16px;
-    margin-bottom: 16px; // Espaço entre os cards
-    text-align: left; // Alinhamento geral do conteúdo
-    font-weight: bold; // Texto em negrito
-    // cursor: pointer; // Muda o cursor para indicar interatividade
-  
-    h3.cardTitle {
-      text-align: center; // Centraliza o h3
-      font-weight: bold; // Negrito no título
-      margin-bottom: 7px;
-    }
-  
-    p.cardText {
-      text-align: justify; // Parágrafos justificados
-      margin: 2px 0;
-    }
-  }
-  
-  // Estilo adicional para os itens do produto dentro do card
-  .produtoItem {
-    padding: 8px; // Espaçamento interno
-    border-top: 1px solid #ccc; // Linha separadora
-    margin-top: 8px; // Espaço acima dos itens
-  }
-  
-
-
-  
-
-.cardHeader {
+.card {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-}
-
-.finishButton {
-    background-color: #3fffa3; /* Cor de fundo */
-    color: white; /* Cor do texto */
-    border: none; /* Sem borda */
-    padding: 8px 12px; /* Espaçamento interno */
-    cursor: pointer; /* Muda o cursor para indicar que é clicável */
-    border-radius: 4px; /* Bordas arredondadas */
-    transition: background-color 0.3s; /* Efeito de transição para a cor de fundo */
-
-    &:hover {
-        background-color: #32d78d; /* Cor ao passar o mouse */
-    }
-}
-
-
-
-.flexContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.totalValue {
-    margin-top: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px 20px; /* Adiciona espaçamento lateral */
+    margin-bottom: 16px;
     font-weight: bold;
-    color: #333;
+    transition: background-color 0.3s, transform 0.2s;
+    position: relative; /* Para o uso do pseudo-elemento */
+
+    &.pending::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 8px; /* Largura da linha azul */
+        height: 100%; /* Altura total do card */
+        background-color: #007bff; /* Cor azul */
+        border-radius: 0.3rem 0 0 0.3rem; /* Arredondamento do canto */
+    }
+
+    &.completed::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 8px; /* Largura da linha verde */
+        height: 100%; /* Altura total do card */
+        background-color: #28a745; /* Cor verde */
+        border-radius: 0.3rem 0 0 0.3rem; /* Arredondamento do canto */
+    }
+
+    h3.cardTitle {
+        font-size: 1rem; /* Tamanho menor para ajustar o layout */
+        margin: 0; /* Remove o espaço em torno do título */
+        padding-left: 16px; /* Espaçamento entre o texto e a linha */
+        color: #333; /* Cor do texto */
+    }
+
+    .finishButton {
+        font-size: 0.9rem; /* Tamanho menor para o botão */
+        padding: 6px 10px; /* Ajusta o espaçamento do botão */
+        background-color: #3fffa3;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+        margin-left: auto; /* Faz o botão ficar à direita */
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: #32d78d;
+        }
+    }
+
+    /* Efeito de hover */
+    &:hover {
+        background-color: #e0e0e0; /* Cor ao passar o mouse */
+        transform: scale(1.02); /* Leve aumento de tamanho ao passar o mouse */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar destaque */
+    }
 }
