@@ -37,3 +37,37 @@
         font-weight: bold;
     }
 }
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    /* Distribui logo à esquerda e botões à direita */
+    align-items: center;
+    padding: 0 0px;
+    /* Espaçamento fixo entre a esquerda e a direita */
+    background-color: var(--gray-900);
+    border: 1px solid #ffffff;
+    height: 80px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    margin-left: 177px;
+    /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
+  }
+
+  .button {
+    background-color: var(--orange-500);
+    color: var(--white);
+    padding: 10px 100px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: var(--orange-600);
+    }
+  }
