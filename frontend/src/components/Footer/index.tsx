@@ -11,9 +11,6 @@ export function Footer() {
                     <Link legacyBehavior href='/privacy'>
                         <a>Política de Privacidade</a>
                     </Link>
-                    <Link legacyBehavior href='/terms'>
-                        <a>Termos de Serviço</a>
-                    </Link>
                     <Link legacyBehavior href='/contact'>
                         <a>Contato</a>
                     </Link>
