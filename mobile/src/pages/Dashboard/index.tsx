@@ -9,16 +9,16 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { StackPramsList } from '../../routes/app.routes'
 
 export default function Dashboard() {
-  const navigation = useNavigation<NativeStackNavigationProp<StackPramsList>>();
+    const navigation = useNavigation<NativeStackNavigationProp<StackPramsList>>();
 
     const [number, setNumber] = useState('');
 
-    async function openOrder(){
-        if(number === ''){
+    async function openOrder() {
+        if (number === '') {
             return;
         }
 
-        navigation.navigate('Order', { number: number})
+        navigation.navigate('Order', { number: number })
     }
 
     const { signOut } = useContext(AuthContext)
@@ -27,22 +27,22 @@ export default function Dashboard() {
             <Text style={styles.title}>Novo Pedido</Text>
 
             <TextInput
-            placeholder="Número da mesa"
-            placeholderTextColor="#F0F0F0"
-            style={styles.input}
-            keyboardType="numeric"
-            value={number}
-            onChangeText={setNumber}
+                placeholder="Número da mesa"
+                placeholderTextColor="#F0F0F0"
+                style={styles.input}
+                keyboardType="numeric"
+                value={number}
+                onChangeText={setNumber}
             />
 
             <TouchableOpacity style={styles.button} onPress={openOrder}>
                 <Text style={styles.buttonText}>Abrir Mesa</Text>
             </TouchableOpacity>
-
-             {/* <Button
+            
+             <Button
             title='Sair do App'
             onPress={signOut}
-            />  */}
+            />  
 
         </SafeAreaView>
     )
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         backgroundColor: '#FFFFFF'
     },
-    title:{
+    title: {
         fontSize: 30,
         fontWeight: 'bold',
         color: '#d41408',
@@ -72,16 +72,16 @@ const styles = StyleSheet.create({
         fontSize: 21,
         color: '#FFF',
     },
-    button:{
+    button: {
         width: '90%',
         height: 40,
         backgroundColor: '#d41408',
         borderRadius: 4,
-        marginVertical:12,
+        marginVertical: 12,
         justifyContent: 'center',
         alignItems: 'center'
     },
-    buttonText:{
+    buttonText: {
         fontSize: 18,
         color: '#FFF',
         fontWeight: 'bold'
