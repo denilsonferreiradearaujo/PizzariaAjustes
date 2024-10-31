@@ -8,7 +8,7 @@ interface OrderProps {
     numMesa: number;
     status: string;
     items: { id: string; quantidade: number; Produto: { nome: string; descricao: string; }; }[];
-    valorTotal: number | string; // Altere para number | string para lidar com ambas as possibilidades
+    valorTotal: number | string;
     dataCreate: Date;
     dataUpdate: Date;
 }
@@ -23,20 +23,19 @@ export function ModalOrder({ isOpen, onRequestClose, order }: ModalOrderProps) {
     const customStyles = {
         content: {
             top: '50%',
-            bottom: 'auto',
             left: '50%',
             right: 'auto',
-            padding: '30px',
+            bottom: 'auto',
             transform: 'translate(-50%, -50%)',
-            backgroundColor: '#f0f0f0',
-            borderRadius: '8px',
-            color: '#fff',
+            padding: '0', // Remove padding padrão
+            backgroundColor: 'transparent', // Mantém a estilização externa
         },
     };
+    
 
     function formatCurrency(value: number | string): string {
-        const numberValue = typeof value === 'string' ? parseFloat(value) : value; // Converte string para número
-        return numberValue.toFixed(2).replace('.', ','); // Formata o valor
+        const numberValue = typeof value === 'string' ? parseFloat(value) : value;
+        return numberValue.toFixed(2).replace('.', ',');
     }
 
     return (

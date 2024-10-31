@@ -1,176 +1,95 @@
 .container {
-    max-width: 720px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: var(--dark-800);
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .title {
-    color: var(--white);
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--dark-800);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
 
-  .titulo {
-    color: var(--white);
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .infoContainer {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-  
-    .productInfo,
-    .priceSizeContainer {
-      flex: 1;
-      background-color: var(--dark-900);
-      padding: 1.5rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-    }
-  
-    .priceSizeContainer h2 {
-      color: var(--white);
-      margin: 1rem 0;
-    }
-  }
-  
-  .input {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 1.5rem; /* Aumentado o espaço abaixo dos inputs */
-    border: 1px solid var(--gray-100);
-    border-radius: 0.3rem;
-    background-color: var(--dark-700);
-    color: var(--white);
-  
-    &:focus {
-      border-color: var(--green-900);
-      outline: none;
-    }
-  }
-  
-  
-  .textarea {
-    width: 100%;
-    min-height: 110px;
-    resize: none;
-    padding: 0.8rem;
-    margin-bottom: 1.5rem; /* Aumentado o espaço abaixo do textarea */
-    border: 1px solid var(--gray-100);
-    border-radius: 0.3rem;
-    background-color: var(--dark-700);
-    color: var(--white);
-  
-    &:focus {
-      border-color: var(--green-900);
-      outline: none;
-    }
-  }
+.titulo {
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
 
-  
-  
-  .select {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--gray-100); /* Mesma borda dos outros inputs */
-    border-radius: 0.3rem;
-    background-color: var(--dark-700);
-    color: var(--white);
-    font-size: 1rem; /* Mesma fonte dos inputs */
-    font-family: inherit; /* Herdar a mesma fonte padrão */
-    line-height: 1.5; /* Altura da linha para melhor leitura */
-    letter-spacing: 0.5px; /* Espaçamento entre letras para legibilidade */
-    background-image: url('/path/to/arrow-icon.svg'); /* Ícone personalizado */
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 12px;
-  
-    &:focus {
-      border-color: var(--green-900); /* Destaque ao focar, como nos inputs */
-      outline: none;
-    }
-  
-    &:hover {
-      border-color: var(--gray-100); /* Mesma cor ao passar o mouse */
-    }
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--gray-100);
+  border-radius: 0.3rem;
+  background-color: var(--dark-700);
+  color: var(--white);
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: var(--green-900);
+    outline: none;
   }
-  
-  
-  
-  
-  
-  .buttonAdd,
-  .buttonRemove,
-  .buttonSubmit {
-    
-    padding: 0.8rem;
-    margin-top: 1rem;
-    border: none;
-    border-radius: 0.3rem;
-    color: var(--dark-700);
-    font-weight: bold;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  input[type='checkbox'] {
+    margin-right: 0.5rem;
     cursor: pointer;
   }
-  
-  .buttonAdd {
-    
-    background-color: var(--green-900);
-    transition: background-color 0.3s;
-  
+
+  label {
+    color: var(--white);
+    cursor: pointer;
+  }
+}
+
+.sizePriceContainer {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: stretch; // Alinha os elementos verticalmente
+
+  .selectSize,
+  .inputPrice {
+    flex: 1; // Faz os elementos ocuparem a mesma largura
+    padding: 0.8rem;
+    border: 1px solid var(--gray-100);
+    border-radius: 0.3rem;
+    background-color: var(--dark-700);
+    color: var(--white);
+    transition: border-color 0.3s ease;
+
+    &:focus {
+      border-color: var(--green-900);
+      outline: none;
+    }
+
     &:hover {
-      background-color: #D41509;
+      border-color: #ff6347;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
   }
-  
-  .buttonRemove {
-    background-color: #D41509;
-   
-    transition: background-color 0.3s;
-  
-    &:hover {
-      background-color: #D41509;
-    }
+}
+
+.buttonSubmit {
+  background-color: #D41509;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.3rem;
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #B21208;
   }
-  
-  .buttonSubmit {
-    background-color: #D41509;
-    transition: background-color 0.3s;
-  
-    &:hover {
-      background-color: #D41509;
-    }
-  }
-  
-  .sizeContainer,
-  .valueContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  
-    input[type='checkbox'] {
-      margin-right: 0.5rem;
-    }
-  }
-  
-  .checkboxContainer {
-    display: flex;
-    align-items: center;
-  
-    label {
-      margin-right: 1rem;
-      color: var(--white);
-    }
-  }
-  
+}
