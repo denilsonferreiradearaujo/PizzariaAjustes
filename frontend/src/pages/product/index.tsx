@@ -43,6 +43,17 @@ export default function Product({ categoryList }: CategoryProps) {
       ...updatedSizes[index],
       [field]: field === 'preco' ? formatPrice(value) : value,
     };
+
+    if (field === 'tamanho' && value === '') {
+      updatedSizes[index].preco = ''; // Limpa o campo de preço ao redefinir para "Selecionar Tamanho"
+    }
+
+    setSizes(updatedSizes);
+  }
+
+  function handlePriceChange(index: number, value: string) {
+    const updatedSizes = [...sizes];
+    updatedSizes[index].preco = formatPrice(value);
     setSizes(updatedSizes);
   }
 
@@ -69,7 +80,7 @@ export default function Product({ categoryList }: CategoryProps) {
 
       const tamanhos = isSizeEnabled
         ? sizes
-            .filter(size => size.tamanho !== '' && size.preco !== '') // Certifique-se de que ambos os campos estejam preenchidos
+            .filter(size => size.tamanho !== '' && size.preco !== '') 
             .map(size => ({
                 tamanho: size.tamanho,
             }))
@@ -77,12 +88,12 @@ export default function Product({ categoryList }: CategoryProps) {
 
       const valores = isSizeEnabled
         ? sizes
-            .filter(size => size.tamanho !== '' && size.preco !== '') // Certifique-se de que ambos os campos estejam preenchidos
+            .filter(size => size.tamanho !== '' && size.preco !== '') 
             .map(size => ({
                 preco: parsePriceForSubmission(size.preco),
-                tamanhoId: size.tamanho, // Mantenha o nome do tamanho, depois você irá associá-lo ao ID
+                tamanho: size.tamanho,
             }))
-        : [];
+        : [{ preco: parsePriceForSubmission(price) }];
 
       const data = {
         nome: name,
@@ -184,10 +195,11 @@ export default function Product({ categoryList }: CategoryProps) {
                     </select>
                     <input
                       type="text"
-                      placeholder="Preço"
+                      placeholder={size.tamanho ? "Preço" : "Sem tamanho selecionado"}
                       className={styles.inputPrice}
                       value={size.preco}
-                      onChange={(e) => handleSizeChange(index, 'preco', e.target.value)}
+                      onChange={(e) => handlePriceChange(index, e.target.value)}
+                      disabled={!size.tamanho}
                     />
                   </div>
                 ))}
