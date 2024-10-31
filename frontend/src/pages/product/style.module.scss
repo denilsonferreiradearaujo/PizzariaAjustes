@@ -77,33 +77,38 @@
     }
   }
 
-  .espacoFooter{
-    
-  }
+  
   
   .select {
     width: 100%;
     padding: 0.8rem;
-    margin-bottom: 1.5rem; /* Aumentado o espaço abaixo do select */
-    border: 1px solid var(--dark-700);
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--gray-100); /* Mesma borda dos outros inputs */
     border-radius: 0.3rem;
     background-color: var(--dark-700);
     color: var(--white);
-    background-image: url('/path/to/arrow-icon.svg'); /* Adicione um ícone personalizado */
+    font-size: 1rem; /* Mesma fonte dos inputs */
+    font-family: inherit; /* Herdar a mesma fonte padrão */
+    line-height: 1.5; /* Altura da linha para melhor leitura */
+    letter-spacing: 0.5px; /* Espaçamento entre letras para legibilidade */
+    background-image: url('/path/to/arrow-icon.svg'); /* Ícone personalizado */
     background-repeat: no-repeat;
-    background-position: right 10px center; /* Ajusta a posição do ícone */
-    background-size: 12px; /* Tamanho do ícone */
+    background-position: right 10px center;
+    background-size: 12px;
   
     &:focus {
-      border-color: var(--dark-700);
+      border-color: var(--green-900); /* Destaque ao focar, como nos inputs */
       outline: none;
     }
   
     &:hover {
-      border-color: var(--dark-700);
-      color: var(--white);
+      border-color: var(--gray-100); /* Mesma cor ao passar o mouse */
     }
   }
+  
+  
+  
+  
   
   .buttonAdd,
   .buttonRemove,
@@ -114,6 +119,7 @@
     border: none;
     border-radius: 0.3rem;
     color: var(--dark-700);
+    font-weight: bold;
     cursor: pointer;
   }
   

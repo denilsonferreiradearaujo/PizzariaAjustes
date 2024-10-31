@@ -4,7 +4,7 @@
     gap: 1.5rem;
     padding: 3rem;
     background-color: #ffffff;
-    border-radius: 8px;
+    border-radius: 25px;
     max-width: 600px;
     width: 90%;
     margin: 0 auto;
@@ -12,11 +12,9 @@
     font-family: 'Arial', sans-serif;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
     animation: slide-in 0.5s ease-out;
-    border-radius: 25px;
-
-    // Altura máxima e rolagem
-    max-height: 80vh; // altura máxima do modal
-    overflow-y: auto; // permite rolagem vertical
+    max-height: 80vh;
+    overflow-y: auto;
+    margin-top: 14vh;
 
     @keyframes slide-in {
         from {
@@ -47,11 +45,11 @@
 
         input, select {
             padding: 0.75rem;
-            border: 1px solid #dcdcdc;
+            border: 1px solid var(--gray-100); /* Borda igual à dos outros inputs */
             border-radius: 4px;
             font-size: 1rem;
             transition: all 0.3s ease;
-            background-color: #f9f9f9;
+            background-color: white;
 
             &:focus {
                 border-color: #1e90ff;
@@ -62,12 +60,12 @@
     }
 
     h3 {
-        color: #555;
+        color: #333333;
         font-size: 1.5rem;
         margin-top: 2rem;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        border-bottom: 1px solid #eaeaea;
+        border-bottom: 1px solid #ffffff;
         padding-bottom: 0.5rem;
     }
 
@@ -76,8 +74,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
-        padding: 1rem;
-        background-color: #f4f4f4;
+        background-color: #ffffff;
         border-radius: 6px;
         margin-bottom: 1.5rem;
 
@@ -103,18 +100,18 @@
             border: none;
 
             &.saveButton {
-                background-color: #28a745;
+                background-color: #D41509;
 
                 &:hover {
-                    background-color: #218838;
+                    background-color: #D41509;
                 }
             }
 
             &.closeButton {
-                background-color: #dc3545;
+                background-color: black;
 
                 &:hover {
-                    background-color: #c82333;
+                    background-color: black;
                 }
             }
         }
@@ -123,13 +120,13 @@
 
 .modal-overlay {
     position: fixed;
-    top: 0;
+    top: 0; /* Começa do topo */
     left: 0;
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.6);
     display: flex;
-    align-items: center;
     justify-content: center;
     padding: 1rem;
-}
+}   
+

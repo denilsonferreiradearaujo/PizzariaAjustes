@@ -20,14 +20,15 @@
     background-color: var(dark-900);
     border-radius: 0.5rem;
     overflow: hidden;
+    text-align:justify;
+   
 
     th {
         padding: 0.8rem;
-        text-align: left;
         background-color: #D41509;
-        color: var(--white);
+        color: white;
         font-weight: bold;
-        text-transform: uppercase;
+       
     }
 
     td {
@@ -48,14 +49,15 @@
 .buttonDetail {
     padding: 0.5rem 1rem;
     background-color: #D41509; // Cor vermelha do botão
-    color: var(--dark-700);
+    color: white;
+    font-weight: bold;
     border: none;
     border-radius: 0.3rem;
     cursor: pointer;
     transition: background-color 0.3s;
 
     &:hover {
-        background-color: #A40C0B; // Cor mais escura no hover
+        background-color: #D41509   ; // Cor mais escura no hover
     }
 }
 
