@@ -2,50 +2,63 @@ import { useContext, useState, useEffect } from "react";
 import { Footer } from '../components/Footer';
 import Head from "next/head";
 import Image from "next/image";
+
 import logoImg from '../../public/logo.png';
 import baner from '../../public/baner.jpg';
-import calabresaImg from '../../public/calabresa.png' // Pizzas Salgadas
-import alohoPoroImg from '../../public/alhoPorocomSalada.png'
-import portuguesaImg from '../../public/Portuguesa.png'
-import baconImg from '../../public/bacon.png'
-import brasileiraImg from '../../public/brasileira.png'
-import brocolisImg from '../../public/brocolis.png'
-import camaraoImg from '../../public/camarao.png'
-import espanholaImg from '../../public/espanhola.png'
-import lomboImg from '../../public/lombocomCatupiry.png'
-import margueridtaImg from '../../public/marguerita.png'
-import morangChoc from '../../public/chocolateMorango.png' // Pizzas Doces
-import confete from '../../public/pizzaConfete.png'
-import pacoca from '../../public/PizzaPacoca.jpeg'
-import brigadeirao from '../../public/brigadeiro.png'
-import amendoin from '../../public/pizzaAmendoin.png'
-import cocaCola2L from '../../public/coca2L.jpeg' // Bebidas
-import cocaColaLata from '../../public/cocaLata.png'
-import fantaGuarana from '../../public/fantaGuarana2L.png'
-import FantaLaranja from '../../public/fantaLaranja2L.png'
-import fantaUvaLata from '../../public/fantaUva.png'
-import guaranaJesus from '../../public/guaranaJesusLata.png'
-import laranja1L from '../../public/laranja1L.png'
-import maguary2L from '../../public/maguary.png'
-import pepsiNaLata from '../../public/pepsiLata.png'
-import sodaLata from '../../public/soda.png'
-import sprite from '../../public/spriteLata.png'
-import tampico2L from '../../public/tampico.png'
-import twistNaLata from '../../public/twistLata.png'
-import erroImg from '../../public/naoFoi.png'
-import Button from '@mui/material/Button';
+import calabresaImg from '../../public/calabresa.png'; // Pizzas Salgadas
+import alohoPoroImg from '../../public/alhoPorocomSalada.png';
+import portuguesaImg from '../../public/Portuguesa.png';
+import baconImg from '../../public/bacon.png';
+import brasileiraImg from '../../public/brasileira.png';
+import brocolisImg from '../../public/brocolis.png';
+import camaraoImg from '../../public/camarao.png';
+import espanholaImg from '../../public/espanhola.png';
+import lomboImg from '../../public/lombocomCatupiry.png';
+import margueridtaImg from '../../public/marguerita.png';
+import morangChoc from '../../public/chocolateMorango.png'; // Pizzas Doces
+import confete from '../../public/pizzaConfete.png';
+import pacoca from '../../public/PizzaPacoca.jpeg';
+import brigadeirao from '../../public/brigadeiro.png';
+import amendoin from '../../public/pizzaAmendoin.png';
+import cocaCola2L from '../../public/coca2L.jpeg'; // Bebidas
+import cocaColaLata from '../../public/cocaLata.png';
+import fantaGuarana from '../../public/fantaGuarana2L.png';
+import FantaLaranja from '../../public/fantaLaranja2L.png';
+import fantaUvaLata from '../../public/fantaUva.png';
+import guaranaJesus from '../../public/guaranaJesusLata.png';
+import laranja1L from '../../public/laranja1L.png';
+import maguary2L from '../../public/maguary.png';
+import pepsiNaLata from '../../public/pepsiLata.png';
+import sodaLata from '../../public/soda.png';
+import sprite from '../../public/spriteLata.png';
+import tampico2L from '../../public/tampico.png';
+import twistNaLata from '../../public/twistLata.png';
+import erroImg from '../../public/naoFoi.png';
+
+// import Button from '@mui/material/Button';
 import { setupAPICliente } from '../../../frontend/src/services/api';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 
-import styles from '../../styles/Home.module.scss';
+import styles from '../../styles/home.module.scss';
 import { AuthContext } from "../contexts/AuthContext";
 import Link from "next/link";
+
+interface Categoria {
+  id: number;
+  nome: string;
+}
+
+interface Produto {
+  id: number;
+  nome: string;
+  valores: { preco: number }[];
+}
 
 // Função para retornar a imagem correta
 function getImageForProduct(nome: string) {
   switch (nome) {
-    case 'Pizza de Marguerita': // Pizzas Salgadas
+    case 'Pizza de Marguerita':
       return margueridtaImg;
     case 'Pizza de Calabresa':
       return calabresaImg;
@@ -61,72 +74,82 @@ function getImageForProduct(nome: string) {
       return camaraoImg;
     case 'Pizza Espanhola':
       return espanholaImg;
-      case 'Pizza de Confete':
+    case 'Pizza de Confete':
       return confete;
-      case 'Pizza de Morango com Chocolate': // Pizzas Doces
+    case 'Pizza de Morango com Chocolate':
       return morangChoc;
-      case 'Pizza de Paçoca':
+    case 'Pizza de Paçoca':
       return pacoca;
-      case 'Pizza de Brigadeiro':
+    case 'Pizza de Brigadeiro':
       return brigadeirao;
-      case 'Pizza de Brigadeiro':
-      return brigadeirao;
-      case 'Pizza de Amendoin':
+    case 'Pizza de Amendoin':
       return amendoin;
-      case 'Coca Cola 2L': // Bebidas
+    case 'Coca Cola 2L':
       return cocaCola2L;
-      case 'Coca Cola Lata':
+    case 'Coca Cola Lata':
       return cocaColaLata;
-      case 'Fanta Guarana 2L':
+    case 'Fanta Guarana 2L':
       return fantaGuarana;
-      case 'Fanta Laranja 2L':
+    case 'Fanta Laranja 2L':
       return FantaLaranja;
-      case 'Fanta Uva Lata':
+    case 'Fanta Uva Lata':
       return fantaUvaLata;
-      case 'Guarana Jesus Lata':
+    case 'Guarana Jesus Lata':
       return guaranaJesus;
-      case 'Suco de Laranja Natural 1L':
+    case 'Suco de Laranja Natural 1L':
       return laranja1L;
-      case 'Suco Maguary de Laranja 2L':
+    case 'Suco Maguary de Laranja 2L':
       return maguary2L;
-      case 'Pepsi Lata':
+    case 'Pepsi Lata':
       return pepsiNaLata;
-      case 'Soda Lata':
+    case 'Soda Lata':
       return sodaLata;
-      case 'Sprite Lata':
+    case 'Sprite Lata':
       return sprite;
-      case 'Tampico 2L':
+    case 'Tampico 2L':
       return tampico2L;
-      case 'Pepsi Twist Lata':
+    case 'Pepsi Twist Lata':
       return twistNaLata;
     default:
-      return erroImg; // Imagem padrão para pizzas doces ou outros itens
+      return erroImg;
   }
 }
 
 // Componente principal
 export default function Home() {
   const [clickedButton, setClickedButton] = useState<number | null>(null);
-  const [produtos, setProdutos] = useState<any[]>([]);  // Estado para armazenar os produtos
-  const [loading, setLoading] = useState<boolean>(false);
-  const [showMap, setShowMap] = useState<boolean>(false);
-
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [produtos, setProdutos] = useState<Produto[]>([]);
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // Função para capturar o clique e buscar produtos da categoria
+  // Função para buscar categorias ao carregar o componente
+  useEffect(() => {
+    const fetchCategorias = async () => {
+      try {
+        const apiCliente = setupAPICliente();
+        const response = await apiCliente.get("/listCategory"); // Atualize para a rota correta
+        setCategorias(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar categorias:", error);
+      }
+    };
+
+    fetchCategorias();
+  }, []);
+
+  // Função para buscar produtos de uma categoria específica
   const handleClick = async (categoriaId: number) => {
     setClickedButton(categoriaId);
     setLoading(true);
 
     try {
-      // Faz a requisição para a API passando a categoria
       const apiCliente = setupAPICliente();
-
-      const response = await apiCliente.get(`/produtos?categoriaId=${categoriaId}`)
-      // const response = await api.get();
-      setProdutos(response.data);  // Atualiza o estado com os produtos retornados
+      const response = await apiCliente.get(`/produtos?categoriaId=${categoriaId}`);
+      setProdutos(response.data);
     } catch (error) {
       console.error("Erro ao buscar produtos:", error);
     } finally {
@@ -141,11 +164,9 @@ export default function Home() {
           <Image src={logoImg} alt="Logo Pizzaria" width={200} height={500} />
         </div>
         <div className={styles.nav}>
-
           <Link href="/login" legacyBehavior>
             <a className={styles.button}>Acessar</a>
           </Link>
-
           <Link href="/signup" legacyBehavior>
             <a className={styles.button}>Cadastrar</a>
           </Link>
@@ -163,12 +184,7 @@ export default function Home() {
         </div>
       </div>
 
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="map-modal"
-        aria-describedby="map-modal-description"
-      >
+      <Modal open={open} onClose={handleClose} aria-labelledby="map-modal" aria-describedby="map-modal-description">
         <Box className={styles.modalBox}>
           <iframe
             width="100%"
@@ -186,66 +202,35 @@ export default function Home() {
         <Image src={baner} alt="Logo Pizzaria" width={1100} height={400} />
       </div>
 
-      {showMap && (
-        <div className={styles.mapContainer}>
-          <iframe
-            width="400"
-            height="300"
-            src="https://maps.google.com/maps?q=sumaré&t=&z=13&ie=UTF8&iwloc=&output=embed"
-            frameBorder="0"
-            scrolling="no"
-            marginHeight={0}
-            marginWidth={0}
-          />
-        </div>
-      )}
-
       <div className={styles.paginacao}>
-        <Button
-          className={clickedButton === 1 ? styles.clickedButton : styles.customButton}
-          variant="contained"
-          onClick={() => handleClick(1)}>
-          🍕Pizzas Salgadas
-        </Button>
-
-        <Button
-          className={clickedButton === 2 ? styles.clickedButton : styles.customButton}
-          variant="contained"
-          onClick={() => handleClick(2)}>
-          🍩Pizzas Doces
-        </Button>
-
-        <Button
-          className={clickedButton === 3 ? styles.clickedButton : styles.customButton}
-          variant="contained"
-          onClick={() => handleClick(3)}>
-          🍸Bebidas
-        </Button>
+        {categorias.map((categoria) => (
+          <button
+            key={categoria.id}
+            className={clickedButton === categoria.id ? styles.clickedButton : styles.customButton}
+            variant="contained"
+            onClick={() => handleClick(categoria.id)}
+          >
+            {categoria.nome} {/* Aqui estamos assumindo que a categoria possui o campo 'nome' */}
+          </button>
+        ))}
       </div>
 
-      {/* Renderiza os produtos */}
       <div className={styles.produtoContainer}>
         {loading ? (
-          <p>Carregando produtos...</p>
+          <p>Carregando produtos, por favor aguarde...</p>
         ) : produtos.length > 0 ? (
           produtos.map((produto) => (
             <div key={produto.id} className={styles.card}>
-              {/* Aqui a função decide qual imagem mostrar */}
-              <Image
-                src={getImageForProduct(produto.nome)}
-                alt={`Imagem de ${produto.nome}`}
-                width={150}
-                height={150}
-              />
+              <Image src={getImageForProduct(produto.nome)} alt={`Imagem de ${produto.nome}`} width={180} height={150} />
               <h3 className={styles.cardTitle}>{produto.nome}</h3>
-              <p className={styles.cardText}>Preço: R$ {produto.valores[0].preco}</p>
-              <Button className={styles.clickedButton2}>
-                Adcionar
-              </Button>
+              <p className={styles.cardText}>
+                Preço: R$ {produto.valores?.[0]?.preco ?? "Não disponível"}
+              </p>
+              <button className={styles.clickedButton2}>Adicionar</button>
             </div>
           ))
         ) : (
-          <p className={styles.espacoFooter}>Nenhum produto encontrado</p>
+          <p>Nenhum produto encontrado nesta categoria.</p>
         )}
       </div>
       <Footer />
