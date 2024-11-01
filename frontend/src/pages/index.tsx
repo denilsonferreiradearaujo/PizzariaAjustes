@@ -35,7 +35,6 @@ import tampico2L from '../../public/tampico.png';
 import twistNaLata from '../../public/twistLata.png';
 import erroImg from '../../public/naoFoi.png';
 
-// import Button from '@mui/material/Button';
 import { setupAPICliente } from '../../../frontend/src/services/api';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
@@ -52,10 +51,9 @@ interface Categoria {
 interface Produto {
   id: number;
   nome: string;
-  valores: { preco: number }[];
+  valores: { preco: number; tamanho: string }[];
 }
 
-// Função para retornar a imagem correta
 function getImageForProduct(nome: string) {
   switch (nome) {
     case 'Pizza de Marguerita':
@@ -115,33 +113,31 @@ function getImageForProduct(nome: string) {
   }
 }
 
-// Componente principal
 export default function Home() {
   const [clickedButton, setClickedButton] = useState<number | null>(null);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [cart, setCart] = useState<Produto[]>([]);
+  const [selectedSizes, setSelectedSizes] = useState<{ [key: number]: string }>({}); // Estado para tamanho selecionado
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // Função para buscar categorias ao carregar o componente
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
         const apiCliente = setupAPICliente();
-        const response = await apiCliente.get("/listCategory"); // Atualize para a rota correta
+        const response = await apiCliente.get("/listCategory");
         setCategorias(response.data);
       } catch (error) {
         console.error("Erro ao buscar categorias:", error);
       }
     };
-
     fetchCategorias();
   }, []);
 
-  // Função para buscar produtos de uma categoria específica
   const handleClick = async (categoriaId: number) => {
     setClickedButton(categoriaId);
     setLoading(true);
@@ -154,6 +150,35 @@ export default function Home() {
       console.error("Erro ao buscar produtos:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSizeChange = (produtoId: number, tamanho: string) => {
+    setSelectedSizes((prev) => ({ ...prev, [produtoId]: tamanho }));
+  };
+
+  const addToCart = (produto: Produto) => {
+    const selectedSize = selectedSizes[produto.id];
+    const selectedValor = produto.valores.find((valor) => valor.tamanho === selectedSize);
+
+    if (selectedValor) {
+      setCart((prevCart) => [
+        ...prevCart,
+        {
+          id: produto.id,
+          nome: produto.nome,
+          tamanho: selectedSize,
+          preco: selectedValor.preco,
+        },
+      ]);
+      console.log("Produto adicionado ao carrinho:", {
+        id: produto.id,
+        nome: produto.nome,
+        tamanho: selectedSize,
+        preco: selectedValor.preco,
+      });
+    } else {
+      alert("Por favor, selecione um tamanho antes de adicionar ao carrinho.");
     }
   };
 
@@ -180,7 +205,9 @@ export default function Home() {
           </a>
         </Link>
         <div className={styles.carrinho}>
-          🛒
+          <Link href="/checkout">
+            🛒
+          </Link>
         </div>
       </div>
 
@@ -207,10 +234,9 @@ export default function Home() {
           <button
             key={categoria.id}
             className={clickedButton === categoria.id ? styles.clickedButton : styles.customButton}
-            variant="contained"
             onClick={() => handleClick(categoria.id)}
           >
-            {categoria.nome} {/* Aqui estamos assumindo que a categoria possui o campo 'nome' */}
+            {categoria.nome}
           </button>
         ))}
       </div>
@@ -221,18 +247,23 @@ export default function Home() {
         ) : produtos.length > 0 ? (
           produtos.map((produto) => (
             <div key={produto.id} className={styles.card}>
-              <Image src={getImageForProduct(produto.nome)} alt={`Imagem de ${produto.nome}`} width={180} height={150} />
-              <h3 className={styles.cardTitle}>{produto.nome}</h3>
+              <Image src={getImageForProduct(produto.nome)} alt={`Imagem de ${produto.nome}`} width={210} height={160} />
+              <h2 className={styles.cardTitle}>{produto.nome}</h2>
               <p className={styles.cardText}>
-                Preço: R$ {produto.valores?.[0]?.preco ?? "Não disponível"}
+                <button>P-{produto.valores?.[0]?.preco ?? "Não disponível"}</button>
+                <button>M-{produto.valores?.[1]?.preco ?? "Não disponível"}</button>
+                <button>G-{produto.valores?.[2]?.preco ?? "Não disponível"}</button>
               </p>
-              <button className={styles.clickedButton2}>Adicionar</button>
+              <button className={styles.addButton} onClick={() => addToCart(produto)}>
+                Adicionar ao Carrinho
+              </button>
             </div>
           ))
         ) : (
-          <p>Nenhum produto encontrado nesta categoria.</p>
+          <p>Nenhum produto encontrado para esta categoria.</p>
         )}
       </div>
+
       <Footer />
     </>
   );
