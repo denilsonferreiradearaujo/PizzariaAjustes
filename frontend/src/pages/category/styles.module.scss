@@ -33,7 +33,23 @@
 .buttonAdd {
     height: 40px;
     border: 0;
-    background-color: #D41509;
+    background-color: hsl(255, 100%, 51%);
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 0.3rem;
+    color: var(--dark-700);
+    margin-left: 0.5rem; /* Espaçamento entre o input e o botão */
+    flex-basis: 20%; /* Define o botão como 5% do espaço */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0; /* Remove o padding interno */
+    width: 10%;
+}
+.buttonEdit {
+    height: 40px;
+    border: 0;
+    background-color: #24d409;
     font-weight: bold;
     font-size: 1rem;
     border-radius: 0.3rem;
@@ -57,7 +73,7 @@
 .buttonDelete {
     height: 40px;
     border: 0;
-    background-color: #000000;
+    background-color: hsl(0, 94%, 47%);
     font-weight: bold;
     //font-size: 0rem;
     border-radius: 0.3rem;
