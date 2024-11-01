@@ -18,71 +18,89 @@ interface CategoryProps {
 
 export default function Product({ categoryList }: CategoryProps) {
   const [name, setName] = useState<string>('');
-  const [price, setPrice] = useState<string>('');
   const [description, setDescription] = useState<string>('');
+  const [price, setPrice] = useState<string>(''); 
   const [categories, setCategories] = useState(categoryList || []);
   const [categorySelected, setCategorySelected] = useState(0);
+  const [isSizeEnabled, setIsSizeEnabled] = useState(false);
 
-  const [sizes, setSizes] = useState<string[]>(['']);
-  const [values, setValues] = useState<{ preco: string; tamanho: boolean; status: boolean }[]>([
-    { preco: '', tamanho: false, status: true },
+  const [sizes, setSizes] = useState([
+    { tamanho: '', preco: '' },
+    { tamanho: '', preco: '' },
+    { tamanho: '', preco: '' },
   ]);
 
-  function handleChangeCategory(event: ChangeEvent<HTMLSelectElement>) {
-    setCategorySelected(Number(event.target.value));
-  }
+  const sizeOptions = [
+    { value: '', label: 'Selecionar Tamanho' },
+    { value: 'Pequena', label: 'Pequena' },
+    { value: 'Média', label: 'Média' },
+    { value: 'Grande', label: 'Grande' },
+  ];
 
-  function handleSizeChange(index: number, value: string) {
+  function handleSizeChange(index: number, field: string, value: string) {
     const updatedSizes = [...sizes];
-    updatedSizes[index] = value;
+    updatedSizes[index] = {
+      ...updatedSizes[index],
+      [field]: field === 'preco' ? formatPrice(value) : value,
+    };
+
+    if (field === 'tamanho' && value === '') {
+      updatedSizes[index].preco = ''; // Limpa o campo de preço ao redefinir para "Selecionar Tamanho"
+    }
+
     setSizes(updatedSizes);
   }
 
-  function handleValueChange(index: number, field: string, value: any) {
-    const updatedValues = [...values];
-    updatedValues[index] = { ...updatedValues[index], [field]: value };
-    setValues(updatedValues);
-  }
-
-  function addSizeField() {
-    setSizes([...sizes, '']);
-  }
-
-  function removeSizeField(index: number) {
-    const updatedSizes = sizes.filter((_, i) => i !== index);
+  function handlePriceChange(index: number, value: string) {
+    const updatedSizes = [...sizes];
+    updatedSizes[index].preco = formatPrice(value);
     setSizes(updatedSizes);
   }
 
-  function addValueField() {
-    setValues([...values, { preco: '', tamanho: false, status: true }]);
+  function formatPrice(value: string): string {
+    const cleanValue = value.replace(/\D/g, '');
+    const numericValue = (parseInt(cleanValue, 10) / 100).toFixed(2);
+    return `R$ ${numericValue.replace('.', ',')}`; 
   }
 
-  function removeValueField(index: number) {
-    const updatedValues = values.filter((_, i) => i !== index);
-    setValues(updatedValues);
+  function parsePriceForSubmission(price: string): string {
+    return price.replace(/[^\d,]/g, '').replace(',', '.'); 
   }
 
   async function handleRegister(event: FormEvent) {
     event.preventDefault();
 
     try {
-      if (name === '' || price === '' || description === '') {
+      if (name === '' || description === '' || (!isSizeEnabled && price === '')) {
         toast.error('Preencha todos os campos!');
         return;
       }
 
       const selectedCategoryId = categories[categorySelected].id;
 
+      const tamanhos = isSizeEnabled
+        ? sizes
+            .filter(size => size.tamanho !== '' && size.preco !== '') 
+            .map(size => ({
+                tamanho: size.tamanho,
+            }))
+        : null;
+
+      const valores = isSizeEnabled
+        ? sizes
+            .filter(size => size.tamanho !== '' && size.preco !== '') 
+            .map(size => ({
+                preco: parsePriceForSubmission(size.preco),
+                tamanho: size.tamanho,
+            }))
+        : [{ preco: parsePriceForSubmission(price) }];
+
       const data = {
         nome: name,
         descricao: description,
         categoriaId: parseInt(selectedCategoryId, 10),
-        tamanhos: sizes.filter((size) => size !== '').map((size) => ({ tamanho: size })),
-        valores: values.map((value) => ({
-          preco: parseFloat(value.preco),
-          tamanho: value.tamanho,
-          status: value.status,
-        })),
+        tamanhos,
+        valores,
       };
 
       const apiCliente = setupAPICliente();
@@ -90,10 +108,9 @@ export default function Product({ categoryList }: CategoryProps) {
 
       toast.success('Produto cadastrado com sucesso!');
       setName('');
-      setPrice('');
       setDescription('');
-      setSizes(['']);
-      setValues([{ preco: '', tamanho: false, status: true }]);
+      setPrice('');
+      setSizes([{ tamanho: '', preco: '' }, { tamanho: '', preco: '' }, { tamanho: '', preco: '' }]);
     } catch (err) {
       console.log('Erro', err);
       toast.error('Ops! Erro ao cadastrar');
@@ -113,7 +130,11 @@ export default function Product({ categoryList }: CategoryProps) {
           <h1 className={styles.titulo}>Novo produto</h1>
 
           <form className={styles.form} onSubmit={handleRegister}>
-            <select value={categorySelected} onChange={handleChangeCategory} className={styles.select}>
+            <select
+              value={categorySelected}
+              onChange={(e) => setCategorySelected(Number(e.target.value))}
+              className={styles.select}
+            >
               {categories.map((item, index) => (
                 <option key={item.id} value={index}>
                   {item.nome}
@@ -122,68 +143,70 @@ export default function Product({ categoryList }: CategoryProps) {
             </select>
 
             <input
-              type='text'
-              placeholder='Digite o nome do produto'
+              type="text"
+              placeholder="Digite o nome do produto"
               className={styles.input}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
 
-            <input
-              type='text'
-              placeholder='Preço do produto'
-              className={styles.input}
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-
             <textarea
-              placeholder='Descreva o produto'
-              className={styles.input}
+              placeholder="Descreva o produto"
+              className={styles.textarea}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
 
-            <h2 className={styles.titulo}>Tamanhos</h2>
-            {sizes.map((size, index) => (
-              <div key={index} className={styles.sizeContainer}>
-                <input
-                  type='text'
-                  placeholder='Tamanho'
-                  className={styles.input}
-                  value={size}
-                  onChange={(e) => handleSizeChange(index, e.target.value)}
-                />
-                {/* <button type='button' className={styles.buttonRemove} onClick={() => removeSizeField(index)}>
-                  Remover
-                </button> */}
-              </div>
-            ))}
-            {/* <button type='button' className={styles.buttonAdd} onClick={addSizeField}>
-              Adicionar Tamanho
-            </button> */}
+            {!isSizeEnabled && (
+              <input
+                type="text"
+                placeholder="Preço"
+                className={styles.input}
+                value={price}
+                onChange={(e) => setPrice(formatPrice(e.target.value))}
+              />
+            )}
 
-            <h2 className={styles.titulo}>Valores</h2>
-            {values.map((value, index) => (
-              <div key={index} className={styles.valueContainer}>
-                <input
-                  type='text'
-                  placeholder='Preço'
-                  className={styles.input}
-                  value={value.preco}
-                  onChange={(e) => handleValueChange(index, 'preco', e.target.value)}
-                />
-                
-                {/* <button type='button' className={styles.buttonRemove} onClick={() => removeValueField(index)}>
-                  Remover
-                </button> */}
-              </div>
-            ))}
-            {/* <button type='button' className={styles.buttonAdd} onClick={addValueField}>
-              Adicionar Valor
-            </button> */}
+            <div className={styles.checkboxContainer}>
+              <input
+                type="checkbox"
+                checked={isSizeEnabled}
+                onChange={() => setIsSizeEnabled(!isSizeEnabled)}
+                id="sizeToggle"
+              />
+              <label htmlFor="sizeToggle">Adicionar tamanhos e valores</label>
+            </div>
 
-            <button className={styles.buttonSubmit} type='submit'>
+            {isSizeEnabled && (
+              <>
+                <h2 className={styles.titulo}>Tamanhos e Preços</h2>
+                {sizes.map((size, index) => (
+                  <div key={index} className={styles.sizePriceContainer}>
+                    <select
+                      value={size.tamanho}
+                      onChange={(e) => handleSizeChange(index, 'tamanho', e.target.value)}
+                      className={styles.selectSize}
+                    >
+                      {sizeOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="text"
+                      placeholder={size.tamanho ? "Preço" : "Sem tamanho selecionado"}
+                      className={styles.inputPrice}
+                      value={size.preco}
+                      onChange={(e) => handlePriceChange(index, e.target.value)}
+                      disabled={!size.tamanho}
+                    />
+                  </div>
+                ))}
+              </>
+            )}
+
+            <button className={styles.buttonSubmit} type="submit">
               Cadastrar
             </button>
           </form>

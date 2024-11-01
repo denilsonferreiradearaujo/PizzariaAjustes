@@ -154,7 +154,7 @@ const UserDetailModal: React.FC<UserDetailModalProps> = ({ userId, isOpen, onClo
                         <select name="status" value={formData?.status ? 'Ativo' : 'Inativo'} onChange={handleChange}>
                             <option value="Ativo">Ativo</option>
                             <option value="Inativo">Inativo</option>
-                        </select>''
+                        </select>
                     </label>
                     <div className={styles.addressGroup}>
                         <h3>Endereços</h3>

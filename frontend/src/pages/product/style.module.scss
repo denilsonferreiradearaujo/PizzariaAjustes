@@ -1,170 +1,114 @@
 .container {
-    max-width: 720px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: var(--dark-800);
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  }
-  
-  .title {
-    color: var(--white);
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
 
-  .titulo {
-    color: var(--white);
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  .form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .infoContainer {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-  
-    .productInfo,
-    .priceSizeContainer {
-      flex: 1;
-      background-color: var(--dark-900);
-      padding: 1.5rem;
-      border-radius: 0.5rem;
-      box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-    }
-  
-    .priceSizeContainer h2 {
-      color: var(--white);
-      margin: 1rem 0;
-    }
-  }
-  
-  .input {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 1.5rem; /* Aumentado o espaço abaixo dos inputs */
-    border: 1px solid var(--gray-100);
-    border-radius: 0.3rem;
-    background-color: var(--dark-700);
-    color: var(--white);
-  
-    &:focus {
-      border-color: var(--green-900);
-      outline: none;
-    }
-  }
-  
-  
-  .textarea {
-    width: 100%;
-    min-height: 110px;
-    resize: none;
-    padding: 0.8rem;
-    margin-bottom: 1.5rem; /* Aumentado o espaço abaixo do textarea */
-    border: 1px solid var(--gray-100);
-    border-radius: 0.3rem;
-    background-color: var(--dark-700);
-    color: var(--white);
-  
-    &:focus {
-      border-color: var(--green-900);
-      outline: none;
-    }
-  }
+.formContainer {
+  flex: 2;
+  max-width: 500px;
+  padding: 2rem;
+  background-color: var(--dark-800);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
 
-  .espacoFooter{
-    
-  }
-  
-  .select {
-    width: 100%;
-    padding: 0.8rem;
-    margin-bottom: 1.5rem; /* Aumentado o espaço abaixo do select */
-    border: 1px solid var(--dark-700);
-    border-radius: 0.3rem;
-    background-color: var(--dark-700);
-    color: var(--white);
-    background-image: url('/path/to/arrow-icon.svg'); /* Adicione um ícone personalizado */
-    background-repeat: no-repeat;
-    background-position: right 10px center; /* Ajusta a posição do ícone */
-    background-size: 12px; /* Tamanho do ícone */
-  
-    &:focus {
-      border-color: var(--dark-700);
-      outline: none;
-    }
-  
-    &:hover {
-      border-color: var(--dark-700);
-      color: var(--white);
-    }
-  }
-  
-  .buttonAdd,
-  .buttonRemove,
-  .buttonSubmit {
-    
-    padding: 0.8rem;
-    margin-top: 1rem;
-    border: none;
-    border-radius: 0.3rem;
-    color: var(#FFC107);
+.productListContainer {
+  flex: 1;
+  padding: 2rem;
+  background-color: var(--dark-700);
+  border-radius: 0.5rem;
+  overflow-y: auto;
+  max-height: 80vh;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.titulo {
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--gray-100);
+  border-radius: 0.3rem;
+  background-color: var(--dark-700);
+  color: var(--white);
+  transition: border-color 0.3s ease;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  input[type='checkbox'] {
+    margin-right: 0.5rem;
     cursor: pointer;
   }
-  
-  .buttonAdd {
-    
-    background-color: var(--green-900);
-    transition: background-color 0.3s;
-  
-    &:hover {
-      background-color: #D41509;
-    }
+
+  label {
+    color: var(--white);
+    cursor: pointer;
   }
-  
-  .buttonRemove {
-    background-color: #D41509;
-   
-    transition: background-color 0.3s;
-  
-    &:hover {
-      background-color: #D41509;
-    }
+}
+
+.sizePriceContainer {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: stretch;
+
+  .inputPrice, // Alterado para .inputPrice
+  .selectSize { // Alterado para .selectSize
+    flex: 1; /* Para garantir que ambos os campos ocupem espaço igual */
+    margin-right: 10px; /* Espaçamento entre os campos */
+    padding: 0.8rem; /* Adicionando padding */
+    border: 1px solid var(--gray-100); /* Adicionando borda */
+    border-radius: 0.3rem; /* Bordas arredondadas */
+    background-color: var(--dark-700); /* Fundo escuro */
+    color: var(--white); /* Texto branco */
+    transition: border-color 0.3s ease; /* Transição suave */
   }
-  
-  .buttonSubmit {
-    background-color: #FFC107;
-    transition: background-color 0.3s;
-  
-    &:hover {
-      background-color: #B22222;
-    }
+
+  .inputPrice:last-child,
+  .selectSize:last-child {
+    margin-right: 0; /* Remove o espaço do último item */
   }
-  
-  .sizeContainer,
-  .valueContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-  
-    input[type='checkbox'] {
-      margin-right: 0.5rem;
-    }
-  }
-  
-  .checkboxContainer {
-    display: flex;
-    align-items: center;
-  
-    label {
-      margin-right: 1rem;
-      color: var(--white);
-    }
-  }
-  
+}
+
+.buttonSubmit {
+  background-color: #D41509;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.3rem;
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.productListContainer h1 {
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.productItem {
+  background-color: var(--dark-800);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
