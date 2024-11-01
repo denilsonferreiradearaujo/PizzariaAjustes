@@ -1,0 +1,135 @@
+.modalContent { 
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 3rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    margin: 0 auto;
+    color: #333;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    animation: slide-in 0.5s ease-out;
+    border-radius: 25px;
+
+    // Altura máxima e rolagem
+    max-height: 80vh; // altura máxima do modal
+    overflow-y: auto; // permite rolagem vertical
+
+    @keyframes slide-in {
+        from {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    h2 {
+        color: #333;
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 1rem;
+        letter-spacing: 1px;
+    }
+
+    label {
+        display: flex;
+        flex-direction: column;
+        color: #444;
+        font-weight: bold;
+        gap: 0.5rem;
+
+        input, select {
+            padding: 0.75rem;
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
+
+            &:focus {
+                border-color: #1e90ff;
+                box-shadow: 0 0 8px rgba(30, 144, 255, 0.3);
+                outline: none;
+            }
+        }
+    }
+
+    h3 {
+        color: #555;
+        font-size: 1.5rem;
+        margin-top: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        border-bottom: 1px solid #eaeaea;
+        padding-bottom: 0.5rem;
+    }
+
+    .addressGroup,
+    .phoneGroup {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1rem;
+        background-color: #f4f4f4;
+        border-radius: 6px;
+        margin-bottom: 1.5rem;
+
+        label {
+            font-weight: normal;
+            color: #666;
+        }
+    }
+
+    .modalButtons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+
+        .saveButton, .closeButton {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border: none;
+
+            &.saveButton {
+                background-color: #28a745;
+
+                &:hover {
+                    background-color: #218838;
+                }
+            }
+
+            &.closeButton {
+                background-color: #dc3545;
+
+                &:hover {
+                    background-color: #c82333;
+                }
+            }
+        }
+    }
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}

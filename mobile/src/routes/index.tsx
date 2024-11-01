@@ -1,34 +1,35 @@
 import React, { useContext } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
 
-// import Dashboard from "../pages/Dashboard";
-import AuthRoutes from "./auth.routes";
+import { View, ActivityIndicator } from "react-native";
+
 import AppRoutes from "./app.routes";
+import AuthRoutes from "./auth.routes";
 
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../contexts/AuthContexts";
 
-function Routes(){
-    const {isAuthenticated, loading} = useContext(AuthContext)
-    
-    
+function Routes() {
+    const { isAuthenticated, loading } = useContext(AuthContext)
+
     if(loading){
         return(
-            <View style={{ 
+            <View 
+                style={{ 
                     flex:1, 
-                    backgroundColor: '#1d1d2e', 
+                    backgroundColor: '#F5F7FB', 
                     justifyContent: 'center', 
-                    alignItems: 'center' 
-                    }}
-                >
-                <ActivityIndicator size={60} color="#f5f7fb"/>
-                <Text style={{ color: '#f5f7fb'}}>Carregando...</Text>
+                    alignItems:'center' 
+                }}
+            >
+                   <ActivityIndicator size={60} color= "#d41408"/> 
             </View>
         )
     }
 
-    return(
+    return (
         isAuthenticated ? <AppRoutes/> : <AuthRoutes/>
     )
 }
+
+
 
 export default Routes;

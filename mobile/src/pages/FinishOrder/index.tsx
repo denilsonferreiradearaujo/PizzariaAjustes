@@ -53,7 +53,7 @@ export default function FinishOrder(){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1d1d2e',
+        backgroundColor: '#ffffff',
         paddingVertical: '5%',
         paddingHorizontal: '4%',
         alignItems: 'center',
@@ -68,11 +68,11 @@ const styles = StyleSheet.create({
     title:{
         fontSize: 30,
         fontWeight: 'bold',
-        color: '#fff',
+        color: '#101026',
         marginBottom: 18,
     },
     button:{
-        backgroundColor: '#3fffa3',
+        backgroundColor: '#b22222',
         flexDirection: 'row',
         width: '65%',
         height: 40,
@@ -80,11 +80,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 4,
     },
+
+    buttonHover: {
+        transform: [{ scale: 1.4 }] 
+    },
+
     textButton:{
         fontSize: 18,
         marginRight: 8,
         fontWeight: 'bold',
-        color: '#1d1d2e'
+        color: '#101026'
     }
 })
 

@@ -2,21 +2,19 @@ import React, { useState, createContext, ReactNode, useEffect } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { api } from "../services/api";
+import { api } from '../services/api'
 
-type AuthContextdata = {
+type AuthContextData = {
     user: UserProps;
-    isAuthenticated: boolean;
+    isAuthenticated: boolean; // Para saber se o usuário está ou não
     signIn: (credentials: SignInProps) => Promise<void>;
     loadingAuth: boolean;
     loading: boolean;
     signOut: () => Promise<void>;
-    errorMessage: string;        // Adicionado para a mensagem de erro
-    clearError: () => void;      // Adicionado para limpar a mensagem de erro
 }
 
 type UserProps = {
-    id: string;
+    id: string; //testar
     nome: string;
     email: string;
     token: string;
@@ -27,33 +25,34 @@ type AuthProviderProps = {
 }
 
 type SignInProps = {
-    email: string,
-    senha: string,
+    email: string;
+    senha: string;
 }
 
-export const AuthContext = createContext({} as AuthContextdata);
+export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<UserProps>({
         id: '',
         nome: '',
         email: '',
-        token: '',
-    });
+        token: ''
+    })
 
-    const [loadingAuth, setLoadingAuth] = useState(false);
+    const [loadingAuth, setLoadingAuth] = useState(false)
     const [loading, setLoading] = useState(true);
-    const [errorMessage, setErrorMessage] = useState("");  // Estado para a mensagem de erro
 
-    const isAuthenticated = !!user.nome;
+    const isAuthenticated = !!user.nome;// variavel booleana
 
     useEffect(() => {
+
         async function getUser() {
-            // Pegar os dados salvo do User
-            const userInfo = await AsyncStorage.getItem('@sujeitopizzaria');
+            //Pegar os dados salvos do user
+            const userInfo = await AsyncStorage.getItem('@sabor&art');
             let hasUser: UserProps = JSON.parse(userInfo || '{}')
 
-            // Verificar se recebemos as informações
+            // Verificar se erros as informações dele.
+
             if (Object.keys(hasUser).length > 0) {
                 api.defaults.headers.common['Authorization'] = `Bearer ${hasUser.token}`
 
@@ -66,23 +65,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
             }
 
             setLoading(false);
-        }
 
+        }
         getUser();
 
     }, [])
 
     async function signIn({ email, senha }: SignInProps) {
         setLoadingAuth(true);
-        setErrorMessage("");  // Limpa a mensagem de erro ao tentar novamente
-        console.log(email, senha);
 
         try {
             const response = await api.post('/login', {
                 email,
                 senha
             })
-            console.log("chegou aqui no mobile-01", response.data);
+
+            //console.log(response.data);
 
             const { id, nome, token } = response.data;
 
@@ -90,7 +88,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 ...response.data
             }
 
-            await AsyncStorage.setItem('@sujeitopizzaria', JSON.stringify(data));
+            await AsyncStorage.setItem('@sabor&art', JSON.stringify(data))
 
             api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
@@ -98,19 +96,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 id,
                 nome,
                 email,
-                token
+                token,
             })
 
-            setLoadingAuth(false);
-            console.log("chegou aqui no mobile-03", response.data);
+            setLoadingAuth(false)
 
         } catch (err) {
-            console.log('Erro ao acessar', err)
-            setErrorMessage("Falha no login. Verifique suas credenciais.");  // Define a mensagem de erro
+            console.log('Erro ao acessar', err);
             setLoadingAuth(false);
         }
-        // console.log(email)
-        // console.log(password)
+
     }
 
     async function signOut() {
@@ -120,13 +115,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
                     id: '',
                     nome: '',
                     email: '',
-                    token: '',
+                    token: ''
                 })
             })
-    }
-
-    function clearError() {
-        setErrorMessage("");  // Limpa a mensagem de erro
     }
 
     return (
@@ -135,16 +126,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 user,
                 isAuthenticated,
                 signIn,
-                loadingAuth,
                 loading,
-                signOut,
-                errorMessage,    // Passa a mensagem de erro
-                clearError       // Passa a função para limpar a mensagem de erro
-            }}
-        >
+                loadingAuth,
+                signOut
+            }}>
             {children}
         </AuthContext.Provider>
     )
 }
-
-
