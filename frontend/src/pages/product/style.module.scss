@@ -1,9 +1,27 @@
 .container {
-  max-width: 720px;
+  display: flex;
+  gap: 2rem;
+  max-width: 1200px;
   margin: 2rem auto;
+  padding: 2rem;
+}
+
+.formContainer {
+  flex: 2;
+  max-width: 500px;
   padding: 2rem;
   background-color: var(--dark-800);
   border-radius: 0.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.productListContainer {
+  flex: 1;
+  padding: 2rem;
+  background-color: var(--dark-700);
+  border-radius: 0.5rem;
+  overflow-y: auto;
+  max-height: 80vh;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
@@ -29,11 +47,6 @@
   background-color: var(--dark-700);
   color: var(--white);
   transition: border-color 0.3s ease;
-
-  &:focus {
-    border-color: var(--green-900);
-    outline: none;
-  }
 }
 
 .checkboxContainer {
@@ -56,27 +69,23 @@
   display: flex;
   gap: 10px;
   margin-bottom: 15px;
-  align-items: stretch; // Alinha os elementos verticalmente
+  align-items: stretch;
 
-  .selectSize,
-  .inputPrice {
-    flex: 1; // Faz os elementos ocuparem a mesma largura
-    padding: 0.8rem;
-    border: 1px solid var(--gray-100);
-    border-radius: 0.3rem;
-    background-color: var(--dark-700);
-    color: var(--white);
-    transition: border-color 0.3s ease;
+  .inputPrice, // Alterado para .inputPrice
+  .selectSize { // Alterado para .selectSize
+    flex: 1; /* Para garantir que ambos os campos ocupem espaço igual */
+    margin-right: 10px; /* Espaçamento entre os campos */
+    padding: 0.8rem; /* Adicionando padding */
+    border: 1px solid var(--gray-100); /* Adicionando borda */
+    border-radius: 0.3rem; /* Bordas arredondadas */
+    background-color: var(--dark-700); /* Fundo escuro */
+    color: var(--white); /* Texto branco */
+    transition: border-color 0.3s ease; /* Transição suave */
+  }
 
-    &:focus {
-      border-color: var(--green-900);
-      outline: none;
-    }
-
-    &:hover {
-      border-color: #ff6347;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
+  .inputPrice:last-child,
+  .selectSize:last-child {
+    margin-right: 0; /* Remove o espaço do último item */
   }
 }
 
@@ -88,8 +97,18 @@
   color: var(--white);
   cursor: pointer;
   transition: background-color 0.3s;
+}
 
-  &:hover {
-    background-color: #B21208;
-  }
+.productListContainer h1 {
+  color: var(--white);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.productItem {
+  background-color: var(--dark-800);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
