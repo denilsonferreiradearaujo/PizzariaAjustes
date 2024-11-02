@@ -1,0 +1,48 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  .sizeList {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+  }
+  
+  .sizeItem {
+    margin-bottom: 0.5rem;
+  }
+  
+  .closeButton {
+    margin-top: 1.5rem;
+    padding: 0.5rem 1rem;
+    background: #ff5a5a;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+  
+    &:hover {
+      background: #ff3a3a;
+    }
+  }
+  

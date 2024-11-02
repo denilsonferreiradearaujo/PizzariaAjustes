@@ -6,7 +6,6 @@ import styles from '../product/style.module.scss';
 import { toast } from 'react-toastify';
 import { canSSRAuth } from '@/src/utils/canSSRAuth';
 import { setupAPICliente } from '../../services/api';
-
 type ItemProps = {
   id: string;
   nome: string;
@@ -42,14 +41,16 @@ export default function Product({ categoryList }: CategoryProps) {
     { value: 'Grande', label: 'Grande' },
   ];
 
-  useEffect(() => {
-    async function fetchProducts() {
-      const apiCliente = setupAPICliente();
-      const response = await apiCliente.get('/listProduct');
-      setProductList(response.data);
-    }
-    fetchProducts();
-  }, []);
+async function fetchProducts() {
+  const apiCliente = setupAPICliente();
+  const response = await apiCliente.get('/listProduct');
+  setProductList(response.data);
+}
+
+useEffect(() => {
+  fetchProducts();
+}, []);
+
 
   function handleSizeChange(index: number, field: string, value: string) {
     const updatedSizes = [...sizes];
@@ -72,41 +73,41 @@ export default function Product({ categoryList }: CategoryProps) {
 
   async function handleRegister(event: FormEvent) {
     event.preventDefault();
-
+  
     if (name === '') {
-        toast.error('O nome do produto é obrigatório!');
-        return;
+      toast.error('O nome do produto é obrigatório!');
+      return;
     }
     if (description === '') {
-        toast.error('A descrição do produto é obrigatória!');
-        return;
+      toast.error('A descrição do produto é obrigatória!');
+      return;
     }
-
+  
     // Verifica se tamanhos estão habilitados e se pelo menos um tamanho e preço foram preenchidos
     if (isSizeEnabled) {
-        const tamanhos = sizes.filter(size => size.tamanho && size.preco);
-        if (tamanhos.length === 0) {
-            toast.error('É necessário adicionar pelo menos um tamanho e preço!');
-            return;
-        }
-    } else if (price === '') {
-        toast.error('O preço é obrigatório se tamanhos não forem adicionados!');
+      const tamanhos = sizes.filter(size => size.tamanho && size.preco);
+      if (tamanhos.length === 0) {
+        toast.error('É necessário adicionar pelo menos um tamanho e preço!');
         return;
+      }
+    } else if (price === '') {
+      toast.error('O preço é obrigatório se tamanhos não forem adicionados!');
+      return;
     }
-
+  
     const selectedCategoryId = categories[categorySelected].id;
-
+  
     const tamanhos = isSizeEnabled
         ? sizes.filter(size => size.tamanho && size.preco)
         : null;
-
-    const valores = isSizeEnabled
+  
+    const valores = isSizeEnabled && tamanhos
         ? tamanhos.map(size => ({
             preco: parsePriceForSubmission(size.preco),
             tamanho: size.tamanho,
-        }))
+          }))
         : [{ preco: parsePriceForSubmission(price) }];
-
+  
     const data = {
         nome: name,
         descricao: description,
@@ -114,21 +115,22 @@ export default function Product({ categoryList }: CategoryProps) {
         tamanhos,
         valores,
     };
-
+  
     const apiCliente = setupAPICliente();
     try {
-        await apiCliente.post('/createProduct', data);
-        toast.success('Produto cadastrado com sucesso!');
-        setName('');
-        setDescription('');
-        setPrice('');
-        setSizes([{ tamanho: '', preco: '' }, { tamanho: '', preco: '' }, { tamanho: '', preco: '' }]);
-        await fetchProducts(); // Recarrega a lista de produtos ao cadastrar um novo
-    } catch (error) {
-        const errorMessage = error.response ? error.response.data.message : 'Erro desconhecido';
-        toast.error(`Erro ao cadastrar: ${errorMessage}`);
+      await apiCliente.post('/createProduct', data);
+      toast.success('Produto cadastrado com sucesso!');
+      setName('');
+      setDescription('');
+      setPrice('');
+      setSizes([{ tamanho: '', preco: '' }, { tamanho: '', preco: '' }, { tamanho: '', preco: '' }]);
+      await fetchProducts(); // Agora fetchProducts está disponível
+    } catch (error : any) {
+      const errorMessage = error.response ? error.response.data.message : 'Erro desconhecido';
+      toast.error(`Erro ao cadastrar: ${errorMessage}`);
     }
-}
+  }
+  
 
 
 
