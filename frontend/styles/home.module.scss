@@ -37,16 +37,28 @@
   height: auto; // Ajusta a altura do card para se adaptar ao conteúdo
   margin-bottom: 20px; // Adiciona margem inferior para espaçamento entre os cards
 
-  h3.cardTitle {
+  h2.cardTitle {
     text-align: center; // Centraliza o h3
     font-weight: bold; // Negrito no título
     margin-top: 10px; // Adiciona espaço acima do título
+    margin-bottom: 10px; // Adiciona espaço abaixo do título
+    font-size: 1.4rem;
   }
 
   p.cardText {
+    display: flex;
     text-align: justify; // Parágrafos justificados
     font-weight: bold; // Negrito no conteúdo
     margin: 5px 0;
+    gap: 0.4rem;
+    text-align: center;
+    justify-content: center;
+    margin-bottom: 6px; // Adiciona espaço abaixo do título
+    font-size: 1rem;
+
+    span{
+
+    }
   }
 }
 
