@@ -83,7 +83,7 @@ export default function Category() {
       <div>
         <Header />
 
-        <main className={styles.container}>
+        <div className={styles.container}>
           <h1>Cadastrar ou filtrar uma categoria</h1>
 
           <form className={styles.form} onSubmit={handleRegister}>
@@ -139,7 +139,8 @@ export default function Category() {
               <p>Nenhuma categoria encontrada</p>
             )}
           </ul>
-        </main>
+        </div>
+
       </div>
     </>
   );
