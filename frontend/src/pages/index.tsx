@@ -35,6 +35,7 @@ import sprite from '../../public/spriteLata.png';
 import tampico2L from '../../public/tampico.png';
 import twistNaLata from '../../public/twistLata.png';
 import erroImg from '../../public/naoFoi.png';
+import CheckoutModal from '../components/checkoutModal';
 
 import { setupAPICliente } from '../../../frontend/src/services/api';
 import Modal from '@mui/material/Modal';
@@ -294,6 +295,9 @@ export default function Home() {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleOpenCheckout = () => setOpenCheckoutModal(true);
+  const handleCloseCheckout = () => setOpenCheckoutModal(false);
 
   useEffect(() => {
     const fetchCategorias = async () => {
