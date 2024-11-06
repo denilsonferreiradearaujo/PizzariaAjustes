@@ -6,6 +6,8 @@ import styles from '../product/style.module.scss';
 import { toast } from 'react-toastify';
 import { canSSRAuth } from '@/src/utils/canSSRAuth';
 import { setupAPICliente } from '../../services/api';
+import { ProductDetailsModal } from '../../components/productDetailModel/indetx';
+
 type ItemProps = {
   id: string;
   nome: string;
@@ -33,6 +35,8 @@ export default function Product({ categoryList }: CategoryProps) {
   ]);
 
   const [productList, setProductList] = useState<ItemProps[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<ItemProps | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sizeOptions = [
     { value: '', label: 'Selecionar Tamanho' },
@@ -41,16 +45,15 @@ export default function Product({ categoryList }: CategoryProps) {
     { value: 'Grande', label: 'Grande' },
   ];
 
-async function fetchProducts() {
-  const apiCliente = setupAPICliente();
-  const response = await apiCliente.get('/listProduct');
-  setProductList(response.data);
-}
+  async function fetchProducts() {
+    const apiCliente = setupAPICliente();
+    const response = await apiCliente.get('/listProduct');
+    setProductList(response.data);
+  }
 
-useEffect(() => {
-  fetchProducts();
-}, []);
-
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   function handleSizeChange(index: number, field: string, value: string) {
     const updatedSizes = [...sizes];
@@ -73,7 +76,7 @@ useEffect(() => {
 
   async function handleRegister(event: FormEvent) {
     event.preventDefault();
-  
+
     if (name === '') {
       toast.error('O nome do produto é obrigatório!');
       return;
@@ -82,7 +85,7 @@ useEffect(() => {
       toast.error('A descrição do produto é obrigatória!');
       return;
     }
-  
+
     // Verifica se tamanhos estão habilitados e se pelo menos um tamanho e preço foram preenchidos
     if (isSizeEnabled) {
       const tamanhos = sizes.filter(size => size.tamanho && size.preco);
@@ -94,28 +97,28 @@ useEffect(() => {
       toast.error('O preço é obrigatório se tamanhos não forem adicionados!');
       return;
     }
-  
+
     const selectedCategoryId = categories[categorySelected].id;
-  
+
     const tamanhos = isSizeEnabled
-        ? sizes.filter(size => size.tamanho && size.preco)
-        : null;
-  
+      ? sizes.filter(size => size.tamanho && size.preco)
+      : null;
+
     const valores = isSizeEnabled && tamanhos
-        ? tamanhos.map(size => ({
-            preco: parsePriceForSubmission(size.preco),
-            tamanho: size.tamanho,
-          }))
-        : [{ preco: parsePriceForSubmission(price) }];
-  
+      ? tamanhos.map(size => ({
+        preco: parsePriceForSubmission(size.preco),
+        tamanho: size.tamanho,
+      }))
+      : [{ preco: parsePriceForSubmission(price) }];
+
     const data = {
-        nome: name,
-        descricao: description,
-        categoriaId: parseInt(selectedCategoryId, 10),
-        tamanhos,
-        valores,
+      nome: name,
+      descricao: description,
+      categoriaId: parseInt(selectedCategoryId, 10),
+      tamanhos,
+      valores,
     };
-  
+
     const apiCliente = setupAPICliente();
     try {
       await apiCliente.post('/createProduct', data);
@@ -125,14 +128,21 @@ useEffect(() => {
       setPrice('');
       setSizes([{ tamanho: '', preco: '' }, { tamanho: '', preco: '' }, { tamanho: '', preco: '' }]);
       await fetchProducts(); // Agora fetchProducts está disponível
-    } catch (error : any) {
+    } catch (error: any) {
       const errorMessage = error.response ? error.response.data.message : 'Erro desconhecido';
       toast.error(`Erro ao cadastrar: ${errorMessage}`);
     }
   }
-  
 
+  const handleProductClick = (product: ItemProps) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
 
   return (
     <>
@@ -234,10 +244,9 @@ useEffect(() => {
             <h1 className={styles.titulo}>Produtos Cadastrados</h1>
             <ul>
               {productList.map((product) => (
-                <li key={product.id} className={styles.productItem}>
+                <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
                   <h2>{product.nome}</h2>
                   <p>{product.descricao}</p>
-                  <p>Preço: R$ {product.preco}</p>
                 </li>
               ))}
             </ul>
@@ -245,6 +254,23 @@ useEffect(() => {
         </main>
       </div>
       <Footer />
+
+      {isModalOpen && selectedProduct && (
+        <ProductDetailsModal product={selectedProduct} onClose={closeModal}>
+          <h2>{selectedProduct.nome}</h2>
+          <p>{selectedProduct.descricao}</p>
+          <h3>Preços:</h3>
+          {selectedProduct.tamanhos && selectedProduct.tamanhos.length > 0 ? (
+            selectedProduct.tamanhos.map((size) => (
+              <div key={size.tamanho}>
+                {size.tamanho}: R$ {size.preco}
+              </div>
+            ))
+          ) : (
+            <div>Sem tamanhos disponíveis</div>
+          )}
+        </ProductDetailsModal>
+      )}
     </>
   );
 }

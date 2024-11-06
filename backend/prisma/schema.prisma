@@ -1,3 +1,5 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 // Criar uma migration: yarn ou npx prisma migrate dev
 
@@ -20,7 +22,7 @@ model Pessoa {
   cpf         String            @db.VarChar(11)
   email       String            @db.VarChar(100)
   tipo        String            @db.VarChar(45)
-  status      Boolean           @default(true)
+  status      Int               @default(1)
   dataCreate  DateTime          @default(now()) @map("dataCreate")
   dataUpdate  DateTime?         @map("dataUpdate")
   enderecos   Endereco[]
@@ -109,9 +111,9 @@ model Produto {
   dataCreate  DateTime     @default(now()) @map("dataCreate")
   dataUpdate  DateTime?    @map("dataUpdate")
   Categoria   Categoria    @relation(fields: [categoriaId], references: [id], onDelete: NoAction)
-  itens       Item[]
-  tamanhos    Tamanho[]
-  valores     Valor[]
+  itens       Item[]       @relation("ProdutoItens")
+  tamanhos    Tamanho[]    @relation("ProdutoTamanhos")
+  valores     Valor[]      @relation("ProdutoValores")
 }
 
 model Item {
@@ -122,7 +124,7 @@ model Item {
   idValor    Int        @map("idValor")
   dataCreate DateTime   @default(now()) @map("dataCreate")
   dataUpdate DateTime?  @map("dataUpdate")
-  Produto    Produto    @relation(fields: [produtoId], references: [id], onDelete: NoAction)
+  Produto    Produto    @relation("ProdutoItens", fields: [produtoId], references: [id], onDelete: NoAction)
   Pedido     Pedido     @relation(fields: [pedidoId], references: [id], onDelete: NoAction)
   sabores    SaboresPizza[]
 }
@@ -143,7 +145,7 @@ model Tamanho {
   tamanho    String     @db.VarChar(45)
   dataCreate DateTime   @default(now()) @map("dataCreate")
   dataUpdate DateTime?  @map("dataUpdate")
-  Produto    Produto    @relation(fields: [produtoId], references: [id], onDelete: NoAction)
+  Produto    Produto    @relation("ProdutoTamanhos", fields: [produtoId], references: [id], onDelete: NoAction)
   valores    Valor[]    // Relação inversa com o modelo Valor
 }
 
@@ -155,7 +157,7 @@ model Valor {
   status     Boolean    @default(true)
   dataCreate DateTime   @default(now()) @map("dataCreate")
   dataUpdate DateTime?  @map("dataUpdate")
-  Produto    Produto    @relation(fields: [produtoId], references: [id], onDelete: NoAction)
+  Produto    Produto    @relation("ProdutoValores", fields: [produtoId], references: [id], onDelete: NoAction)
   Tamanho    Tamanho?   @relation(fields: [tamanhoId], references: [id], onDelete: NoAction)
 
   @@unique([produtoId, tamanhoId]) // Índice único para garantir a unicidade
