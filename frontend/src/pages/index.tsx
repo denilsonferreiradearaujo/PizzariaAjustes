@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { Footer } from '../components/Footer';
+import { useRouter } from 'next/router';
 import Head from "next/head";
 import Image from "next/image";
 
@@ -34,6 +35,7 @@ import sprite from '../../public/spriteLata.png';
 import tampico2L from '../../public/tampico.png';
 import twistNaLata from '../../public/twistLata.png';
 import erroImg from '../../public/naoFoi.png';
+import CheckoutModal from '../components/checkoutModal';
 
 import { setupAPICliente } from '../../../frontend/src/services/api';
 import Modal from '@mui/material/Modal';
@@ -48,10 +50,22 @@ interface Categoria {
   nome: string;
 }
 
+interface Valor {
+  preco: number;
+  tamanho: string;
+}
+
 interface Produto {
   id: number;
   nome: string;
-  valores: { preco: number; tamanho: string }[];
+  valores: Valor[];
+}
+
+interface CartItem {
+  id: number;
+  nome: string;
+  tamanho: string;
+  preco: number;
 }
 
 function getImageForProduct(nome: string) {
@@ -113,17 +127,177 @@ function getImageForProduct(nome: string) {
   }
 }
 
+// export default function Home() {
+//   const [clickedButton, setClickedButton] = useState<number | null>(null);
+//   const [categorias, setCategorias] = useState<Categoria[]>([]);
+//   const [produtos, setProdutos] = useState<Produto[]>([]);
+//   const [loading, setLoading] = useState(false);
+//   const [open, setOpen] = useState(false);
+//   const [cart, setCart] = useState<Produto[]>([]);
+//   const [selectedSizes, setSelectedSizes] = useState<{ [key: number]: string }>({}); // Estado para tamanho selecionado
+
+//   const handleOpen = () => setOpen(true);
+//   const handleClose = () => setOpen(false);
+
+//   useEffect(() => {
+//     const fetchCategorias = async () => {
+//       try {
+//         const apiCliente = setupAPICliente();
+//         const response = await apiCliente.get("/listCategory");
+//         setCategorias(response.data);
+//       } catch (error) {
+//         console.error("Erro ao buscar categorias:", error);
+//       }
+//     };
+//     fetchCategorias();
+//   }, []);
+
+//   const handleClick = async (categoriaId: number) => {
+//     setClickedButton(categoriaId);
+//     setLoading(true);
+
+//     try {
+//       const apiCliente = setupAPICliente();
+//       const response = await apiCliente.get(`/produtos?categoriaId=${categoriaId}`);
+//       setProdutos(response.data);
+//     } catch (error) {
+//       console.error("Erro ao buscar produtos:", error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleSizeChange = (produtoId: number, tamanho: string) => {
+//     setSelectedSizes((prev) => ({ ...prev, [produtoId]: tamanho }));
+//   };
+
+//   const addToCart = (produto: Produto) => {
+//     const selectedSize = selectedSizes[produto.id];
+//     const selectedValor = produto.valores.find((valor) => valor.tamanho === selectedSize);
+
+//     if (selectedValor) {
+//       setCart((prevCart) => [
+//         ...prevCart,
+//         {
+//           id: produto.id,
+//           nome: produto.nome,
+//           tamanho: selectedSize,
+//           preco: selectedValor.preco,
+//         },
+//       ]);
+//       console.log("Produto adicionado ao carrinho:", {
+//         id: produto.id,
+//         nome: produto.nome,
+//         tamanho: selectedSize,
+//         preco: selectedValor.preco,
+//       });
+//     } else {
+//       alert("Por favor, selecione um tamanho antes de adicionar ao carrinho.");
+//     }
+//   };
+
+//   return (
+//     <>
+//       <header className={styles.header}>
+//         <div className={styles.logo}>
+//           <Image src={logoImg} alt="Logo Pizzaria" width={200} height={500} />
+//         </div>
+//         <div className={styles.nav}>
+//           <Link href="/login" legacyBehavior>
+//             <a className={styles.button}>Acessar</a>
+//           </Link>
+//           <Link href="/signup" legacyBehavior>
+//             <a className={styles.button}>Cadastrar</a>
+//           </Link>
+//         </div>
+//       </header>
+
+//       <div className={styles.subHeader}>
+//         <Link href="#" legacyBehavior>
+//           <a className={styles.localizacao} onClick={handleOpen}>
+//             Loja: Sumaré 📍
+//           </a>
+//         </Link>
+//         <div className={styles.carrinho}>
+//           <Link href="/checkout">
+//             🛒
+//           </Link>
+//         </div>
+//       </div>
+
+//       <Modal open={open} onClose={handleClose} aria-labelledby="map-modal" aria-describedby="map-modal-description">
+//         <Box className={styles.modalBox}>
+//           <iframe
+//             width="100%"
+//             height="450"
+//             style={{ border: "0" }}
+//             loading="lazy"
+//             allowFullScreen
+//             referrerPolicy="no-referrer-when-downgrade"
+//             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3662.322653421742!2d-47.26300282545686!3d-22.834092479134377!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8bd1ab1fc77f3%3A0xf2ff0cd47cdcb7d8!2sEscola%20SENAI%20%22Dr.%20Celso%20Charuri%22!5e0!3m2!1sen!2sbr!4v1697399239926!5m2!1sen!2sbr"
+//           />
+//         </Box>
+//       </Modal>
+
+//       <div className={styles.baner}>
+//         <Image src={baner} alt="Logo Pizzaria" width={1100} height={400} />
+//       </div>
+
+//       <div className={styles.paginacao}>
+//         {categorias.map((categoria) => (
+//           <button
+//             key={categoria.id}
+//             className={clickedButton === categoria.id ? styles.clickedButton : styles.customButton}
+//             onClick={() => handleClick(categoria.id)}
+//           >
+//             {categoria.nome}
+//           </button>
+//         ))}
+//       </div>
+
+//       <div className={styles.produtoContainer}>
+//         {loading ? (
+//           <p>Carregando produtos, por favor aguarde...</p>
+//         ) : produtos.length > 0 ? (
+//           produtos.map((produto) => (
+//             <div key={produto.id} className={styles.card}>
+//               <Image src={getImageForProduct(produto.nome)} alt={`Imagem de ${produto.nome}`} width={210} height={160} />
+//               <h2 className={styles.cardTitle}>{produto.nome}</h2>
+//               <p className={styles.cardText}>
+//                 <button>P-{produto.valores?.[0]?.preco ?? "Não disponível"}</button>
+//                 <button>M-{produto.valores?.[1]?.preco ?? "Não disponível"}</button>
+//                 <button>G-{produto.valores?.[2]?.preco ?? "Não disponível"}</button>
+//               </p>
+//               <button className={styles.addButton} onClick={() => addToCart(produto)}>
+//                 Adicionar ao Carrinho
+//               </button>
+//             </div>
+//           ))
+//         ) : (
+//           <p>Nenhum produto encontrado para esta categoria.</p>
+//         )}
+//       </div>
+
+//       <Footer />
+//     </>
+//   );
+// }
+
 export default function Home() {
   const [clickedButton, setClickedButton] = useState<number | null>(null);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [cart, setCart] = useState<Produto[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<{ [key: number]: string }>({}); // Estado para tamanho selecionado
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [selectedSize, setSelectedSize] = useState<{ [produtoId: number]: string }>({});
+  const router = useRouter();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleOpenCheckout = () => setOpenCheckoutModal(true);
+  const handleCloseCheckout = () => setOpenCheckoutModal(false);
 
   useEffect(() => {
     const fetchCategorias = async () => {
@@ -154,32 +328,30 @@ export default function Home() {
   };
 
   const handleSizeChange = (produtoId: number, tamanho: string) => {
-    setSelectedSizes((prev) => ({ ...prev, [produtoId]: tamanho }));
+    setSelectedSize((prevSelected) => ({ ...prevSelected, [produtoId]: tamanho }));
   };
 
   const addToCart = (produto: Produto) => {
-    const selectedSize = selectedSizes[produto.id];
-    const selectedValor = produto.valores.find((valor) => valor.tamanho === selectedSize);
+    const tamanhoSelecionado = selectedSize[produto.id];
+    const valorSelecionado = produto.valores.find(valor => valor.tamanho === tamanhoSelecionado);
 
-    if (selectedValor) {
-      setCart((prevCart) => [
-        ...prevCart,
-        {
-          id: produto.id,
-          nome: produto.nome,
-          tamanho: selectedSize,
-          preco: selectedValor.preco,
-        },
-      ]);
-      console.log("Produto adicionado ao carrinho:", {
+    if (tamanhoSelecionado && valorSelecionado) {
+      const cartItem: CartItem = {
         id: produto.id,
         nome: produto.nome,
-        tamanho: selectedSize,
-        preco: selectedValor.preco,
-      });
+        tamanho: tamanhoSelecionado,
+        preco: valorSelecionado.preco
+      };
+      setCart((prevCart) => [...prevCart, cartItem]);
+      console.log("Produto adicionado ao carrinho:", cartItem);
     } else {
-      alert("Por favor, selecione um tamanho antes de adicionar ao carrinho.");
+      alert("Por favor, selecione um tamanho.");
     }
+  };
+
+  const goToCart = () => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    router.push("/checkout");
   };
 
   return (
@@ -204,10 +376,8 @@ export default function Home() {
             Loja: Sumaré 📍
           </a>
         </Link>
-        <div className={styles.carrinho}>
-          <Link href="/checkout">
-            🛒
-          </Link>
+        <div className={styles.carrinho} onClick={goToCart}>
+          🛒
         </div>
       </div>
 
@@ -249,11 +419,20 @@ export default function Home() {
             <div key={produto.id} className={styles.card}>
               <Image src={getImageForProduct(produto.nome)} alt={`Imagem de ${produto.nome}`} width={210} height={160} />
               <h2 className={styles.cardTitle}>{produto.nome}</h2>
-              <p className={styles.cardText}>
-                <button>P-{produto.valores?.[0]?.preco ?? "Não disponível"}</button>
-                <button>M-{produto.valores?.[1]?.preco ?? "Não disponível"}</button>
-                <button>G-{produto.valores?.[2]?.preco ?? "Não disponível"}</button>
-              </p>
+              <div className={styles.cardDetails}>
+                {produto.valores.map((valor, index) => (
+                  <label key={index}>
+                    <input
+                      type="radio"
+                      name={`tamanho-${produto.id}`}
+                      value={valor.tamanho}
+                      checked={selectedSize[produto.id] === valor.tamanho}
+                      onChange={() => handleSizeChange(produto.id, valor.tamanho)}
+                    />
+                    {valor.tamanho}: R${valor.preco}
+                  </label>
+                ))}
+              </div>
               <button className={styles.addButton} onClick={() => addToCart(produto)}>
                 Adicionar ao Carrinho
               </button>
@@ -263,7 +442,6 @@ export default function Home() {
           <p>Nenhum produto encontrado para esta categoria.</p>
         )}
       </div>
-
       <Footer />
     </>
   );
