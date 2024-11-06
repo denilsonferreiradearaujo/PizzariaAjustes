@@ -34,6 +34,7 @@ import sprite from '../../public/spriteLata.png';
 import tampico2L from '../../public/tampico.png';
 import twistNaLata from '../../public/twistLata.png';
 import erroImg from '../../public/naoFoi.png';
+import CheckoutModal from '../components/checkoutModal';
 
 import { setupAPICliente } from '../../../frontend/src/services/api';
 import Modal from '@mui/material/Modal';
@@ -121,9 +122,13 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   const [cart, setCart] = useState<Produto[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<{ [key: number]: string }>({}); // Estado para tamanho selecionado
+  const [openCheckoutModal, setOpenCheckoutModal] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleOpenCheckout = () => setOpenCheckoutModal(true);
+  const handleCloseCheckout = () => setOpenCheckoutModal(false);
 
   useEffect(() => {
     const fetchCategorias = async () => {
