@@ -1,8 +1,9 @@
+// Modal - Atualizado
 import styles from './styles.module.scss';
 
 type Size = {
   tamanho: string;
-  preco: string;
+  preco: number; // Mudei de string para number
 };
 
 type Product = {
@@ -10,20 +11,27 @@ type Product = {
   nome: string;
   descricao: string;
   tamanhos?: Size[];
-  preco?: string;
+  preco: number; // Mudei de string para number
 };
 
 interface ProductDetailsModalProps {
-  product: Product | null;
+  product: Product;
   onClose: () => void;
 }
 
 export function ProductDetailsModal({ product, onClose }: ProductDetailsModalProps) {
-  if (!product) return null;
+  const formatPrice = (price: number) => { // Atualizei o tipo de entrada
+    if (price == null || isNaN(price)) {
+      return 'R$ 0,00';
+    }
+    
+    return `R$ ${price.toFixed(2).replace('.', ',')}`;
+  };
 
   return (
     <div className={styles.overlay}>
       <div className={styles.modal}>
+        <button onClick={onClose} className={styles.closeButton}>X</button>
         <h2>{product.nome}</h2>
         <p>{product.descricao}</p>
         
@@ -31,15 +39,13 @@ export function ProductDetailsModal({ product, onClose }: ProductDetailsModalPro
           <ul className={styles.sizeList}>
             {product.tamanhos.map((size, index) => (
               <li key={index} className={styles.sizeItem}>
-                <strong>Tamanho:</strong> {size.tamanho} | <strong>Preço:</strong> {size.preco}
+                <strong>Tamanho:</strong> {size.tamanho} | <strong>Preço:</strong> {formatPrice(size.preco)} 
               </li>
             ))}
           </ul>
         ) : (
-          <p><strong>Preço:</strong> {product.preco}</p>
+          <p><strong>Preço:</strong> {formatPrice(product.preco)}</p>
         )}
-
-        <button onClick={onClose} className={styles.closeButton}>Fechar</button>
       </div>
     </div>
   );
