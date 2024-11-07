@@ -11,16 +11,18 @@ interface ValorRequest {
 
 interface ProdutoRequest {
     nome: string;
+    descricao?: string; // Adicionado para descrição
     categoriaId: number;
     tamanhos?: TamanhoRequest[];
     valores: ValorRequest[];
 }
 
 class CreateProductService {
-    async execute({ nome, categoriaId, tamanhos, valores }: ProdutoRequest) {
+    async execute({ nome, descricao, categoriaId, tamanhos, valores }: ProdutoRequest) {
         const produto = await prismaClient.produto.create({
             data: {
                 nome,
+                descricao, // Adicionado para incluir a descrição
                 categoriaId,
                 tamanhos: tamanhos
                     ? {
