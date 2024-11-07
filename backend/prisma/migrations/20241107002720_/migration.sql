@@ -44,8 +44,8 @@ CREATE TABLE `Login` (
 -- CreateTable
 CREATE TABLE `Telefone` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `numero` VARCHAR(11) NOT NULL,
-    `tipo` VARCHAR(45) NOT NULL,
+    `telefoneResidencial` VARCHAR(191) NULL,
+    `telefoneCelular` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -74,7 +74,7 @@ CREATE TABLE `TaxaEntrega` (
 CREATE TABLE `Pedido` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `pessoaId` INTEGER NULL,
-    `taxaEntregaId` INTEGER NOT NULL,
+    `taxaEntregaId` INTEGER NULL,
     `status` VARCHAR(45) NOT NULL,
     `numMesa` INTEGER NOT NULL,
     `valTotal` DECIMAL(12, 2) NOT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE `Valor` (
     `produtoId` INTEGER NOT NULL,
     `tamanhoId` INTEGER NULL,
     `preco` DECIMAL(12, 2) NOT NULL,
-    `status` INTEGER NOT NULL DEFAULT 1,
+    `status` BOOLEAN NOT NULL DEFAULT true,
     `dataCreate` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `dataUpdate` DATETIME(3) NULL,
 
