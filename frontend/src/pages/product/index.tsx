@@ -134,6 +134,29 @@ export default function Product({ categoryList }: CategoryProps) {
     }
   }
 
+  //Tentativa de edição de produto
+  const salvarEdicao = async (id: number, novoNome: string) => {
+    const apiCliente = setupAPICliente();
+    try {
+      await apiCliente.post(`/updateProduct/${id}`, { nome: novoNome });
+      toast.success('Producto atualizada com sucesso');
+      await fetchProducts();
+    } catch (error) {
+      toast.error('Erro ao atualizar a Producto');
+    }
+  };
+  const handleDelete = async (id: number) => {
+    const apiCliente = setupAPICliente();
+    try {
+      await apiCliente.delete(`/Product/${id}`); // Certifique-se de que a rota DELETE esteja correta
+      toast.success('Produto excluída com sucesso');
+      await fetchProducts(); // Atualiza a lista após exclusão
+    } catch (error) {
+      toast.error('Erro ao excluir a Product');
+    }
+  };
+  //
+
   const handleProductClick = (product: ItemProps) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
@@ -247,8 +270,23 @@ export default function Product({ categoryList }: CategoryProps) {
                 <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
                   <h2>{product.nome}</h2>
                   <p>{product.descricao}</p>
+                  <div>
+                    <button
+                      className={styles.buttonEdit}
+                      onClick={() => salvarEdicao(selectedProduct.id, selectedProduct.nome)}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className={styles.buttonDelete} // Adicione uma classe de estilo se necessário
+                      onClick={() => handleDelete(selectedProduct.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </li>
-              ))}
+              ))};
+              
             </ul>
           </div>
         </main>
@@ -268,7 +306,7 @@ export default function Product({ categoryList }: CategoryProps) {
             ))
           ) : (
             <div>Sem tamanhos disponíveis</div>
-          )}
+          )};
         </ProductDetailsModal>
       )}
     </>
