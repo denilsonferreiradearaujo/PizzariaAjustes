@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `pessoa` MODIFY `status` INTEGER NOT NULL DEFAULT 1;

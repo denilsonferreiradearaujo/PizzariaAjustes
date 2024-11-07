@@ -80,11 +80,15 @@
 .localizacao {
   margin-left: 215px;
   /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
+  font-weight: bold; // Texto em negrito
 }
 
 .carrinho {
   padding-right: 250px;
   /* Padding fixo à direita */
+  font-weight: bold; // Texto em negrito
+  cursor: pointer;
+  color: #c8102e;
 }
 
 .subHeader {
