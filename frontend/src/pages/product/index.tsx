@@ -108,21 +108,21 @@ export default function Product({ categoryList }: CategoryProps) {
   const handleRegister = async (event: FormEvent) => {
     event.preventDefault();
     if (!handleValidation()) return;
-
-    const selectedCategoryId = categories[categorySelected].id;
+  
+    const categoriaId = categories[categorySelected]?.id; // Definimos a categoria corretamente
     const tamanhos = isSizeEnabled ? sizes.filter(size => size.tamanho && size.preco) : null;
     const valores = tamanhos
       ? tamanhos.map(size => ({ preco: parsePriceForSubmission(size.preco), tamanho: size.tamanho }))
       : [{ preco: parsePriceForSubmission(price) }];
-
+  
     const data = {
       nome: name,
       descricao: description,
-      categoriaId: parseInt(selectedCategoryId, 10),
+      categoriaId: parseInt(categoriaId, 10), // Usamos `categoriaId` aqui
       tamanhos,
       valores,
     };
-
+  
     const apiCliente = setupAPICliente();
     try {
       await apiCliente.post('/createProduct', data);
@@ -137,7 +137,7 @@ export default function Product({ categoryList }: CategoryProps) {
       toast.error(`Erro ao cadastrar: ${errorMessage}`);
     }
   };
-
+  
   const handleProductClick = (product: ItemProps) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
@@ -146,6 +146,36 @@ export default function Product({ categoryList }: CategoryProps) {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedProduct(null);
+  };
+
+  const salvarEdicao = async (id: number, novoNome: string) => {
+    const apiCliente = setupAPICliente();
+    try {
+      await apiCliente.post(`/updateProduct/${id}`, { nome: novoNome });
+      toast.success('Categoria atualizada com sucesso');
+      await fetchProducts();
+    } catch (error) {
+      toast.error('Erro ao atualizar a categoria');
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    const apiCliente = setupAPICliente();
+    try {
+      await apiCliente.delete(`/product/${id}`); // Certifique-se de que a rota DELETE esteja correta
+      toast.success('Categoria excluída com sucesso');
+      await fetchProducts(); // Atualiza a lista após exclusão
+    } catch (error) {
+      toast.error('Erro ao excluir a categoria');
+    }
+  };
+
+  const data = {
+    nome: name,
+    descricao: description,
+    categoriaId: parseInt(selectedCategoryId, 10),
+    tamanhos: isSizeEnabled ? tamanhos : null,
+    valores,
   };
 
   return (
@@ -236,15 +266,16 @@ export default function Product({ categoryList }: CategoryProps) {
               </>
             )}
 
-            <button className={styles.buttonSubmit} type="submit">
+            <button className={styles.buttonSubmit} type="submit" disabled={loading || (!isSizeEnabled && price === '')}>
               Cadastrar
             </button>
+
           </form>
         </div>
 
         <div className={styles.productListContainer}>
           <h1 className={styles.titulo}>Produtos Cadastrados</h1>
-          {loading ? (
+          {/* {loading ? (
             <p>Carregando produtos...</p>
           ) : (
             <ul>
@@ -253,24 +284,26 @@ export default function Product({ categoryList }: CategoryProps) {
                   <h2>{product.nome}</h2>
                   <p>{product.descricao}</p>
                   <div>
-                    <button
-                      className={styles.buttonEdit}
-                      onClick={() => salvarEdicao(selectedProduct.id, selectedProduct.nome)}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      className={styles.buttonDelete} // Adicione uma classe de estilo se necessário
-                      onClick={() => handleDelete(selectedProduct.id)}
-                    >
-                      Delete
-                    </button>
                   </div>
                 </li>
               ))};
-              
+
+            </ul>
+          )} */}
+          
+          {productList.length === 0 ? (
+            <p>Não há produtos cadastrados.</p>
+          ) : (
+            <ul>
+              {productList.map((product) => (
+                <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
+                  <h2>{product.nome}</h2>
+                  <p>{product.descricao}</p>
+                </li>
+              ))}
             </ul>
           )}
+
         </div>
       </main>
       <Footer />
@@ -288,6 +321,20 @@ export default function Product({ categoryList }: CategoryProps) {
               ))}
             </ul>
           )}
+
+          <button
+            className={styles.buttonEdit}
+            onClick={() => salvarEdicao(selectdProduct.id, selectdProduct.nome)}
+          >
+            Editar
+          </button>
+          <button
+            className={styles.buttonDelete} // Adicione uma classe de estilo se necessário
+            onClick={() => handleDelete(selectdProduct.id)}
+          >
+            Delete
+          </button>
+
         </ProductDetailsModal>
       )}
     </>

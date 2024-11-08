@@ -113,3 +113,54 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+// 
+
+.buttonEdit {
+  height: 40px;
+  border: 0;
+  background-color: #8B4513;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  color: var(--dark-700);
+  margin-left: 0.5rem; /* Espaçamento entre o input e o botão */
+  flex-basis: 20%; /* Define o botão como 5% do espaço */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Remove o padding interno */
+  // width: 10%;
+}
+
+// 🔍✒️🖊️📝
+.buttonEdit::before {
+  content: '✒️'; /* Aqui você pode usar o ícone desejado */
+  font-size: 1.2rem;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+
+.buttonDelete {
+  height: 40px;
+  border: 0;
+  background-color: hsl(0, 94%, 47%);
+  font-weight: bold;
+  //font-size: 0rem;
+  border-radius: 0.3rem;
+  color: var(--dark-700);
+  margin-left: 0.5rem; /* Espaçamento entre o input e o botão */
+  flex-basis: 20%; /* Define o botão como 5% do espaço */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Remove o padding interno */
+  // width: 10%;
+}
+
+.buttonDelete::before {
+  content: '🗑️'; /* Ícone de lixeira */
+  font-size: 1.2rem;
+  display: inline-block;
+ // margin-right: 0.5rem;
+}
