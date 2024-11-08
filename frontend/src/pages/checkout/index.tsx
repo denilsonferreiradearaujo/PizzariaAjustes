@@ -100,11 +100,11 @@ import axios from 'axios';
 import { useCart } from '../../contexts/CartContext';
 import logoImg from '../../../public/logo.png';
 import styles from './style.module.scss';
-import Head from "next/head";
+import Head from 'next/head';
 import { setupAPICliente } from '@/src/services/api';
 
 const Checkout: React.FC = () => {
-    const {cart, clearCart } = useCart(); // Ajuste para trazer `clearCart` do contexto
+    const { cart, clearCart } = useCart(); // Trazendo o cart e clearCart do contexto
     const [total, setTotal] = useState(0);
     const [cep, setCep] = useState('');
     const [address, setAddress] = useState({
@@ -113,13 +113,24 @@ const Checkout: React.FC = () => {
         cidade: '',
     });
 
-    // Calcula o total
+    // Converte os valores de `preco` e calcula o total do carrinho
     useEffect(() => {
-        const totalAmount = cart.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
-        setTotal(totalAmount);
-    }, [cart]);
+    const parsedCart = cart.map((item) => ({
+        ...item,
+        preco: isNaN(Number(item.preco)) ? 0 : Number(item.preco),
+        quantidade: isNaN(Number(item.quantidade)) ? 0 : Number(item.quantidade),
+    }));
 
-    console.log(cart)
+    console.log("Carrinho depois do parse:", parsedCart);
+
+    const totalAmount = parsedCart.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+    console.log("Total calculado:", totalAmount);
+
+    setTotal(totalAmount);
+}, [cart]);
+
+
+    console.log("Carrinho atualizado:", cart);
 
     // Função para buscar o CEP
     const handleCepBlur = async () => {
@@ -192,7 +203,9 @@ const Checkout: React.FC = () => {
                             <span>{item.nome}</span>
                             <span>{item.tamanho}</span>
                             <span>{item.quantidade}</span>
-                            <span>R$ {typeof item.preco === "number" ? item.preco.toFixed(2) : "0.00"}</span>
+                            <span>
+                                R$ {typeof item.preco === 'number' ? item.preco.toFixed(2) : parseFloat(item.preco).toFixed(2)}
+                            </span>
                         </div>
                     ))}
                 </section>
