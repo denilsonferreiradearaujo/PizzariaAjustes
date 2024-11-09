@@ -13,6 +13,7 @@ interface CartItem {
 
 interface CartContextData {
   cart: CartItem[];
+  setCart: React.Dispatch<React.SetStateAction<CartItem[]>>; // Inclua o setCart
   addToCart: (item: CartItem) => void;
   clearCart: () => void;
   totalAmount: () => number;
@@ -60,7 +61,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const totalAmount = () => cart.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, clearCart, totalAmount }}>
+    <CartContext.Provider value={{ cart, setCart, addToCart, clearCart, totalAmount }}>
       {children}
     </CartContext.Provider>
   );

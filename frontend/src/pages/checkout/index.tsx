@@ -1,110 +1,19 @@
-// import React from 'react';
-// import { Footer } from '../../components/Footer';
-// import Image from 'next/image';
-// import Link from 'next/link';
-// import logoImg from '../../../public/logo.png';
-// import styles from './style.module.scss';
-// import Head from "next/head";
-
-// const Checkout: React.FC = () => {
-//     return (
-//         <>
-//             <Head>
-//                 <title>Carrinho</title>
-//             </Head>
-//             {/* Cabeçalho com logo e navegação */}
-//             <header className={styles.header}>
-//                 <div className={styles.logo}>
-//                     <Image src={logoImg} alt="Logo Pizzaria" width={200} height={100} />
-//                 </div>
-//                 <div className={styles.nav}>
-//                     <Link href="/" legacyBehavior>
-//                         <a className={styles.button}>Home</a>
-//                     </Link>
-//                 </div>
-//             </header>
-
-//             {/* Conteúdo do Checkout */}
-//             <div className={styles.checkoutContainer}>
-//                 <h1>Finalizar Pedido</h1>
-
-//                 {/* Resumo do Pedido */}
-//                 <section className={styles.orderSummary}>
-//                     <h2>Resumo do Pedido</h2>
-//                     <div className={styles.orderItem}>
-//                         <span>Produto</span>
-//                         <span>Tamanho</span>
-//                         <span>Quantidade</span>
-//                         <span>Preço</span>
-//                     </div>
-//                     {/* Exemplo de item - esses dados virão de um state ou props */}
-//                     <div className={styles.orderItem}>
-//                         <span>Pizza Margherita</span>
-//                         <span>Pequena</span>
-//                         <span>1</span>
-//                         <span>R$ 40,00</span>
-//                     </div>
-//                 </section>
-
-//                 {/* Total do Pedido */}
-//                 <section className={styles.orderTotal}>
-//                     <p> Total do Pedido R$ 55,00</p>
-//                 </section>
-
-//                 {/* Informações do Cliente */}
-//                 <section className={styles.customerInfo}>
-//                     <h2>Informações do Cliente</h2>
-//                     <input type="text" placeholder="Nome" />
-//                     <input type="text" placeholder="Celular" />
-
-//                     <div>
-//                         <input type="text" placeholder="Cep" />
-//                         <input type="text" placeholder="Logradouro" />
-//                         <input type="text" placeholder="numero" />
-//                         <input type="text" placeholder="Bairro" />
-//                         <input type="text" placeholder="Cidade" />
-//                         <input type="text" placeholder="Complemento" />
-//                     </div>
-
-
-//                 </section>
-
-//                 {/* Método de Pagamento */}
-//                 <section className={styles.paymentMethod}>
-//                     <h2>Método de Pagamento</h2>
-//                     <select>
-//                         <option>Cartão de Crédito</option>
-//                         <option>Dinheiro</option>
-//                         <option>Pix</option>
-//                     </select>
-//                 </section>
-
-//                 {/* Botão para Confirmar o Pedido */}
-//                 <button className={styles.confirmButton}>Confirmar Pedido</button>
-//             </div>
-
-//             <Footer />
-//         </>
-//     );
-// };
-
-// export default Checkout;
-
-
-// src/pages/checkout/index.tsx
 import React, { useEffect, useState } from 'react';
 import { Footer } from '../../components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaRegTrashAlt } from "react-icons/fa";
 import axios from 'axios';
 import { useCart } from '../../contexts/CartContext';
 import logoImg from '../../../public/logo.png';
 import styles from './style.module.scss';
 import Head from "next/head";
 import { setupAPICliente } from '@/src/services/api';
+import { toast } from 'react-toastify';
+
 
 const Checkout: React.FC = () => {
-    const {cart, clearCart } = useCart(); // Ajuste para trazer `clearCart` do contexto
+    const { cart, setCart, clearCart } = useCart(); // Incluindo setCart para manipular o estado do carrinho
     const [total, setTotal] = useState(0);
     const [cep, setCep] = useState('');
     const [address, setAddress] = useState({
@@ -119,7 +28,13 @@ const Checkout: React.FC = () => {
         setTotal(totalAmount);
     }, [cart]);
 
-    console.log(cart)
+    // Função para remover um item do carrinho
+    const handleRemoveItem = (index: number) => {
+        const updatedCart = [...cart];
+        updatedCart.splice(index, 1); // Remove o item pelo índice
+        setCart(updatedCart); // Atualiza o estado do carrinho
+        localStorage.setItem('cart', JSON.stringify(updatedCart)); // Sincroniza com o localStorage
+    };
 
     // Função para buscar o CEP
     const handleCepBlur = async () => {
@@ -134,7 +49,7 @@ const Checkout: React.FC = () => {
                 });
             } catch (error) {
                 console.error("Erro ao buscar CEP:", error);
-                alert("CEP não encontrado. Verifique e tente novamente.");
+                toast.error("CEP não encontrado. Verifique e tente novamente.");
             }
         }
     };
@@ -157,11 +72,11 @@ const Checkout: React.FC = () => {
 
             const apiCliente = setupAPICliente();
             await apiCliente.post('/createPedido', order); // Usando `POST` para criação
-            alert('Pedido confirmado!');
+            toast.success('Pedido confirmado!');
             clearCart(); // Limpa o carrinho após confirmar o pedido
         } catch (error) {
             console.error(error);
-            alert('Erro ao confirmar o pedido. Tente novamente.');
+            toast.error('Erro ao confirmar o pedido. Tente novamente.');
         }
     };
 
@@ -192,7 +107,11 @@ const Checkout: React.FC = () => {
                             <span>{item.nome}</span>
                             <span>{item.tamanho}</span>
                             <span>{item.quantidade}</span>
-                            <span>R$ {typeof item.preco === "number" ? item.preco.toFixed(2) : "0.00"}</span>
+                            <span>R$ {typeof item.preco === "number" ? item.preco.toFixed(2) : parseFloat(item.preco).toFixed(2)}</span>
+                            {/* Ícone de lixeira para excluir item */}
+                            <button onClick={() => handleRemoveItem(index)} className={styles.trashButton}>
+                                <FaRegTrashAlt size={20} color='red'/>
+                            </button>
                         </div>
                     ))}
                 </section>
