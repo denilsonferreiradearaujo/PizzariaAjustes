@@ -3,6 +3,7 @@ import { Footer } from '../components/Footer';
 import { useRouter } from 'next/router';
 import Head from "next/head";
 import Image from "next/image";
+import { toast } from 'react-toastify';
 
 import logoImg from '../../public/logo.png';
 import baner from '../../public/baner.jpg';
@@ -65,6 +66,7 @@ interface CartItem {
   nome: string;
   tamanho: string;
   preco: number;
+  quantidade: number;
 }
 
 function getImageForProduct(nome: string) {
@@ -152,7 +154,7 @@ export default function Home() {
     fetchCategorias();
   }, []);
 
-  // Adicionado iten do carinho no local storage
+  // Adicionado item do carrinho no local storage
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
     if (storedCart) {
@@ -162,7 +164,7 @@ export default function Home() {
       }));
       setCart(parsedCart);
     }
-  }, []);
+  }, [setCart]);
 
   const handleClick = async (categoriaId: number) => {
     setClickedButton(categoriaId);
@@ -185,28 +187,104 @@ export default function Home() {
 
   const addToCart = (produto: Produto) => {
     const tamanhoSelecionado = selectedSize[produto.id];
-    const valorSelecionado = produto.valores.find(valor => valor.tamanho === tamanhoSelecionado);
-
-    if (tamanhoSelecionado && valorSelecionado) {
-      const cartItem: CartItem = {
-        id: produto.id,
-        nome: produto.nome,
-        tamanho: tamanhoSelecionado,
-        preco: valorSelecionado.preco
-      };
-      const newCart = [...cart, cartItem];
-      setCart(newCart);
-      localStorage.setItem("cart", JSON.stringify(newCart));
-      console.log("Produto adicionado ao carrinho:", cartItem);
-    } else {
-      alert("Por favor, selecione um tamanho.");
+    const valorSelecionado = produto.valores.find((valor) => valor.tamanho === tamanhoSelecionado);
+  
+    if (!tamanhoSelecionado || !valorSelecionado) {
+      toast.error("Por favor, selecione um tamanho.");
+      return;
     }
+  
+    setCart((prevCart) => {
+      // Verifica se o produto e tamanho já existem no carrinho
+      const existingItemIndex = prevCart.findIndex(
+        (item) => item.id === produto.id && item.tamanho === tamanhoSelecionado
+      );
+  
+      if (existingItemIndex >= 0) {
+        // Incrementar quantidade no item existente
+        const updatedCart = [...prevCart];
+        updatedCart[existingItemIndex].quantidade;
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        toast.success("Quantidade inserida no carrinho!")
+        return updatedCart;
+      } else {
+        // Adicionar novo item ao carrinho
+        const newItem: CartItem = {
+          id: produto.id,
+          nome: produto.nome,
+          tamanho: tamanhoSelecionado,
+          quantidade: 1,
+          preco: valorSelecionado.preco,
+        };
+        const updatedCart = [...prevCart, newItem];
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        toast.success("Quantidade inserida no carrinho!")
+        return updatedCart;
+      }
+    });
+  };
+  
+
+  const incrementQuantity = (itemId: number, tamanho: string) => {
+    setCart((prevCart) => {
+      const existingItemIndex = prevCart.findIndex(
+        (item) => item.id === itemId && item.tamanho === tamanho
+      );
+
+      if (existingItemIndex >= 0) {
+        const updatedCart = prevCart.map((item, index) =>
+          index === existingItemIndex
+            ? { ...item, quantidade: item.quantidade + 1 }
+            : item
+        );
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        return updatedCart;
+      } else {
+        // Adiciona o item caso ele não exista
+        const produto = produtos.find((p) => p.id === itemId);
+        const tamanhoSelecionado = selectedSize[itemId];
+        const valorSelecionado = produto?.valores.find((v) => v.tamanho === tamanhoSelecionado);
+
+        if (produto && tamanhoSelecionado && valorSelecionado) {
+          const newItem: CartItem = {
+            id: produto.id,
+            nome: produto.nome,
+            tamanho: tamanhoSelecionado,
+            quantidade: 1,
+            preco: valorSelecionado.preco,
+          };
+          const updatedCart = [...prevCart, newItem];
+          localStorage.setItem("cart", JSON.stringify(updatedCart));
+          return updatedCart;
+        }
+        return prevCart;
+      }
+    });
   };
 
+  const decrementQuantity = (itemId: number, tamanho: string) => {
+    console.log("Decrementando quantidade", itemId, tamanho);
+    setCart((prevCart) => {
+      const updatedCart = prevCart
+        .map((item) =>
+          item.id === itemId && item.tamanho === tamanho && item.quantidade > 1
+            ? { ...item, quantidade: item.quantidade - 1 }
+            : item
+        )
+        .filter((item) => item.quantidade > 0); // Remove itens com quantidade 0
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      return updatedCart;
+    });
+  };
+
+  // Funcão para direcionar para a página do carrinho.
   const goToCart = () => {
     router.push("/checkout");
   };
 
+  console.log("Tamanho selecionado:", selectedSize);
+  console.log("Carrinho:", cart);
+  
   return (
     <>
       <header className={styles.header}>
@@ -286,6 +364,26 @@ export default function Home() {
                     {valor.tamanho}: R${valor.preco}
                   </label>
                 ))}
+              </div>
+              <div className={styles.quantityControl}>
+                <button
+                  onClick={() => decrementQuantity(produto.id, selectedSize[produto.id])}
+                  disabled={!selectedSize[produto.id]}
+                >
+                  -
+                </button>
+                <span>
+                  {cart.find(
+                    (item) =>
+                      item.id === produto.id && item.tamanho === selectedSize[produto.id]
+                  )?.quantidade || 0}
+                </span>
+                <button
+                  onClick={() => incrementQuantity(produto.id, selectedSize[produto.id])}
+                  disabled={!selectedSize[produto.id]}
+                >
+                  +
+                </button>
               </div>
               <button className={styles.addButton} onClick={() => addToCart(produto)}>
                 Adicionar ao Carrinho
