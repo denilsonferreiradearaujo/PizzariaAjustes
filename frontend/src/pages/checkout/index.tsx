@@ -11,7 +11,6 @@ import Head from "next/head";
 import { setupAPICliente } from '@/src/services/api';
 import { toast } from 'react-toastify';
 
-
 const Checkout: React.FC = () => {
     const { cart, setCart, clearCart } = useCart(); // Incluindo setCart para manipular o estado do carrinho
     const [total, setTotal] = useState(0);
@@ -22,7 +21,20 @@ const Checkout: React.FC = () => {
         cidade: '',
     });
 
-    // Calcula o total
+    // Carregar itens do localStorage e calcular o total ao abrir a página
+    useEffect(() => {
+        const storedCart = localStorage.getItem('cart');
+        if (storedCart) {
+            const parsedCart = JSON.parse(storedCart);
+            setCart(parsedCart);
+
+            // Atualiza o total imediatamente
+            const totalAmount = parsedCart.reduce((acc: number, item: any) => acc + item.preco * item.quantidade, 0);
+            setTotal(totalAmount);
+        }
+    }, []);
+
+    // Atualiza o total sempre que o carrinho mudar
     useEffect(() => {
         const totalAmount = cart.reduce((acc, item) => acc + item.preco * item.quantidade, 0);
         setTotal(totalAmount);
@@ -110,7 +122,7 @@ const Checkout: React.FC = () => {
                             <span>R$ {typeof item.preco === "number" ? item.preco.toFixed(2) : parseFloat(item.preco).toFixed(2)}</span>
                             {/* Ícone de lixeira para excluir item */}
                             <button onClick={() => handleRemoveItem(index)} className={styles.trashButton}>
-                                <FaRegTrashAlt size={20} color='red'/>
+                                <FaRegTrashAlt size={20} color='red' />
                             </button>
                         </div>
                     ))}
