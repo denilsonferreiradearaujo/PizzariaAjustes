@@ -15,6 +15,7 @@ interface ProdutoRequest {
     categoriaId: number;
     tamanhos?: TamanhoRequest[];
     valores: ValorRequest[];
+    status : string;
 }
 
 class CreateProductService {
@@ -29,6 +30,7 @@ class CreateProductService {
                           create: tamanhos.map(t => ({ tamanho: t.tamanho })),
                       }
                     : undefined,
+                    status : "Ativo" //Garante que o status é setado como ativo
             },
         });
 

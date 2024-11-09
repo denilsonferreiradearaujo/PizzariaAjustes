@@ -25,6 +25,9 @@
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.15",
     "prisma": "^5.19.1",
-    "react-modal": "^3.16.1"
+    "react-checkbox-group": "^5.0.2",
+    "react-modal": "^3.16.1",
+    "react-switch": "^7.0.0",
+    "styled-components": "^6.1.13"
   }
 }
