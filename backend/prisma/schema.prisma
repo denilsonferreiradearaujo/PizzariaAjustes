@@ -108,6 +108,7 @@ model Produto {
   categoriaId Int
   nome        String       @db.VarChar(150)
   descricao   String?      @db.VarChar(500)
+  status      String       @db.VarChar(7) @default("Ativo")
   dataCreate  DateTime     @default(now()) @map("dataCreate")
   dataUpdate  DateTime?    @map("dataUpdate")
   Categoria   Categoria    @relation(fields: [categoriaId], references: [id], onDelete: NoAction)
