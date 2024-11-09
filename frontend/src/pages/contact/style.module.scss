@@ -66,8 +66,62 @@
     text-decoration: none;
     font-size: 1rem;
     transition: background-color 0.3s ease;
+    margin-bottom: 20px;
   
-    &:hover {
-      background-color: var(--orange-600);
     }
-  }
+
+    .button:hover {
+        background-color: #FFC107;
+    }
+//   
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 800px;
+    margin: 0 auto;
+}
+
+.formGroup {
+    position: relative;
+    margin-bottom: 15px;
+    width: 50%;
+}
+
+.input {
+    width: 400px;
+    padding: 10px 10px 10px 40px;
+    border: 1px solid black;
+    border-radius: 4px;
+    outline: none;
+    background-color:--white;
+    color: --black;
+}
+
+.textArea {
+    width: 400px;
+    height: 400px;
+    padding: 20px 10px 10px 40px;
+    vertical-align: top;
+    resize:none;
+    border: 1px solid black;
+    border-radius: 4px;
+    outline: none;
+    background-color:--white;
+    color: --black;
+}
+
+.a {
+    color: --black; // Cor do link
+    margin: 15px; // Espaçamento horizontal entre os links
+    text-decoration: none; // Remove sublinhado
+    transition: color 0.3s ease; // Transição suave para hover
+    padding: 10px 100px;
+
+
+
+    &:hover {
+        color: #FFC107; // Cor do link ao passar o mouse
+    }
+}
