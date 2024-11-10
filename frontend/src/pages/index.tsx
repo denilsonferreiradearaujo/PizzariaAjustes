@@ -53,6 +53,7 @@ interface Categoria {
 interface Valor {
   preco: number;
   tamanho: string;
+  id: number;
 }
 
 interface Produto {
@@ -67,6 +68,8 @@ interface CartItem {
   tamanho: string;
   preco: number;
   quantidade: number;
+  produtoId: number;
+  idValor: number;
 }
 
 function getImageForProduct(nome: string) {
@@ -185,45 +188,85 @@ export default function Home() {
     setSelectedSize((prevSelected) => ({ ...prevSelected, [produtoId]: tamanho }));
   };
 
+  // const addToCart = (produto: Produto) => {
+  //   const tamanhoSelecionado = selectedSize[produto.id];
+  //   const valorSelecionado = produto.valores.find((valor) => valor.tamanho === tamanhoSelecionado);
+  
+  //   if (!tamanhoSelecionado || !valorSelecionado) {
+  //     toast.error("Por favor, selecione um tamanho.");
+  //     return;
+  //   }
+  
+  //   setCart((prevCart) => {
+  //     // Verifica se o produto e tamanho já existem no carrinho
+  //     const existingItemIndex = prevCart.findIndex(
+  //       (item) => item.id === produto.id && item.tamanho === tamanhoSelecionado
+  //     );
+  
+  //     if (existingItemIndex >= 0) {
+  //       // Incrementar quantidade no item existente
+  //       const updatedCart = [...prevCart];
+  //       updatedCart[existingItemIndex].quantidade;
+  //       localStorage.setItem("cart", JSON.stringify(updatedCart));
+  //       toast.success("Quantidade inserida no carrinho!")
+  //       return updatedCart;
+  //     } else {
+  //       // Adicionar novo item ao carrinho
+  //       const newItem: CartItem = {
+  //         id: produto.id,
+  //         nome: produto.nome,
+  //         tamanho: tamanhoSelecionado,
+  //         quantidade: 1,
+  //         preco: valorSelecionado.preco,
+  //       };
+  //       const updatedCart = [...prevCart, newItem];
+  //       localStorage.setItem("cart", JSON.stringify(updatedCart));
+  //       toast.success("Quantidade inserida no carrinho!")
+  //       return updatedCart;
+  //     }
+  //   });
+  // };
+  
   const addToCart = (produto: Produto) => {
     const tamanhoSelecionado = selectedSize[produto.id];
     const valorSelecionado = produto.valores.find((valor) => valor.tamanho === tamanhoSelecionado);
-  
+
     if (!tamanhoSelecionado || !valorSelecionado) {
-      toast.error("Por favor, selecione um tamanho.");
-      return;
+        toast.error("Por favor, selecione um tamanho.");
+        return;
     }
-  
+
     setCart((prevCart) => {
-      // Verifica se o produto e tamanho já existem no carrinho
-      const existingItemIndex = prevCart.findIndex(
-        (item) => item.id === produto.id && item.tamanho === tamanhoSelecionado
-      );
-  
-      if (existingItemIndex >= 0) {
-        // Incrementar quantidade no item existente
-        const updatedCart = [...prevCart];
-        updatedCart[existingItemIndex].quantidade;
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-        toast.success("Quantidade inserida no carrinho!")
-        return updatedCart;
-      } else {
-        // Adicionar novo item ao carrinho
-        const newItem: CartItem = {
-          id: produto.id,
-          nome: produto.nome,
-          tamanho: tamanhoSelecionado,
-          quantidade: 1,
-          preco: valorSelecionado.preco,
-        };
-        const updatedCart = [...prevCart, newItem];
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
-        toast.success("Quantidade inserida no carrinho!")
-        return updatedCart;
-      }
+        // Verifica se o produto e tamanho já existem no carrinho
+        const existingItemIndex = prevCart.findIndex(
+            (item) => item.produtoId === produto.id && item.tamanho === tamanhoSelecionado
+        );
+
+        if (existingItemIndex >= 0) {
+            // Incrementar quantidade no item existente
+            const updatedCart = [...prevCart];
+            updatedCart[existingItemIndex].quantidade += 1; // Incrementa a quantidade
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+            toast.success("Quantidade adicionada ao carrinho!");
+            return updatedCart;
+        } else {
+            // Adicionar novo item ao carrinho
+            const newItem: CartItem = {
+                produtoId: produto.id, // Usar produtoId para consistência com o backend
+                nome: produto.nome,
+                tamanho: tamanhoSelecionado,
+                quantidade: 1,
+                preco: valorSelecionado.preco,
+                idValor: valorSelecionado.id, // Inclui o id do valor selecionado
+            };
+            const updatedCart = [...prevCart, newItem];
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+            toast.success("Item adicionado ao carrinho!");
+            return updatedCart;
+        }
     });
-  };
-  
+};
+
 
   const incrementQuantity = (itemId: number, tamanho: string) => {
     setCart((prevCart) => {
