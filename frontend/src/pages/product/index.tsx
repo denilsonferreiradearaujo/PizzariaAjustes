@@ -14,6 +14,7 @@ type ItemProps = {
   descricao: string;
   preco: string;
   tamanhos: Array<{ tamanho: string; preco: string }>;
+  status: string;
 };
 
 interface CategoryProps {
@@ -28,14 +29,9 @@ export default function Product({ categoryList }: CategoryProps) {
   const [categorySelected, setCategorySelected] = useState(0);
   const [isSizeEnabled, setIsSizeEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const [sizes, setSizes] = useState([
-    { tamanho: '', preco: '' },
-    { tamanho: '', preco: '' },
-    { tamanho: '', preco: '' },
-  ]);
-
+  const [sizes, setSizes] = useState([{ tamanho: '', preco: '' }, { tamanho: '', preco: '' }, { tamanho: '', preco: '' }]);
   const [productList, setProductList] = useState<ItemProps[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<ItemProps | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -53,7 +49,7 @@ export default function Product({ categoryList }: CategoryProps) {
       const response = await apiCliente.get('/listProduct');
       setProductList(response.data);
     } catch (error) {
-      toast.error("Erro ao carregar produtos");
+      toast.error('Erro ao carregar produtos');
     } finally {
       setLoading(false);
     }
@@ -243,20 +239,33 @@ export default function Product({ categoryList }: CategoryProps) {
         </div>
 
         <div className={styles.productListContainer}>
-          <h1 className={styles.titulo}>Produtos Cadastrados</h1>
-          {loading ? (
-            <p>Carregando produtos...</p>
-          ) : (
-            <ul>
-              {productList.map((product) => (
-                <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
-                  <h2>{product.nome}</h2>
-                  <p>{product.descricao}</p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+  <h1 className={styles.titulo}>Produtos Cadastrados</h1>
+
+  {/* Campo de pesquisa */}
+  <input
+    type="text"
+    placeholder="Pesquisar por nome..."
+    className={styles.input}
+    value={searchTerm} // Use searchTerm para a pesquisa
+    onChange={(e) => setSearchTerm(e.target.value)} // Atualiza searchTerm conforme o usuário digita
+  />
+
+  {loading ? (
+    <p>Carregando produtos...</p>
+  ) : (
+    <ul>
+      {/* Filtra os produtos pelo nome */}
+      {productList
+        .filter(product => product.nome.toLowerCase().includes(searchTerm.toLowerCase()))// Filtra os produtos conforme o texto de pesquisa
+        .map((product) => (
+          <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
+            <h2>{product.nome}</h2>
+            <p>{product.descricao}</p>
+          </li>
+        ))}
+    </ul>
+  )}
+</div>
       </main>
       <Footer />
 
@@ -273,6 +282,7 @@ export default function Product({ categoryList }: CategoryProps) {
               ))}
             </ul>
           )}
+          {!selectedProduct.tamanhos && <p>Preço: {selectedProduct.preco}</p>}
         </ProductDetailsModal>
       )}
     </>
@@ -281,8 +291,7 @@ export default function Product({ categoryList }: CategoryProps) {
 
 export const getServerSideProps = canSSRAuth(async (ctx) => {
   const apiCliente = setupAPICliente(ctx);
-  const response = await apiCliente.get('/listProduct');
-
+  const response = await apiCliente.get('/listCategory');
   return {
     props: {
       categoryList: response.data,

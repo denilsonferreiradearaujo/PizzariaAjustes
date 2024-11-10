@@ -1,37 +1,48 @@
 
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from "react-native";
-import { CategoryProps } from "../../pages/Order";
+import {
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    Dimensions,
+    ScrollView
+} from 'react-native'
 
-interface ModalPickerProps{
+import { CategoryProps } from '../../pages/Order'
+
+interface ModalPickerProps {
     options: CategoryProps[];
-    handleCloseModal: ()=> void;
+    handleCLoseModal: () => void;
     selectedItem: (item: CategoryProps) => void;
 }
 
-const {width: WIDTH, height: HEIGHT} = Dimensions.get('window')
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
 
-export function ModalPicker({options, handleCloseModal, selectedItem }: ModalPickerProps){
+export function ModalPicker({ options, handleCLoseModal, selectedItem }: ModalPickerProps) {
+console.log(options);
+
 
     function onPressItem(item: CategoryProps){
         // console.log(item);
-        selectedItem(item); // Passa o item selecionado para a função callback
-        handleCloseModal();
+        selectedItem(item);
+        handleCLoseModal();
     }
 
+
     const option = options.map((item, index) => (
-        <TouchableOpacity key={index} style={styles.option} onPress={ ()=> onPressItem(item)}>
+        <TouchableOpacity key={index} style={styles.option} onPress={ () => onPressItem(item)}>
             <Text style={styles.item}>
-                {item?.name}
+                {item?.nome}
             </Text>
         </TouchableOpacity>
-    ));
+    ))
 
-    return(
-        <TouchableOpacity style={styles.container} onPress={handleCloseModal}>
+    return (
+        <TouchableOpacity style={styles.container} onPress={handleCLoseModal}>
             <View style={styles.content}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    {option}
+                {option}
                 </ScrollView>
             </View>
         </TouchableOpacity>
@@ -42,12 +53,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     content: {
-        width: WIDTH -20,
-        height: HEIGHT / 2,
-        backgroundColor: '#fff',
+        width: WIDTH - 20,
+        height: HEIGHT / 5,
+        backgroundColor: '#FFF',
         borderWidth: 1,
         borderColor: '#8a8a8a',
         borderRadius: 4,
@@ -62,5 +73,5 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: 'bold',
         color: '#101026'
-    },
+    }
 })

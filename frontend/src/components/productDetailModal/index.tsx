@@ -1,4 +1,3 @@
-// Modal - ProductDetailsModal.tsx
 import styles from './styles.module.scss';
 
 type Size = {
@@ -18,6 +17,7 @@ type Product = {
   descricao: string | null;
   tamanhos: Size[];
   valores: Value[];
+  status: string;
 };
 
 interface ProductDetailsModalProps {
@@ -39,8 +39,9 @@ export function ProductDetailsModal({ product, onClose }: ProductDetailsModalPro
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <button onClick={onClose} className={styles.closeButton}>X</button>
-        <h2>{product.nome}</h2>
-        <p>{product.descricao || 'Descrição indisponível'}</p>
+        <h2 className={styles.modalTitle}>{product.nome}</h2>
+        <p className={styles.modalDescription}>{product.descricao || 'Descrição indisponível'}</p>
+        <p className = {styles.modalStatus}>Status {product.status}</p>
 
         {product.tamanhos && product.tamanhos.length > 0 ? (
           <ul className={styles.sizeList}>
@@ -51,7 +52,7 @@ export function ProductDetailsModal({ product, onClose }: ProductDetailsModalPro
               console.log(`Tamanho: ${size.tamanho}, Preço: ${price}`);
               return (
                 <li key={size.id} className={styles.sizeItem}>
-                  <strong>Tamanho:</strong> {size.tamanho} | <strong>Preço:</strong> {formatPrice(price)}
+                  <strong>Tamanho:</strong> {size.tamanho} <strong>Preço:</strong> {formatPrice(price)}
                 </li>
               );
             })}
