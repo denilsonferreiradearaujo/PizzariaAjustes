@@ -161,13 +161,15 @@ export default function Home() {
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
     if (storedCart) {
-      const parsedCart = JSON.parse(storedCart).map((item: any) => ({
-        ...item,
-        preco: Number(item.preco) // Garante que preco seja um número
-      }));
-      setCart(parsedCart);
+      const parsedCart = JSON.parse(storedCart);
+      const uniqueCart = parsedCart.filter(
+        (item: CartItem, index: number, self: CartItem[]) =>
+          index === self.findIndex((i) => i.id === item.id && i.tamanho === item.tamanho)
+      );
+      setCart(uniqueCart);
     }
-  }, [setCart]);
+  }, []);
+  
 
   const handleClick = async (categoriaId: number) => {
     setClickedButton(categoriaId);
@@ -230,42 +232,46 @@ export default function Home() {
   const addToCart = (produto: Produto) => {
     const tamanhoSelecionado = selectedSize[produto.id];
     const valorSelecionado = produto.valores.find((valor) => valor.tamanho === tamanhoSelecionado);
-
+  
     if (!tamanhoSelecionado || !valorSelecionado) {
-        toast.error("Por favor, selecione um tamanho.");
-        return;
+      toast.error("Por favor, selecione um tamanho.");
+      return;
     }
-
+  
     setCart((prevCart) => {
-        // Verifica se o produto e tamanho já existem no carrinho
-        const existingItemIndex = prevCart.findIndex(
-            (item) => item.produtoId === produto.id && item.tamanho === tamanhoSelecionado
+      // Verifica se o produto e tamanho já existem no carrinho
+      const existingItemIndex = prevCart.findIndex(
+        (item) => item.id === produto.id && item.tamanho === tamanhoSelecionado
+      );
+  
+      if (existingItemIndex >= 0) {
+        // Atualiza a quantidade do item existente
+        const updatedCart = prevCart.map((item, index) =>
+          index === existingItemIndex
+            ? { ...item, quantidade: item.quantidade } // + 1
+            : item
         );
-
-        if (existingItemIndex >= 0) {
-            // Incrementar quantidade no item existente
-            const updatedCart = [...prevCart];
-            updatedCart[existingItemIndex].quantidade += 1; // Incrementa a quantidade
-            localStorage.setItem("cart", JSON.stringify(updatedCart));
-            toast.success("Quantidade adicionada ao carrinho!");
-            return updatedCart;
-        } else {
-            // Adicionar novo item ao carrinho
-            const newItem: CartItem = {
-                produtoId: produto.id, // Usar produtoId para consistência com o backend
-                nome: produto.nome,
-                tamanho: tamanhoSelecionado,
-                quantidade: 1,
-                preco: valorSelecionado.preco,
-                idValor: valorSelecionado.id, // Inclui o id do valor selecionado
-            };
-            const updatedCart = [...prevCart, newItem];
-            localStorage.setItem("cart", JSON.stringify(updatedCart));
-            toast.success("Item adicionado ao carrinho!");
-            return updatedCart;
-        }
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        toast.success("Quantidade adicionada ao carrinho!");
+        return updatedCart;
+      } else {
+        // Adiciona novo item
+        const newItem: CartItem = {
+          id: produto.id,
+          nome: produto.nome,
+          tamanho: tamanhoSelecionado,
+          quantidade: 1,
+          preco: valorSelecionado.preco,
+          idValor: valorSelecionado.id,
+        };
+        const updatedCart = [...prevCart, newItem];
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        toast.success("Item adicionado ao carrinho!");
+        return updatedCart;
+      }
     });
-};
+  };
+  
 
 
   const incrementQuantity = (itemId: number, tamanho: string) => {
@@ -295,6 +301,7 @@ export default function Home() {
             tamanho: tamanhoSelecionado,
             quantidade: 1,
             preco: valorSelecionado.preco,
+            idValor: valorSelecionado.id, // Inclui o id do valor selecionado
           };
           const updatedCart = [...prevCart, newItem];
           localStorage.setItem("cart", JSON.stringify(updatedCart));
