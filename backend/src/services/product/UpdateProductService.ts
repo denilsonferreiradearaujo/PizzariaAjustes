@@ -1,4 +1,3 @@
-// src/services/product/UpdateProductService.ts
 import prismaClient from "../../prisma";
 
 interface TamanhoRequest {
@@ -10,13 +9,13 @@ interface ValorRequest {
   id?: number; // O ID do valor é opcional para identificar os existentes e atualizar.
   preco: number;
   tamanhoId: number; // Alterado para 'number', já que representa um ID.
-  status: boolean;
 }
 
 interface ProdutoUpdateRequest {
   id: number; // ID do produto que será atualizado
   nome?: string;
   categoriaId?: number;
+  status?: string; // Adicionando status ao ProdutoUpdateRequest
   tamanhos?: TamanhoRequest[];
   valores?: ValorRequest[];
 }
@@ -35,7 +34,7 @@ class UpdateProductService {
           where: { id: tamanho.id },
           data: { 
             tamanho: tamanho.tamanho,
-            dataUpdate: new Date(), // Atualiza o campo dataUpdate
+            dataUpdate: new Date(),
           },
         });
       } else {
@@ -44,7 +43,7 @@ class UpdateProductService {
           data: { 
             produtoId, 
             tamanho: tamanho.tamanho,
-            dataCreate: new Date(), // Presumindo que você também tenha um campo dataCreate
+            dataCreate: new Date(),
           },
         });
       }
@@ -56,7 +55,7 @@ class UpdateProductService {
     await prismaClient.valor.deleteMany({
       where: {
         produtoId: produtoId,
-        id: { notIn: valores.map(v => v.id).filter(id => id !== undefined) }, // Mantém apenas os IDs que foram passados na requisição
+        id: { notIn: valores.map(v => v.id).filter(id => id !== undefined) },
       },
     });
 
@@ -67,9 +66,8 @@ class UpdateProductService {
           where: { id: valor.id },
           data: { 
             preco: valor.preco,
-            tamanhoId: valor.tamanhoId, // Alterado de 'tamanho' para 'tamanhoId'
-            status: valor.status,
-            dataUpdate: new Date(), // Atualiza o campo dataUpdate
+            tamanhoId: valor.tamanhoId,
+            dataUpdate: new Date(),
           },
         });
       } else {
@@ -78,28 +76,28 @@ class UpdateProductService {
           data: { 
             produtoId, 
             preco: valor.preco, 
-            tamanhoId: valor.tamanhoId, // Alterado de 'tamanho' para 'tamanhoId'
-            status: valor.status,
-            dataCreate: new Date(), // Presumindo que você também tenha um campo dataCreate
+            tamanhoId: valor.tamanhoId,
+            dataCreate: new Date(),
           },
         });
       }
     }
   }
 
-  public async execute({ id, nome, categoriaId, tamanhos, valores }: ProdutoUpdateRequest) {
+  public async execute({ id, nome, categoriaId, status, tamanhos, valores }: ProdutoUpdateRequest) {
     const produtoExiste = await this.produtoExiste(id);
     if (!produtoExiste) {
       throw new Error("Produto não encontrado.");
     }
 
-    // Atualizar os dados do produto e setar a dataUpdate
+    // Atualizar os dados do produto, incluindo o status, se fornecido
     const produtoAtualizado = await prismaClient.produto.update({
       where: { id },
       data: {
         nome,
         categoriaId,
-        dataUpdate: new Date(), // Atualiza o campo dataUpdate do produto
+        status, // Atualizando o status aqui
+        dataUpdate: new Date(),
       },
       include: {
         tamanhos: true,

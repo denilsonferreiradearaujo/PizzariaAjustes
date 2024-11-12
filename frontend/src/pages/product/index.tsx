@@ -106,16 +106,16 @@ export default function Product({ categoryList }: CategoryProps) {
     if (!handleValidation()) return;
 
     const selectedCategoryId = categories[categorySelected].id;
-    const tamanhos = isSizeEnabled ? sizes.filter(size => size.tamanho && size.preco) : null;
-    const valores = tamanhos
+    const tamanhos = isSizeEnabled ? sizes.filter(size => size.tamanho && size.preco) : [];  //tamanhos nunca será null
+    const valores = tamanhos.length > 0
       ? tamanhos.map(size => ({ preco: parsePriceForSubmission(size.preco), tamanho: size.tamanho }))
-      : [{ preco: parsePriceForSubmission(price) }];
+      : [{ preco: parsePriceForSubmission(price) }]; // Caso tamanhos esteja vazio, mantemos o preço padrão
 
     const data = {
       nome: name,
       descricao: description,
       categoriaId: parseInt(selectedCategoryId, 10),
-      tamanhos,
+      tamanhos: tamanhos.length > 0 ? tamanhos : undefined, // Exclui tamanhos se estiver vazio
       valores,
     };
 
@@ -239,33 +239,33 @@ export default function Product({ categoryList }: CategoryProps) {
         </div>
 
         <div className={styles.productListContainer}>
-  <h1 className={styles.titulo}>Produtos Cadastrados</h1>
+          <h1 className={styles.titulo}>Produtos Cadastrados</h1>
 
-  {/* Campo de pesquisa */}
-  <input
-    type="text"
-    placeholder="Pesquisar por nome..."
-    className={styles.input}
-    value={searchTerm} // Use searchTerm para a pesquisa
-    onChange={(e) => setSearchTerm(e.target.value)} // Atualiza searchTerm conforme o usuário digita
-  />
+          {/* Campo de pesquisa */}
+          <input
+            type="text"
+            placeholder="Pesquisar por nome..."
+            className={styles.input}
+            value={searchTerm} // Use searchTerm para a pesquisa
+            onChange={(e) => setSearchTerm(e.target.value)} // Atualiza searchTerm conforme o usuário digita
+          />
 
-  {loading ? (
-    <p>Carregando produtos...</p>
-  ) : (
-    <ul>
-      {/* Filtra os produtos pelo nome */}
-      {productList
-        .filter(product => product.nome.toLowerCase().includes(searchTerm.toLowerCase()))// Filtra os produtos conforme o texto de pesquisa
-        .map((product) => (
-          <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
-            <h2>{product.nome}</h2>
-            <p>{product.descricao}</p>
-          </li>
-        ))}
-    </ul>
-  )}
-</div>
+          {loading ? (
+            <p>Carregando produtos...</p>
+          ) : (
+            <ul>
+              {/* Filtra os produtos pelo nome */}
+              {productList
+                .filter(product => product.nome.toLowerCase().includes(searchTerm.toLowerCase()))// Filtra os produtos conforme o texto de pesquisa
+                .map((product) => (
+                  <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
+                    <h2>{product.nome}</h2>
+                    <p>{product.descricao}</p>
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
       </main>
       <Footer />
 

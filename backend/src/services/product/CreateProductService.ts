@@ -15,7 +15,6 @@ interface ProdutoRequest {
     categoriaId: number;
     tamanhos?: TamanhoRequest[];
     valores: ValorRequest[];
-    status : string;
 }
 
 class CreateProductService {
