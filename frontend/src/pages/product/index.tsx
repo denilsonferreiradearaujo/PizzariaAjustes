@@ -116,23 +116,16 @@ export default function Product({ categoryList }: CategoryProps) {
     }
 
     const selectedCategoryId = categories[categorySelected].id;
-
-    const tamanhos = isSizeEnabled
-      ? sizes.filter(size => size.tamanho && size.preco)
-      : null;
-
-    const valores = isSizeEnabled && tamanhos
-      ? tamanhos.map(size => ({
-        preco: parsePriceForSubmission(size.preco),
-        tamanho: size.tamanho,
-      }))
-      : [{ preco: parsePriceForSubmission(price) }];
+    const tamanhos = isSizeEnabled ? sizes.filter(size => size.tamanho && size.preco) : [];  //tamanhos nunca será null
+    const valores = tamanhos.length > 0
+      ? tamanhos.map(size => ({ preco: parsePriceForSubmission(size.preco), tamanho: size.tamanho }))
+      : [{ preco: parsePriceForSubmission(price) }]; // Caso tamanhos esteja vazio, mantemos o preço padrão
 
     const data = {
       nome: name,
       descricao: description,
       categoriaId: parseInt(selectedCategoryId, 10),
-      tamanhos,
+      tamanhos: tamanhos.length > 0 ? tamanhos : undefined, // Exclui tamanhos se estiver vazio
       valores,
     };
 
@@ -257,19 +250,60 @@ export default function Product({ categoryList }: CategoryProps) {
             </form>
           </div>
 
-          <div className={styles.productListContainer}>
-            <h1 className={styles.titulo}>Produtos Cadastrados</h1>
+        <div className={styles.productListContainer}>
+          <h1 className={styles.titulo}>Produtos Cadastrados</h1>
+
+          {/* Campo de pesquisa */}
+          <input
+            type="text"
+            placeholder="Pesquisar por nome..."
+            className={styles.input}
+            value={searchTerm} // Use searchTerm para a pesquisa
+            onChange={(e) => setSearchTerm(e.target.value)} // Atualiza searchTerm conforme o usuário digita
+          />
+
+          {loading ? (
+            <p>Carregando produtos...</p>
+          ) : (
             <ul>
-              {productList.map((product) => (
-                <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
-                  <h2>{product.nome}</h2>
-                  <p>{product.descricao}</p>
+              {/* Filtra os produtos pelo nome */}
+              {productList
+                .filter(product => product.nome.toLowerCase().includes(searchTerm.toLowerCase()))// Filtra os produtos conforme o texto de pesquisa
+                .map((product) => (
+                  <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
+                    <h2>{product.nome}</h2>
+                    <p>{product.descricao}</p>
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
+      </main>
+      <Footer />
+
+      {isModalOpen && selectedProduct && (
+        <ProductDetailsModal product={selectedProduct} onClose={closeModal}>
+          <h2>{selectedProduct.nome}</h2>
+          <p>{selectedProduct.descricao}</p>
+          {selectedProduct.tamanhos && (
+            <ul>
+              {selectedProduct.tamanhos.map((size, index) => (
+                <li key={index}>
+                  {size.tamanho} - {size.preco}
                 </li>
               ))}
             </ul>
-          </div>
-        </main>
-      </div>
+          )}
+          {!selectedProduct.tamanhos && <p>Preço: {selectedProduct.preco}</p>}
+        </ProductDetailsModal>
+      )}
+    </>
+  );
+}
+
+export const getServerSideProps = canSSRAuth(async (ctx) => {
+  const apiCliente = setupAPICliente(ctx);
+  const response = await apiCliente.get('/listCategory');
   return {
     props: {
       categoryList: response.data,

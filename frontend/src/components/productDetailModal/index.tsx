@@ -41,7 +41,14 @@ export function ProductDetailsModal({ product, onClose }: ProductDetailsModalPro
         <button onClick={onClose} className={styles.closeButton}>X</button>
         <h2 className={styles.modalTitle}>{product.nome}</h2>
         <p className={styles.modalDescription}>{product.descricao || 'Descrição indisponível'}</p>
-        <p className = {styles.modalStatus}>Status {product.status}</p>
+        
+        {/* Exibição do status com cor condicional */}
+        <p
+          className={styles.modalStatus}
+          style={{ color: product.status === 'Ativo' ? 'green' : 'red' }}
+        >
+          Status: {product.status}
+        </p>
 
         {product.tamanhos && product.tamanhos.length > 0 ? (
           <ul className={styles.sizeList}>
@@ -52,13 +59,13 @@ export function ProductDetailsModal({ product, onClose }: ProductDetailsModalPro
               console.log(`Tamanho: ${size.tamanho}, Preço: ${price}`);
               return (
                 <li key={size.id} className={styles.sizeItem}>
-                  <strong>Tamanho:</strong> {size.tamanho} <strong>Preço:</strong> {formatPrice(price)}
+                  <strong>Tamanho:</strong> {size.tamanho} <strong>Preço:</strong> {price ? formatPrice(price) : 'Sem preço'}
                 </li>
               );
             })}
           </ul>
         ) : (
-          <p><strong>Preço:</strong> Indisponível</p>
+          <p> <strong>Preço:</strong> {formatPrice(product.valores[0]?.preco)}</p>  // Caso o produto não tenha tamanhos, mostra o preço padrão
         )}
       </div>
     </div>
