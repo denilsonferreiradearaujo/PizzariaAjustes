@@ -14,6 +14,7 @@ type ItemProps = {
   descricao: string;
   preco: string;
   tamanhos: Array<{ tamanho: string; preco: string }>;
+  status: string;
 };
 
 interface CategoryProps {
@@ -27,6 +28,7 @@ export default function Product({ categoryList }: CategoryProps) {
   const [categories, setCategories] = useState(categoryList || []);
   const [categorySelected, setCategorySelected] = useState(0);
   const [isSizeEnabled, setIsSizeEnabled] = useState(false);
+<<<<<<< HEAD
 
   const [sizes, setSizes] = useState([
     { tamanho: '', preco: '' },
@@ -34,7 +36,12 @@ export default function Product({ categoryList }: CategoryProps) {
     { tamanho: '', preco: '' },
   ]);
 
+=======
+  const [loading, setLoading] = useState(false);
+  const [sizes, setSizes] = useState([{ tamanho: '', preco: '' }, { tamanho: '', preco: '' }, { tamanho: '', preco: '' }]);
+>>>>>>> 70cb68e3786ab0476e693a207dca394b4835fb84
   const [productList, setProductList] = useState<ItemProps[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<ItemProps | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -45,11 +52,26 @@ export default function Product({ categoryList }: CategoryProps) {
     { value: 'Grande', label: 'Grande' },
   ];
 
+<<<<<<< HEAD
   async function fetchProducts() {
     const apiCliente = setupAPICliente();
     const response = await apiCliente.get('/listProduct');
     setProductList(response.data);
   }
+=======
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const apiCliente = setupAPICliente();
+      const response = await apiCliente.get('/listProduct');
+      setProductList(response.data);
+    } catch (error) {
+      toast.error('Erro ao carregar produtos');
+    } finally {
+      setLoading(false);
+    }
+  };
+>>>>>>> 70cb68e3786ab0476e693a207dca394b4835fb84
 
   useEffect(() => {
     fetchProducts();
@@ -205,6 +227,7 @@ export default function Product({ categoryList }: CategoryProps) {
                 <label htmlFor="sizeToggle">Adicionar tamanhos e valores</label>
               </div>
 
+<<<<<<< HEAD
               {isSizeEnabled && (
                 <>
                   <h2 className={styles.titulo}>Tamanhos e Preços</h2>
@@ -253,6 +276,37 @@ export default function Product({ categoryList }: CategoryProps) {
           </div>
         </main>
       </div>
+=======
+        <div className={styles.productListContainer}>
+  <h1 className={styles.titulo}>Produtos Cadastrados</h1>
+
+  {/* Campo de pesquisa */}
+  <input
+    type="text"
+    placeholder="Pesquisar por nome..."
+    className={styles.input}
+    value={searchTerm} // Use searchTerm para a pesquisa
+    onChange={(e) => setSearchTerm(e.target.value)} // Atualiza searchTerm conforme o usuário digita
+  />
+
+  {loading ? (
+    <p>Carregando produtos...</p>
+  ) : (
+    <ul>
+      {/* Filtra os produtos pelo nome */}
+      {productList
+        .filter(product => product.nome.toLowerCase().includes(searchTerm.toLowerCase()))// Filtra os produtos conforme o texto de pesquisa
+        .map((product) => (
+          <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
+            <h2>{product.nome}</h2>
+            <p>{product.descricao}</p>
+          </li>
+        ))}
+    </ul>
+  )}
+</div>
+      </main>
+>>>>>>> 70cb68e3786ab0476e693a207dca394b4835fb84
       <Footer />
 
       {isModalOpen && selectedProduct && (
@@ -269,6 +323,7 @@ export default function Product({ categoryList }: CategoryProps) {
           ) : (
             <div>Sem tamanhos disponíveis</div>
           )}
+          {!selectedProduct.tamanhos && <p>Preço: {selectedProduct.preco}</p>}
         </ProductDetailsModal>
       )}
     </>
@@ -278,7 +333,10 @@ export default function Product({ categoryList }: CategoryProps) {
 export const getServerSideProps = canSSRAuth(async (ctx) => {
   const apiCliente = setupAPICliente(ctx);
   const response = await apiCliente.get('/listCategory');
+<<<<<<< HEAD
 
+=======
+>>>>>>> 70cb68e3786ab0476e693a207dca394b4835fb84
   return {
     props: {
       categoryList: response.data,
