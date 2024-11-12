@@ -248,7 +248,7 @@ export default function Home() {
         // Atualiza a quantidade do item existente
         const updatedCart = prevCart.map((item, index) =>
           index === existingItemIndex
-            ? { ...item, quantidade: item.quantidade } // + 1
+            ? { ...item, quantidade: item.quantidade} // + 1
             : item
         );
         localStorage.setItem("cart", JSON.stringify(updatedCart));
