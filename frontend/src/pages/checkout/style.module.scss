@@ -1,74 +1,187 @@
 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+
+
+  .logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav .button {
+    color: black;
+    text-decoration: dashed;
+    font-size: 18px;
+  }
+}
+
+.titulo {
+  position: relative;
+  text-align: center;
+}
+
+.checkoutContainerPrimaria {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+
+  h1,
+  h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 10px;
+
+  }
+
+
+}
+
+.checkoutContainer {
+  max-width: 600px;
+  min-width: 600px;
+  min-height: 250px;
+  max-height: 302px;
+  overflow-y: auto;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-left: 115vh;
+  position: absolute;
+  flex: 1;
+ 
+
+
+
+
+  .orderSummary,
+  .orderTotal,
+  .customerInfo,
+  .paymentMethod {
+    margin-bottom: 20px;
+  }
+
+  .orderTotal {
+    justify-content: left,
+  }
+
+  .orderItem {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    
-  
-    .logo {
-      display: flex;
-      align-items: center;
-    }
-  
-    .nav .button {
-      color: white;
-      text-decoration: none;
-      font-size: 18px;
-    }
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
   }
-  
-  .checkoutContainer {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  
-    h1, h2 {
-      color: #333;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-  
-    .orderSummary, .orderTotal, .customerInfo, .paymentMethod {
-      margin-bottom: 20px;
-    }
 
-    .orderTotal{
-      justify-content: left,
-    }
-  
-    .orderItem {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid #ddd;
-    }
-  
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-  
-    .confirmButton {
-      width: 100%;
-      padding: 10px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s;
-  
-      &:hover {
-        background-color: #45a049;
-      }
+}
+
+.checkoutContainer2 {
+  max-width: 600px;
+  margin: 30px auto;
+  margin-left: 25vh;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+
+
+
+  .customerInfo {
+    margin-bottom: 20px;
+  }
+
+
+
+  input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+
+}
+
+.checkoutContainer3 {
+  max-width: 600px;
+  margin: 30px auto;
+  min-width: 600px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-left: 115vh;
+  position: absolute;
+  margin-top: 53vh;
+
+
+
+
+
+  select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 17px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+
+  .confirmButton {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #45a049;
     }
   }
-  
+}
+
+// Inlcuindo a nova formatação para tipo tabela.
+
+.orderTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.orderTable th, .orderTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.orderTable th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.orderTable td {
+  background-color: #f4f4f4;
+  // font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap; /* Impede a quebra de linha */
+  overflow: hidden; /* Oculta o conteúdo que excede o tamanho */
+  text-overflow: ellipsis; /* Adiciona os "..." ao final do texto */
+}
+
+.trashButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+
