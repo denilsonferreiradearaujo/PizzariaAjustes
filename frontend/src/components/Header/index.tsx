@@ -21,6 +21,9 @@ export function Header(){
 
                 <nav className={styles.menuNav}>
 
+                <Link legacyBehavior href='/dashboard'>
+                        <a>Dashboard</a>
+                    </Link>
                     <Link legacyBehavior href='/category'>
                         <a>Categoria</a>
                     </Link>
