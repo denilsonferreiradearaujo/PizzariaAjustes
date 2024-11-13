@@ -158,6 +158,18 @@ export default function Home() {
   }, []);
 
   // Adicionado item do carrinho no local storage
+  // useEffect(() => {
+  //   const storedCart = localStorage.getItem("cart");
+  //   if (storedCart) {
+  //     const parsedCart = JSON.parse(storedCart);
+  //     const uniqueCart = parsedCart.filter(
+  //       (item: CartItem, index: number, self: CartItem[]) =>
+  //         index === self.findIndex((i) => i.id === item.id && i.tamanho === item.tamanho)
+  //     );
+  //     setCart(uniqueCart);
+  //   }
+  // }, []);
+
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
     if (storedCart) {
@@ -169,6 +181,7 @@ export default function Home() {
       setCart(uniqueCart);
     }
   }, []);
+  
   
 
   const handleClick = async (categoriaId: number) => {
@@ -258,6 +271,7 @@ export default function Home() {
         // Adiciona novo item
         const newItem: CartItem = {
           id: produto.id,
+          produtoId: produto.id,
           nome: produto.nome,
           tamanho: tamanhoSelecionado,
           quantidade: 1,
@@ -274,46 +288,100 @@ export default function Home() {
   
 
 
+  // const incrementQuantity = (itemId: number, tamanho: string) => {
+  //   setCart((prevCart) => {
+  //     const existingItemIndex = prevCart.findIndex(
+  //       (item) => item.id === itemId && item.tamanho === tamanho
+  //     );
+
+  //     if (existingItemIndex >= 0) {
+  //       const updatedCart = prevCart.map((item, index) =>
+  //         index === existingItemIndex
+  //           ? { ...item, quantidade: item.quantidade + 1 }
+  //           : item
+  //       );
+  //       // localStorage.setItem("cart", JSON.stringify(updatedCart));
+  //       return updatedCart;
+  //     } else {
+  //       // Adiciona o item caso ele não exista
+  //       const produto = produtos.find((p) => p.id === itemId);
+  //       const tamanhoSelecionado = selectedSize[itemId];
+  //       const valorSelecionado = produto?.valores.find((v) => v.tamanho === tamanhoSelecionado);
+
+  //       if (produto && tamanhoSelecionado && valorSelecionado) {
+  //         const newItem: CartItem = {
+  //           id: produto.id,
+  //           nome: produto.nome,
+  //           tamanho: tamanhoSelecionado,
+  //           quantidade: 1,
+  //           preco: valorSelecionado.preco,
+  //           idValor: valorSelecionado.id, // Inclui o id do valor selecionado
+  //         };
+  //         const updatedCart = [...prevCart, newItem];
+  //         localStorage.setItem("cart", JSON.stringify(updatedCart));
+  //         return updatedCart;
+  //       }
+  //       return prevCart;
+  //     }
+  //   });
+  // };
+
   const incrementQuantity = (itemId: number, tamanho: string) => {
     setCart((prevCart) => {
       const existingItemIndex = prevCart.findIndex(
         (item) => item.id === itemId && item.tamanho === tamanho
       );
-
+  
       if (existingItemIndex >= 0) {
         const updatedCart = prevCart.map((item, index) =>
           index === existingItemIndex
             ? { ...item, quantidade: item.quantidade + 1 }
             : item
         );
-        localStorage.setItem("cart", JSON.stringify(updatedCart));
         return updatedCart;
       } else {
         // Adiciona o item caso ele não exista
         const produto = produtos.find((p) => p.id === itemId);
         const tamanhoSelecionado = selectedSize[itemId];
         const valorSelecionado = produto?.valores.find((v) => v.tamanho === tamanhoSelecionado);
-
+  
         if (produto && tamanhoSelecionado && valorSelecionado) {
           const newItem: CartItem = {
             id: produto.id,
+            produtoId: produto.id,
             nome: produto.nome,
             tamanho: tamanhoSelecionado,
             quantidade: 1,
             preco: valorSelecionado.preco,
-            idValor: valorSelecionado.id, // Inclui o id do valor selecionado
+            idValor: valorSelecionado.id,
           };
           const updatedCart = [...prevCart, newItem];
-          localStorage.setItem("cart", JSON.stringify(updatedCart));
           return updatedCart;
         }
         return prevCart;
       }
     });
   };
+  
 
+  // const decrementQuantity = (itemId: number, tamanho: string) => {
+  //   console.log("Decrementando quantidade", itemId, tamanho);
+  //   setCart((prevCart) => {
+  //     const updatedCart = prevCart
+  //       .map((item) =>
+  //         item.id === itemId && item.tamanho === tamanho && item.quantidade > 1
+  //           ? { ...item, quantidade: item.quantidade - 1 }
+  //           : item
+  //       )
+  //       .filter((item) => item.quantidade > 0); // Remove itens com quantidade 0
+  //     localStorage.setItem("cart", JSON.stringify(updatedCart));
+  //     return updatedCart;
+  //   });
+  // };
+
+  // Funcão para direcionar para a página do carrinho.
+  
   const decrementQuantity = (itemId: number, tamanho: string) => {
-    console.log("Decrementando quantidade", itemId, tamanho);
     setCart((prevCart) => {
       const updatedCart = prevCart
         .map((item) =>
@@ -322,12 +390,11 @@ export default function Home() {
             : item
         )
         .filter((item) => item.quantidade > 0); // Remove itens com quantidade 0
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
       return updatedCart;
     });
   };
-
-  // Funcão para direcionar para a página do carrinho.
+  
+  
   const goToCart = () => {
     router.push("/checkout");
   };
