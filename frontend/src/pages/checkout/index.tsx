@@ -276,11 +276,11 @@ const Checkout: React.FC = () => {
                     quantidade: item.quantidade,
                 })),
             };
-    
+
             console.log("Payload enviado:", payload); // Para debug
             const apiCliente = setupAPICliente();
             await apiCliente.post('/createPedido', payload);
-    
+
             toast.success("Pedido confirmado com sucesso!");
             setCart([]); // Limpa o carrinho após o envio
             localStorage.removeItem("cart"); // Limpa o localStorage
@@ -289,17 +289,20 @@ const Checkout: React.FC = () => {
             toast.error("Erro ao confirmar pedido. Tente novamente.");
         }
     };
-    
-    
-    
+
+
+
     return (
         <>
             <Head>
                 <title>Checkout</title>
             </Head>
+
             <header className={styles.header}>
                 <div className={styles.logo}>
-                    <Image src={logoImg} alt="Logo Pizzaria" width={200} height={100} />
+                    <Link legacyBehavior href='/'>
+                        <img src='/logo.png' width={210} height={80} />
+                    </Link>
                 </div>
                 <div className={styles.nav}>
                     <Link href="/" legacyBehavior>
@@ -307,85 +310,94 @@ const Checkout: React.FC = () => {
                     </Link>
                 </div>
             </header>
+            <div className={styles.titulo}>
 
-            <div className={styles.checkoutContainer}>
                 <h1>Finalizar Pedido</h1>
 
-                <section className={styles.orderSummary}>
-                    <h2>Resumo do Pedido</h2>
-                    {cart.map((item, index) => (
-                        <div key={index} className={styles.orderItem}>
-                            <span>{item.nome}</span>
-                            <span>{item.tamanho}</span>
-                            <span>{item.quantidade}</span>
-                            <span>R$ {typeof item.preco === "number" ? item.preco.toFixed(2) : parseFloat(item.preco).toFixed(2)}</span>
-                            <button onClick={() => handleRemoveItem(index)} className={styles.trashButton}>
-                                <FaRegTrashAlt size={20} color='red' />
-                            </button>
-                        </div>
-                    ))}
-                </section>
-
-                <section className={styles.orderTotal}>
-                    <p>Total do Pedido: R$ {total.toFixed(2)}</p>
-                </section>
-
-                <section className={styles.customerInfo}>
-                    <h2>Informações do Cliente</h2>
-                    <input
-                        type="text"
-                        placeholder="Nome"
-                        value={customer.nome}
-                        onChange={(e) => setCustomer({ ...customer, nome: e.target.value })}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Celular"
-                        value={customer.celular}
-                        onChange={(e) => setCustomer({ ...customer, celular: e.target.value })}
-                    />
-
-                    <div>
-                        <input
-                            type="text"
-                            placeholder="Cep"
-                            value={cep}
-                            onChange={(e) => setCep(e.target.value)}
-                            onBlur={handleCepBlur}
-                        />
-                        <input type="text" placeholder="Logradouro" value={address.logradouro} readOnly />
-                        <input
-                            type="text"
-                            placeholder="Número"
-                            value={address.numero}
-                            onChange={(e) => setAddress({ ...address, numero: e.target.value })}
-                        />
-                        <input type="text" placeholder="Bairro" value={address.bairro} readOnly />
-                        <input type="text" placeholder="Cidade" value={address.cidade} readOnly />
-                        <input
-                            type="text"
-                            placeholder="Complemento"
-                            value={address.complemento}
-                            onChange={(e) => setAddress({ ...address, complemento: e.target.value })}
-                        />
-                    </div>
-                </section>
-
-                <section className={styles.paymentMethod}>
-                    <h2>Método de Pagamento</h2>
-                    <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
-                        <option>Cartão de Crédito</option>
-                        <option>Dinheiro</option>
-                        <option>Pix</option>
-                    </select>
-                </section>
-
-                <button className={styles.confirmButton} onClick={handleConfirmOrder}>
-                    Confirmar Pedido
-                </button>
             </div>
+            <div className={styles.checkoutContainerPrimaria}>
+                <div className={styles.checkoutContainer}>
 
+
+                    <section className={styles.orderSummary}>
+                        <h2>Resumo do Pedido</h2>
+                        {cart.map((item, index) => (
+                            <div key={index} className={styles.orderItem}>
+                                <span>{item.nome}</span>
+                                <span>{item.tamanho}</span>
+                                <span>{item.quantidade}</span>
+                                <span>R$ {typeof item.preco === "number" ? item.preco.toFixed(2) : parseFloat(item.preco).toFixed(2)}</span>
+                                <button onClick={() => handleRemoveItem(index)} className={styles.trashButton}>
+                                    <FaRegTrashAlt size={20} color='red' />
+                                </button>
+                            </div>
+                        ))}
+                    </section>
+
+                    <section className={styles.orderTotal}>
+                        <p>Total do Pedido: R$ {total.toFixed(2)}</p>
+                    </section>
+                </div>
+
+                <div className={styles.checkoutContainer2}>
+                    <section className={styles.customerInfo}>
+                        <h2>Informações do Cliente</h2>
+                        <input
+                            type="text"
+                            placeholder="Nome"
+                            value={customer.nome}
+                            onChange={(e) => setCustomer({ ...customer, nome: e.target.value })}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Celular"
+                            value={customer.celular}
+                            onChange={(e) => setCustomer({ ...customer, celular: e.target.value })}
+                        />
+
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="Cep"
+                                value={cep}
+                                onChange={(e) => setCep(e.target.value)}
+                                onBlur={handleCepBlur}
+                            />
+                            <input type="text" placeholder="Logradouro" value={address.logradouro} readOnly />
+                            <input
+                                type="text"
+                                placeholder="Número"
+                                value={address.numero}
+                                onChange={(e) => setAddress({ ...address, numero: e.target.value })}
+                            />
+                            <input type="text" placeholder="Bairro" value={address.bairro} readOnly />
+                            <input type="text" placeholder="Cidade" value={address.cidade} readOnly />
+                            <input
+                                type="text"
+                                placeholder="Complemento"
+                                value={address.complemento}
+                                onChange={(e) => setAddress({ ...address, complemento: e.target.value })}
+                            />
+                        </div>
+                    </section>
+                </div>
+                <div className={styles.checkoutContainer3}>
+                    <section className={styles.paymentMethod}>
+                        <h2>Método de Pagamento</h2>
+                        <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+                            <option>Cartão de Crédito</option>
+                            <option>Dinheiro</option>
+                            <option>Pix</option>
+                        </select>
+                    </section>
+
+                    <button className={styles.confirmButton} onClick={handleConfirmOrder}>
+                        Confirmar Pedido
+                    </button>
+                </div >
+            </div>
             <Footer />
+
         </>
     );
 };
