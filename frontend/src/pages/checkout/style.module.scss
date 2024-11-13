@@ -43,7 +43,7 @@
   max-width: 600px;
   min-width: 600px;
   min-height: 250px;
-  max-height: 260px;
+  max-height: 302px;
   overflow-y: auto;
   margin: 30px auto;
   padding: 20px;
@@ -117,7 +117,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   margin-left: 115vh;
   position: absolute;
-  margin-top: 46vh;
+  margin-top: 53vh;
 
 
 
@@ -126,7 +126,7 @@
   select {
     width: 100%;
     padding: 8px;
-    margin-top: 66px;
+    margin-top: 17px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -147,6 +147,41 @@
       background-color: #45a049;
     }
   }
+}
+
+// Inlcuindo a nova formatação para tipo tabela.
+
+.orderTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.orderTable th, .orderTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.orderTable th {
+  background-color: #f4f4f4;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.orderTable td {
+  background-color: #f4f4f4;
+  // font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap; /* Impede a quebra de linha */
+  overflow: hidden; /* Oculta o conteúdo que excede o tamanho */
+  text-overflow: ellipsis; /* Adiciona os "..." ao final do texto */
+}
+
+.trashButton {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 
