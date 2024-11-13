@@ -6,6 +6,7 @@
     border-radius: 0.5rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
+
 // .container{
 //     max-width: 720px;
 //     margin: 1.6rem auto;
@@ -23,8 +24,7 @@
 .form {
     display: flex;
     align-items: center;
-    margin: 1rem 0;
-        
+    margin: 1rem 0;     
 }
 
 .input {
@@ -41,7 +41,7 @@
 .buttonAdd {
     height: 40px;
     border: 0;
-    background-color: hsl(255, 100%, 51%);
+    background-color: #FFC107;
     font-weight: bold;
     font-size: 1rem;
     border-radius: 0.3rem;
@@ -54,10 +54,18 @@
     padding: 0; /* Remove o padding interno */
     width: 10%;
 }
+
+.buttonAdd::before {
+    content: '💾'; /* Aqui você pode usar o ícone desejado */
+    font-size: 1.2rem;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
 .buttonEdit {
     height: 40px;
     border: 0;
-    background-color: #24d409;
+    background-color: #8B4513;
     font-weight: bold;
     font-size: 1rem;
     border-radius: 0.3rem;
@@ -71,12 +79,14 @@
     // width: 10%;
 }
 
-.buttonAdd::before {
-    content: '💾'; /* Aqui você pode usar o ícone desejado */
+// 🔍✒️🖊️📝
+.buttonEdit::before {
+    content: '✒️'; /* Aqui você pode usar o ícone desejado */
     font-size: 1.2rem;
     display: inline-block;
     margin-right: 0.5rem;
 }
+
 
 .buttonDelete {
     height: 40px;

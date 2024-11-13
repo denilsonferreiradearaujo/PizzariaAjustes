@@ -1,12 +1,46 @@
-
-import React from 'react'
+import React from 'react';
+import emailjs from 'emailjs-com';
 import { Footer } from '../../components/Footer';
-import styles from './style.module.scss'
+import styles from './style.module.scss';
 import Image from "next/image";
 import Link from "next/link";
 import logoImg from '../../../public/logo.png';
+import { toast } from 'react-toastify';
 
 const PrivacyPolicy: React.FC = () => {
+    const enviarEmail = (e) => {
+        e.preventDefault();
+
+        // Capture a data e a hora atuais
+        const currentDate = new Date();
+        const date = currentDate.toLocaleDateString();
+        const time = currentDate.toLocaleTimeString();
+
+        e.target.date.value = date;
+        e.target.time.value = time;
+
+        // Adicione data e hora como parâmetros extras
+        emailjs
+            .sendForm(
+                'service_srx9ckq',
+                'template_emidah4',
+                e.target,
+                '3JaBOCjox6QJDTSxj',
+            )
+            .then(
+                (result) => {
+                    console.log(result.text);
+                    toast.success("E-mail enviado com sucesso!");
+                },
+                (error) => {
+                    console.log(error.text);
+                    toast.error("Houve um erro ao enviar o e-mail. Tente novamente.");
+                }
+            );
+
+        e.target.reset();
+    };
+
     return (
         <>
             <header className={styles.header}>
@@ -14,62 +48,59 @@ const PrivacyPolicy: React.FC = () => {
                     <Image src={logoImg} alt="Logo Pizzaria" width={200} height={100} />
                 </div>
                 <div className={styles.nav}>
-
                     <Link href="/" legacyBehavior>
-                        <a className={styles.button}>Home</a>
+                        <a className={styles.a}>Home</a>
                     </Link>
-
                 </div>
             </header>
             <div className={styles.privacyContainer}>
-                <h1>Política de Privacidade – Sabor & Arte Pizzaria</h1>
-                <p>
-                    A Sabor & Arte Pizzaria valoriza a privacidade de seus usuários e está comprometida em proteger os dados pessoais que coleta e processa, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018). Esta Política de Privacidade explica como coletamos, utilizamos, armazenamos e protegemos suas informações pessoais. Ao utilizar nossos serviços, você aceita as práticas descritas nesta política.
-                </p>
+                <h1>Entre em contato pelos nossos canais de opinião</h1>
+                <p>Deixe sua opinião, contato ou sugestão sobre nossos serviços para melhor atendê-lo novamente.</p>
 
-                <h2>1. Dados Coletados</h2>
-                <p>
-                    Coletamos dados pessoais fornecidos diretamente por você, como nome, endereço, telefone, e-mail e informações de pagamento, para o processamento de pedidos, cadastro de usuários e para melhorarmos sua experiência. Dados de navegação, como endereço IP, tipo de navegador e padrões de uso em nosso site também podem ser coletados automaticamente.
-                </p>
+                <form className={styles.form} onSubmit={enviarEmail}>
+                    <div className={styles.formGroup}>
+                        <label>Preencha seu nome:</label>
+                        <input
+                            className={styles.input}
+                            id="name"
+                            name="name"
+                            placeholder="Nome"
+                            required
+                        />
+                    </div>
 
-                <h2>2. Finalidade do Uso dos Dados</h2>
-                <p>
-                    Utilizamos as informações para:
-                </p>
-                <ul>
-                    <li>Processamento e entrega de pedidos</li>
-                    <li>Comunicação sobre seu pedido ou conta</li>
-                    <li>Melhoria dos nossos serviços e personalização da experiência do usuário</li>
-                    <li>Cumprimento de obrigações legais e regulatórias</li>
-                </ul>
+                    <div className={styles.formGroup}>
+                        <label>Adicione seu e-mail:</label>
+                        <input
+                            className={styles.input}
+                            id="email"
+                            name="email"
+                            placeholder="E-mail"
+                            required
+                        />
+                    </div>
 
-                <h2>3. Compartilhamento de Dados</h2>
-                <p>
-                    Seus dados poderão ser compartilhados com prestadores de serviço e parceiros confiáveis que auxiliam no processamento de pedidos, entrega, pagamento e suporte ao cliente. Exigimos que todos os nossos parceiros e prestadores cumpram com os requisitos de proteção de dados.
-                </p>
+                    <div className={styles.formGroup}>
+                        <label>Descrição:</label>
+                        <textarea
+                            className={styles.textArea}
+                            id="mensagem"
+                            name="mensagem"
+                            placeholder="Deixe sua mensagem"
+                            required
+                        ></textarea>
+                    </div>
 
-                <h2>4. Retenção e Segurança dos Dados</h2>
-                <p>
-                    Mantemos suas informações apenas pelo tempo necessário para cumprir as finalidades mencionadas nesta política e de acordo com as exigências legais. Empregamos medidas de segurança, como criptografia e controle de acesso, para proteger os dados de acessos não autorizados, perdas ou alterações.
-                </p>
+                    {/* Campos ocultos para data e hora */}
+                    <input type="hidden" name="date" />
+                    <input type="hidden" name="time" />
 
-                <h2>5. Direitos dos Titulares de Dados</h2>
-                <p>
-                    Nos termos da LGPD, você possui os seguintes direitos:
-                </p>
-                <ul>
-                    <li>Acessar e corrigir seus dados pessoais</li>
-                    <li>Solicitar a exclusão de dados desnecessários ou excessivos</li>
-                    <li>Revogar seu consentimento e solicitar a portabilidade dos dados, conforme aplicável</li>
-                </ul>
-                <p>
-                    Para exercer seus direitos, você pode entrar em contato conosco pelo e-mail <strong>contato@saborearte.com.br</strong>.
-                </p>
+                    <button className={styles.button} type="submit">
+                        Enviar
+                    </button>
 
-                <h2>6. Alterações desta Política</h2>
-                <p>
-                    Podemos atualizar esta Política de Privacidade periodicamente. Recomendamos que consulte esta página regularmente para estar ciente de quaisquer mudanças.
-                </p>
+                    <p><em>Servir bem para servir sempre</em></p>
+                </form>
             </div>
             <Footer />
         </>

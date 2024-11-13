@@ -3,9 +3,9 @@
     position: absolute;
     background-color: #272626; // Cor de fundo
     color: #ffffff; // Cor do texto
-    padding: 100px 0; // Espaçamento vertical
+    padding: 50px 0; // Espaçamento vertical
     text-align: center; // Centraliza o texto
-    margin-top: 140px; // Espaçamento acima da navegação
+    // margin-top: 40px; // Espaçamento acima da navegação
 
     .footerContent {
         margin-top: -100px; // Espaçamento acima da navegação
@@ -19,6 +19,7 @@
         a {
             color: #ffffff; // Cor do link
             margin: 0 15px; // Espaçamento horizontal entre os links
+            padding: 20px;
             text-decoration: none; // Remove sublinhado
             transition: color 0.3s ease; // Transição suave para hover
 
@@ -29,13 +30,29 @@
     }
 }
 
-.imgSenai{
-    margin-top: 90px;
-    justify-items: auto;
-    align-items: center;
+.imgSocial{
+    flex-direction:row;
 }
 
+.Image {
+    padding: 20px;
+}
+
+
 .direitos{
-    margin-top: 100px;
+    margin-top: 50px;
+}
+
+//
+/* Flex container para alinhar as imagens horizontalmente */
+.social-icons {
+    display: flex;
+    gap: 10px; /* Espaço entre os itens */
+    align-items: center; /* Alinha verticalmente as imagens caso tenham alturas diferentes */
+}
+
+/* Estilo para o espaçamento adicional se necessário */
+.rdsocial {
+    margin-left: 10px;
 }
 
