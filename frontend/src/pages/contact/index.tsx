@@ -1,13 +1,46 @@
-
-import React from 'react'
+import React from 'react';
+import emailjs from 'emailjs-com';
 import { Footer } from '../../components/Footer';
-import styles from './style.module.scss'
+import styles from './style.module.scss';
 import Image from "next/image";
 import Link from "next/link";
 import logoImg from '../../../public/logo.png';
-
+import { toast } from 'react-toastify';
 
 const PrivacyPolicy: React.FC = () => {
+    const enviarEmail = (e) => {
+        e.preventDefault();
+
+        // Capture a data e a hora atuais
+        const currentDate = new Date();
+        const date = currentDate.toLocaleDateString();
+        const time = currentDate.toLocaleTimeString();
+
+        e.target.date.value = date;
+        e.target.time.value = time;
+
+        // Adicione data e hora como parâmetros extras
+        emailjs
+            .sendForm(
+                'service_srx9ckq',
+                'template_emidah4',
+                e.target,
+                '3JaBOCjox6QJDTSxj',
+            )
+            .then(
+                (result) => {
+                    console.log(result.text);
+                    toast.success("E-mail enviado com sucesso!");
+                },
+                (error) => {
+                    console.log(error.text);
+                    toast.error("Houve um erro ao enviar o e-mail. Tente novamente.");
+                }
+            );
+
+        e.target.reset();
+    };
+
     return (
         <>
             <header className={styles.header}>
@@ -15,29 +48,40 @@ const PrivacyPolicy: React.FC = () => {
                     <Image src={logoImg} alt="Logo Pizzaria" width={200} height={100} />
                 </div>
                 <div className={styles.nav}>
-
                     <Link href="/" legacyBehavior>
                         <a className={styles.a}>Home</a>
                     </Link>
                 </div>
             </header>
             <div className={styles.privacyContainer}>
-                <h1>Entrem contato pelos nossos canais de opnião</h1>
-                <p>Deixe sua opinão, contato ou sugestão sobre nossos serviços para melhor atende-lo novamente.</p>
+                <h1>Entre em contato pelos nossos canais de opinião</h1>
+                <p>Deixe sua opinião, contato ou sugestão sobre nossos serviços para melhor atendê-lo novamente.</p>
 
-                <form className={styles.form}>
+                <form className={styles.form} onSubmit={enviarEmail}>
                     <div className={styles.formGroup}>
-                        <label >Preencha seu nome:</label>
-                        <input className={styles.input} for="name" id="name" name-="name" placeholder="Nome" required></input>
+                        <label>Preencha seu nome:</label>
+                        <input
+                            className={styles.input}
+                            id="name"
+                            name="name"
+                            placeholder="Nome"
+                            required
+                        />
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label  >Adcione seu e-mail:</label>
-                        <input className={styles.input} for="email" id="email" name-="email" placeholder="E-mail" required></input>
+                        <label>Adicione seu e-mail:</label>
+                        <input
+                            className={styles.input}
+                            id="email"
+                            name="email"
+                            placeholder="E-mail"
+                            required
+                        />
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label  >Descrição:</label>
+                        <label>Descrição:</label>
                         <textarea
                             className={styles.textArea}
                             id="mensagem"
@@ -46,9 +90,16 @@ const PrivacyPolicy: React.FC = () => {
                             required
                         ></textarea>
                     </div>
-                    <button className={styles.button} type="submit">Enviar</button>
 
-                    <p><em>Servi bem para servi sempre</em></p>
+                    {/* Campos ocultos para data e hora */}
+                    <input type="hidden" name="date" />
+                    <input type="hidden" name="time" />
+
+                    <button className={styles.button} type="submit">
+                        Enviar
+                    </button>
+
+                    <p><em>Servir bem para servir sempre</em></p>
                 </form>
             </div>
             <Footer />
