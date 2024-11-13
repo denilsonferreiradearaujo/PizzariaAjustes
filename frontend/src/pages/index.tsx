@@ -246,7 +246,7 @@ export default function Home() {
     const tamanhoSelecionado = selectedSize[produto.id];
     const valorSelecionado = produto.valores.find((valor) => valor.tamanho === tamanhoSelecionado);
   
-    if (!tamanhoSelecionado || !valorSelecionado) {
+    if (!valorSelecionado) { //!tamanhoSelecionado || 
       toast.error("Por favor, selecione um tamanho.");
       return;
     }
@@ -329,7 +329,7 @@ export default function Home() {
   const incrementQuantity = (itemId: number, tamanho: string) => {
     setCart((prevCart) => {
       const existingItemIndex = prevCart.findIndex(
-        (item) => item.id === itemId && item.tamanho === tamanho
+        (item) => item.id === itemId // && item.tamanho === tamanho
       );
   
       if (existingItemIndex >= 0) {
@@ -345,7 +345,7 @@ export default function Home() {
         const tamanhoSelecionado = selectedSize[itemId];
         const valorSelecionado = produto?.valores.find((v) => v.tamanho === tamanhoSelecionado);
   
-        if (produto && tamanhoSelecionado && valorSelecionado) {
+        if (produto && valorSelecionado) { //&& tamanhoSelecionado
           const newItem: CartItem = {
             id: produto.id,
             produtoId: produto.id,
@@ -385,7 +385,7 @@ export default function Home() {
     setCart((prevCart) => {
       const updatedCart = prevCart
         .map((item) =>
-          item.id === itemId && item.tamanho === tamanho && item.quantidade > 1
+          item.id === itemId && item.quantidade > 1 //item.tamanho === tamanho && 
             ? { ...item, quantidade: item.quantidade - 1 }
             : item
         )
@@ -485,7 +485,7 @@ export default function Home() {
               <div className={styles.quantityControl}>
                 <button
                   onClick={() => decrementQuantity(produto.id, selectedSize[produto.id])}
-                  disabled={!selectedSize[produto.id]}
+                  // disabled={!selectedSize[produto.id]}
                 >
                   -
                 </button>
@@ -497,7 +497,7 @@ export default function Home() {
                 </span>
                 <button
                   onClick={() => incrementQuantity(produto.id, selectedSize[produto.id])}
-                  disabled={!selectedSize[produto.id]}
+                  // disabled={!selectedSize[produto.id]}
                 >
                   +
                 </button>

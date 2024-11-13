@@ -319,7 +319,7 @@ const Checkout: React.FC = () => {
                 <div className={styles.checkoutContainer}>
 
 
-                    <section className={styles.orderSummary}>
+                    {/* <section className={styles.orderSummary}>
                         <h2>Resumo do Pedido</h2>
                         {cart.map((item, index) => (
                             <div key={index} className={styles.orderItem}>
@@ -332,7 +332,38 @@ const Checkout: React.FC = () => {
                                 </button>
                             </div>
                         ))}
+                    </section> */}
+
+                    <section className={styles.orderSummary}>
+                        <h2>Resumo do Pedido</h2>
+                        <table className={styles.orderTable}>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Tamanho</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {cart.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.nome}</td>
+                                        <td>{item.tamanho}</td>
+                                        <td>{item.quantidade}</td>
+                                        <td>R$ {typeof item.preco === "number" ? item.preco.toFixed(2) : parseFloat(item.preco).toFixed(2)}</td>
+                                        <td>
+                                            <button onClick={() => handleRemoveItem(index)} className={styles.trashButton}>
+                                                <FaRegTrashAlt size={20} color='red' />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </section>
+
 
                     <section className={styles.orderTotal}>
                         <p>Total do Pedido: R$ {total.toFixed(2)}</p>
