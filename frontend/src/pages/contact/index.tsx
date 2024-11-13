@@ -23,7 +23,7 @@ const PrivacyPolicy: React.FC = () => {
             </header>
             <div className={styles.privacyContainer}>
                 <h1>Entrem contato pelos nossos canais de opnião</h1>
-                <p>Deixe sua opinão, contato, sugestão ou opnião sobre nossos serviços para melhor atende-lo novamente.</p>
+                <p>Deixe sua opinão, contato ou sugestão sobre nossos serviços para melhor atende-lo novamente.</p>
 
                 <form className={styles.form}>
                     <div className={styles.formGroup}>
@@ -38,7 +38,13 @@ const PrivacyPolicy: React.FC = () => {
 
                     <div className={styles.formGroup}>
                         <label  >Descrição:</label>
-                        <input className={styles.textArea} for="mensagem" id="mensagem" name-="mesagem" placeholder="Deixe sua mensagem" required></input>
+                        <textarea
+                            className={styles.textArea}
+                            id="mensagem"
+                            name="mensagem"
+                            placeholder="Deixe sua mensagem"
+                            required
+                        ></textarea>
                     </div>
                     <button className={styles.button} type="submit">Enviar</button>
 

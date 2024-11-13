@@ -6,7 +6,7 @@ import styles from '../product/style.module.scss';
 import { toast } from 'react-toastify';
 import { canSSRAuth } from '@/src/utils/canSSRAuth';
 import { setupAPICliente } from '../../services/api';
-import { ProductDetailsModal } from '../../components/productDetailModal/index';
+import { ProductDetailsModal } from '../../components/productDetailModal';
 
 type ItemProps = {
   id: string;
@@ -28,15 +28,8 @@ export default function Product({ categoryList }: CategoryProps) {
   const [categories, setCategories] = useState(categoryList || []);
   const [categorySelected, setCategorySelected] = useState(0);
   const [isSizeEnabled, setIsSizeEnabled] = useState(false);
-
-  const [sizes, setSizes] = useState([
-    { tamanho: '', preco: '' },
-    { tamanho: '', preco: '' },
-    { tamanho: '', preco: '' },
-  ]);
-
-  // const [loading, setLoading] = useState(false);
-  // const [sizes, setSizes] = useState([{ tamanho: '', preco: '' }, { tamanho: '', preco: '' }, { tamanho: '', preco: '' }]);
+  const [loading, setLoading] = useState(false);
+  const [sizes, setSizes] = useState([{ tamanho: '', preco: '' }, { tamanho: '', preco: '' }, { tamanho: '', preco: '' }]);
   const [productList, setProductList] = useState<ItemProps[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<ItemProps | null>(null);
@@ -49,71 +42,68 @@ export default function Product({ categoryList }: CategoryProps) {
     { value: 'Grande', label: 'Grande' },
   ];
 
-  //
-  async function fetchProducts() {
-    const apiCliente = setupAPICliente();
-    const response = await apiCliente.get('/listProduct');
-    setProductList(response.data);
-  }
-  // const fetchProducts = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const apiCliente = setupAPICliente();
-  //     const response = await apiCliente.get('/listProduct');
-  //     setProductList(response.data);
-  //   } catch (error) {
-  //     toast.error('Erro ao carregar produtos');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const apiCliente = setupAPICliente();
+      const response = await apiCliente.get('/listProduct');
+      setProductList(response.data);
+    } catch (error) {
+      toast.error('Erro ao carregar produtos');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  function handleSizeChange(index: number, field: string, value: string) {
+  const handleSizeChange = (index: number, field: string, value: string) => {
     const updatedSizes = [...sizes];
     updatedSizes[index] = {
       ...updatedSizes[index],
       [field]: field === 'preco' ? formatPrice(value) : value,
     };
     setSizes(updatedSizes);
-  }
+  };
 
-  function formatPrice(value: string): string {
+  const formatPrice = (value: string): string => {
     const cleanValue = value.replace(/\D/g, '');
     const numericValue = (parseInt(cleanValue, 10) / 100).toFixed(2);
     return `R$ ${numericValue.replace('.', ',')}`;
-  }
+  };
 
-  function parsePriceForSubmission(price: string): string {
+  const parsePriceForSubmission = (price: string): string => {
     return price.replace(/[^\d,]/g, '').replace(',', '.');
-  }
+  };
 
-  async function handleRegister(event: FormEvent) {
-    event.preventDefault();
-
+  const handleValidation = () => {
     if (name === '') {
       toast.error('O nome do produto é obrigatório!');
-      return;
+      return false;
     }
     if (description === '') {
       toast.error('A descrição do produto é obrigatória!');
-      return;
+      return false;
     }
 
-    // Verifica se tamanhos estão habilitados e se pelo menos um tamanho e preço foram preenchidos
     if (isSizeEnabled) {
       const tamanhos = sizes.filter(size => size.tamanho && size.preco);
       if (tamanhos.length === 0) {
         toast.error('É necessário adicionar pelo menos um tamanho e preço!');
-        return;
+        return false;
       }
     } else if (price === '') {
       toast.error('O preço é obrigatório se tamanhos não forem adicionados!');
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const handleRegister = async (event: FormEvent) => {
+    event.preventDefault();
+    if (!handleValidation()) return;
 
     const selectedCategoryId = categories[categorySelected].id;
     const tamanhos = isSizeEnabled ? sizes.filter(size => size.tamanho && size.preco) : [];  //tamanhos nunca será null
@@ -137,12 +127,12 @@ export default function Product({ categoryList }: CategoryProps) {
       setDescription('');
       setPrice('');
       setSizes([{ tamanho: '', preco: '' }, { tamanho: '', preco: '' }, { tamanho: '', preco: '' }]);
-      await fetchProducts(); // Agora fetchProducts está disponível
+      await fetchProducts();
     } catch (error: any) {
       const errorMessage = error.response ? error.response.data.message : 'Erro desconhecido';
       toast.error(`Erro ao cadastrar: ${errorMessage}`);
     }
-  }
+  };
 
   const handleProductClick = (product: ItemProps) => {
     setSelectedProduct(product);
@@ -159,96 +149,94 @@ export default function Product({ categoryList }: CategoryProps) {
       <Head>
         <title>Novo produto - Pizzaria</title>
       </Head>
+      <Header />
 
-      <div>
-        <Header />
+      <main className={styles.container}>
+        <div className={styles.formContainer}>
+          <h1 className={styles.titulo}>Novo produto</h1>
 
-        <main className={styles.container}>
-          <div className={styles.formContainer}>
-            <h1 className={styles.titulo}>Novo produto</h1>
+          <form className={styles.form} onSubmit={handleRegister}>
+            <select
+              value={categorySelected}
+              onChange={(e) => setCategorySelected(Number(e.target.value))}
+              className={styles.select}
+            >
+              {categories.map((item, index) => (
+                <option key={item.id} value={index}>
+                  {item.nome}
+                </option>
+              ))}
+            </select>
 
-            <form className={styles.form} onSubmit={handleRegister}>
-              <select
-                value={categorySelected}
-                onChange={(e) => setCategorySelected(Number(e.target.value))}
-                className={styles.select}
-              >
-                {categories.map((item, index) => (
-                  <option key={item.id} value={index}>
-                    {item.nome}
-                  </option>
-                ))}
-              </select>
+            <input
+              type="text"
+              placeholder="Digite o nome do produto"
+              className={styles.input}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
 
+            <textarea
+              placeholder="Descreva o produto"
+              className={styles.textarea}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+
+            {!isSizeEnabled && (
               <input
                 type="text"
-                placeholder="Digite o nome do produto"
+                placeholder="Preço"
                 className={styles.input}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={price}
+                onChange={(e) => setPrice(formatPrice(e.target.value))}
               />
+            )}
 
-              <textarea
-                placeholder="Descreva o produto"
-                className={styles.textarea}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+            <div className={styles.checkboxContainer}>
+              <input
+                type="checkbox"
+                checked={isSizeEnabled}
+                onChange={() => setIsSizeEnabled(!isSizeEnabled)}
+                id="sizeToggle"
               />
+              <label htmlFor="sizeToggle">Adicionar tamanhos e valores</label>
+            </div>
 
-              {!isSizeEnabled && (
-                <input
-                  type="text"
-                  placeholder="Preço"
-                  className={styles.input}
-                  value={price}
-                  onChange={(e) => setPrice(formatPrice(e.target.value))}
-                />
-              )}
+            {isSizeEnabled && (
+              <>
+                <h2 className={styles.titulo}>Tamanhos e Preços</h2>
+                {sizes.map((size, index) => (
+                  <div key={index} className={styles.sizePriceContainer}>
+                    <select
+                      value={size.tamanho}
+                      onChange={(e) => handleSizeChange(index, 'tamanho', e.target.value)}
+                      className={styles.selectSize}
+                    >
+                      {sizeOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="text"
+                      placeholder={size.tamanho ? 'Preço' : 'Sem tamanho selecionado'}
+                      className={styles.inputPrice}
+                      value={size.preco}
+                      onChange={(e) => handleSizeChange(index, 'preco', e.target.value)}
+                      disabled={!size.tamanho}
+                    />
+                  </div>
+                ))}
+              </>
+            )}
 
-              <div className={styles.checkboxContainer}>
-                <input
-                  type="checkbox"
-                  checked={isSizeEnabled}
-                  onChange={() => setIsSizeEnabled(!isSizeEnabled)}
-                  id="sizeToggle"
-                />
-                <label htmlFor="sizeToggle">Adicionar tamanhos e valores</label>
-              </div>
-
-              {isSizeEnabled && (
-                <>
-                  <h2 className={styles.titulo}>Tamanhos e Preços</h2>
-                  {sizes.map((size, index) => (
-                    <div key={index} className={styles.sizePriceContainer}>
-                      <select
-                        value={size.tamanho}
-                        onChange={(e) => handleSizeChange(index, 'tamanho', e.target.value)}
-                        className={styles.selectSize}
-                      >
-                        {sizeOptions.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                      <input
-                        type="text"
-                        placeholder={size.tamanho ? 'Preço' : 'Sem tamanho selecionado'}
-                        className={styles.inputPrice}
-                        value={size.preco}
-                        onChange={(e) => handleSizeChange(index, 'preco', e.target.value)}
-                        disabled={!size.tamanho}
-                      />
-                    </div>
-                  ))}
-                </>
-              )}
-
-              <button className={styles.buttonSubmit} type="submit">
-                Cadastrar
-              </button>
-            </form>
-          </div>
+            <button className={styles.buttonSubmit} type="submit">
+              Cadastrar
+            </button>
+          </form>
+        </div>
 
         <div className={styles.productListContainer}>
           <h1 className={styles.titulo}>Produtos Cadastrados</h1>

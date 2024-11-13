@@ -1,6 +1,10 @@
 import styles from './home.module.scss'; // Certifique-se de que o caminho esteja correto
 import Link from 'next/link';
 import imgSsaborEArt from '../../../public/logoFooter.png'
+import imgTwitter from '../../../public/logo-twitter.png'
+import imgWhatsapp from '../../../public/logo-whatsapp.png'
+import imgInstagram from '../../../public/logo-instagram.png'
+import imgTiktok from '../../../public/logo-tiktok.png'
 import Image from "next/image";
 
 export function Footer() {
@@ -17,7 +21,29 @@ export function Footer() {
                 </nav>
 
                 <div className={styles.imgSenai}>
-                    <Image src={imgSsaborEArt} alt="Logo Pizzaria" width={260} height={130} />
+                    <Image src={imgSsaborEArt} alt="Logo Pizzaria" width={300} height={170} />
+                </div>
+
+                <div className={styles.imgSocial}>
+                    <p>Conheça a Sabor&Arts em outras redes sociais</p>
+
+                    <div className="social-icons">
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
+                            <Image src={imgInstagram} alt="Instagram" width={120} height={120} />
+                        </a>
+
+                        <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
+                            <Image src={imgTiktok} alt="TikTok" width={100} height={100} />
+                        </a>
+
+                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
+                            <Image src={imgTwitter} alt="Twitter" width={100} height={100} />
+                        </a>
+
+                        <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
+                            <Image src={imgWhatsapp} alt="WhatsApp" width={100} height={100} />
+                        </a>
+                    </div>
                 </div>
 
                 <div className={styles.direitos}>
