@@ -1,3 +1,15 @@
+.statusAtivo {
+  color: green !important;
+  font-weight: bold;
+  padding-bottom: 0.4rem;
+}
+
+.statusInativo {
+  color: red !important;
+  font-weight: bold;
+  padding-bottom: 0.4rem;
+}
+
 .container {
   display: flex;
   gap: 2rem;
@@ -5,16 +17,22 @@
   margin: 2rem auto;
   padding: 2rem;
   animation: fadeIn 1s ease-in-out;
+  align-items: stretch; /* Faz com que as divs dentro do container tenham a mesma altura */
+  box-sizing: border-box; /* Garantir que o padding e a borda não afetam o layout */
 }
 
-.formContainer {
-  flex: 2;
-  max-width: 500px;
+.productListContainer {
+  margin-top: 0; /* Ajustado para remover qualquer margem superior extra */
   padding: 2rem;
-  background-color: var(--dark-800);
+  background-color: var(--dark-700);
   border-radius: 0.5rem;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
+  overflow-y: auto;
+  max-height: 80vh;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box; /* Garantir que o padding e a borda não afetam o layout */
 }
 
 .productListContainer ul {
@@ -22,22 +40,49 @@
   padding: 0;
 }
 
-.formContainer:hover {
-  transform: scale(1.005);
-}
-
-.productListContainer {
-  flex: 1;
-  padding: 2rem;
-  background-color: var(--dark-700);
-  border-radius: 0.5rem;
-  overflow-y: auto;
-  max-height: 80vh;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
 .productListContainer:hover {
   background-color: var(--dark-600);
+}
+
+.filtersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.filtersContainer select,
+.filtersContainer input {
+  flex: 1 1 200px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.filtersContainer input {
+  min-width: 150px;
+}
+
+.filtersContainer select {
+  min-width: 180px;
+}
+
+.formContainer {
+  flex: 1;
+  max-width: 500px;
+  padding: 2rem;
+  background-color: var(--dark-800);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box; /* Garantir que o padding e a borda não afetam o layout */
+}
+
+.formContainer:hover {
+  transform: scale(1.005);
 }
 
 .titulo {
@@ -79,17 +124,17 @@
   display: flex;
   align-items: center;
   margin-bottom: 1.5rem;
+}
 
-  input[type='checkbox'] {
-    margin-right: 0.5rem;
-    cursor: pointer;
-  }
+.checkboxContainer input[type='checkbox'] {
+  margin-right: 0.5rem;
+  cursor: pointer;
+}
 
-  label {
-    color: var(--white);
-    cursor: pointer;
-    font-weight: bold;
-  }
+.checkboxContainer label {
+  color: var(--white);
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .sizePriceContainer {
@@ -98,28 +143,28 @@
   margin-bottom: 15px;
   align-items: stretch;
   animation: slideIn 0.5s ease-in-out;
+}
 
-  .inputPrice,
-  .selectSize {
-    flex: 1;
-    margin-right: 10px;
-    padding: 0.8rem;
-    border: 1px solid var(--gray-100);
-    border-radius: 0.3rem;
-    background-color: var(--dark-700);
-    color: var(--white);
-    transition: border-color 0.3s ease, transform 0.3s ease;
-  }
+.sizePriceContainer .inputPrice,
+.sizePriceContainer .selectSize {
+  flex: 1;
+  margin-right: 10px;
+  padding: 0.8rem;
+  border: 1px solid var(--gray-100);
+  border-radius: 0.3rem;
+  background-color: var(--dark-700);
+  color: var(--white);
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
 
-  .inputPrice:last-child,
-  .selectSize:last-child {
-    margin-right: 0;
-  }
+.sizePriceContainer .inputPrice:last-child,
+.sizePriceContainer .selectSize:last-child {
+  margin-right: 0;
+}
 
-  .inputPrice:focus,
-  .selectSize:focus {
-    transform: scale(1.02);
-  }
+.sizePriceContainer .inputPrice:focus,
+.sizePriceContainer .selectSize:focus {
+  transform: scale(1.02);
 }
 
 .buttonSubmit {

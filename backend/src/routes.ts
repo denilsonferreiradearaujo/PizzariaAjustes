@@ -50,6 +50,7 @@ router.delete('/category/:id', new DeleteCategoryController().handle);
 router.post('/createProduct', new CreateProductController().handle);
 router.get('/listProduct', new ListProductController().handle);
 router.post('/updateProduct/:id', new UpdateProductController().handle);
+router.put('/updateProduct/:id', new UpdateProductController().handle);
 router.get("/produtos", new ListProductByCategoryController().handle);
 
 // Rotas taxa de entrega
