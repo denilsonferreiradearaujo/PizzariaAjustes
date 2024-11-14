@@ -478,7 +478,7 @@ export default function Home() {
                       checked={selectedSize[produto.id] === valor.tamanho}
                       onChange={() => handleSizeChange(produto.id, valor.tamanho)}
                     />
-                    {valor.tamanho}: R${valor.preco}
+                    {valor.tamanho} R${valor.preco}
                   </label>
                 ))}
               </div>
