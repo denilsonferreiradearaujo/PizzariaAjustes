@@ -1,58 +1,52 @@
 .footerContainer {
     width: 100%;
-    position: absolute;
-    background-color: #272626; // Cor de fundo
-    color: #ffffff; // Cor do texto
-    padding: 50px 0; // Espaçamento vertical
-    text-align: center; // Centraliza o texto
-    // margin-top: 40px; // Espaçamento acima da navegação
-
-    .footerContent {
-        margin-top: -100px; // Espaçamento acima da navegação
-        display: flex;
-        flex-direction: column; // Empilha os elementos verticalmente
-        align-items: center; // Centraliza horizontalmente
-    }
-
-    .footerNav {
-        margin-top: 100px; // Espaçamento acima da navegação
-        a {
-            color: #ffffff; // Cor do link
-            margin: 0 15px; // Espaçamento horizontal entre os links
-            padding: 20px;
-            text-decoration: none; // Remove sublinhado
-            transition: color 0.3s ease; // Transição suave para hover
-
-            &:hover {
-                color: #FFC107; // Cor do link ao passar o mouse
-            }
-        }
-    }
+    background-color: #272626;
+    color: #ffffff;
+    padding: 50px 20px;
+    text-align: center;
 }
 
-.imgSocial{
-    flex-direction:row;
-}
-
-.Image {
-    padding: 20px;
-}
-
-
-.direitos{
-    margin-top: 50px;
-}
-
-//
-/* Flex container para alinhar as imagens horizontalmente */
-.social-icons {
+.footerContent {
     display: flex;
-    gap: 10px; /* Espaço entre os itens */
-    align-items: center; /* Alinha verticalmente as imagens caso tenham alturas diferentes */
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Estilo para o espaçamento adicional se necessário */
-.rdsocial {
-    margin-left: 10px;
+.footerNav {
+    display: flex;
+    gap: 30px;
 }
 
+.footerNav a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footerNav a:hover {
+    color: #FFC107;
+}
+
+.imgSenai {
+    padding: 0px;
+}
+
+.socialContainer {
+    text-align: center;
+}
+
+.socialContainer p {
+    margin-bottom: 15px;
+}
+
+.socialIcons {
+    display: flex;
+    gap: 50px; /* Ajuste o espaçamento entre ícones */
+    justify-content: center;
+}
+
+.rights {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #cccccc;
+}
