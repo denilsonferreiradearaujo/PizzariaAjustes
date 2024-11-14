@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import styles from './styles.module.scss';
+import { toast } from 'react-toastify';
+import { setupAPICliente } from '@/src/services/api';
 
 type Size = {
   tamanho: string;
-  preco?: string; // Alterado para opcional, será preenchido a partir de `valores`
+  preco?: string;
   id: number;
 };
 
@@ -26,7 +29,15 @@ interface ProductDetailsModalProps {
 }
 
 export function ProductDetailsModal({ product, onClose }: ProductDetailsModalProps) {
-  console.log('Product data:', product);
+  const [name, setName] = useState(product.nome);
+  const [description, setDescription] = useState(product.descricao || '');
+  const [status, setStatus] = useState(product.status);
+  const [priceValues, setPriceValues] = useState(
+    product.valores.map((value) => ({
+      tamanhoId: value.tamanhoId,
+      preco: value.preco,
+    }))
+  );
 
   const formatPrice = (price: string | number | undefined) => {
     if (price == null || isNaN(Number(price))) {
@@ -35,38 +46,104 @@ export function ProductDetailsModal({ product, onClose }: ProductDetailsModalPro
     return `R$ ${Number(price).toFixed(2).replace('.', ',')}`;
   };
 
+  const handleUpdateProduct = async () => {
+    const apiCliente = setupAPICliente();
+    const updatedProduct = {
+      nome: name,
+      descricao: description,
+      status,
+      valores: priceValues.map((value) => ({
+        ...value,
+        preco: value.preco.replace(',', '.'),
+      })),
+    };
+
+    try {
+      await apiCliente.put(`/updateProduct/${product.id}`, updatedProduct);
+      toast.success('Produto atualizado com sucesso!');
+      onClose();
+    } catch (error) {
+      toast.error('Erro ao atualizar o produto');
+    }
+  };
+
+  const handlePriceChange = (tamanhoId: number, value: string) => {
+    setPriceValues((prevPrices) =>
+      prevPrices.map((price) =>
+        price.tamanhoId === tamanhoId ? { ...price, preco: value } : price
+      )
+    );
+  };
+
+  const handleSinglePriceChange = (value: string) => {
+    // Atualiza o preço para o único produto sem tamanhos
+    setPriceValues([{ tamanhoId: 0, preco: value }]);
+  };
+
   return (
     <div className={styles.overlay}>
-      <div className={styles.modal}>
+      <div className={`${styles.modal} ${product.tamanhos.length === 0 ? styles.noSizes : ''}`}>
         <button onClick={onClose} className={styles.closeButton}>X</button>
-        <h2 className={styles.modalTitle}>{product.nome}</h2>
-        <p className={styles.modalDescription}>{product.descricao || 'Descrição indisponível'}</p>
-        
-        {/* Exibição do status com cor condicional */}
-        <p
-          className={styles.modalStatus}
-          style={{ color: product.status === 'Ativo' ? 'green' : 'red' }}
+
+        <h2 className={styles.modalTitle}>Editar Produto</h2>
+
+        <label>Nome:</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className={styles.input}
+        />
+
+        <label>Descrição:</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className={styles.textarea}
+        />
+
+        <label>Status:</label>
+        <select
+          value={status}
+          onChange={(e) => setStatus(e.target.value)}
+          className={styles.select}
         >
-          Status: {product.status}
-        </p>
+          <option value="Ativo">Ativo</option>
+          <option value="Inativo">Inativo</option>
+        </select>
 
         {product.tamanhos && product.tamanhos.length > 0 ? (
-          <ul className={styles.sizeList}>
-            {product.tamanhos.map((size) => {
-              const matchingValue = product.valores.find((value) => value.tamanhoId === size.id);
-              const price = matchingValue ? matchingValue.preco : undefined;
-
-              console.log(`Tamanho: ${size.tamanho}, Preço: ${price}`);
-              return (
+          <>
+            <h3>Tamanhos e Preços</h3>
+            <ul className={styles.sizeList}>
+              {product.tamanhos.map((size) => (
                 <li key={size.id} className={styles.sizeItem}>
-                  <strong>Tamanho:</strong> {size.tamanho} <strong>Preço:</strong> {price ? formatPrice(price) : 'Sem preço'}
+                  <strong>{size.tamanho}</strong>
+                  <input
+                    type="text"
+                    value={priceValues.find((value) => value.tamanhoId === size.id)?.preco || ''}
+                    onChange={(e) => handlePriceChange(size.id, e.target.value)}
+                    className={styles.inputPrice}
+                  />
                 </li>
-              );
-            })}
-          </ul>
+              ))}
+            </ul>
+          </>
         ) : (
-          <p> <strong>Preço:</strong> {formatPrice(product.valores[0]?.preco)}</p>  // Caso o produto não tenha tamanhos, mostra o preço padrão
+          <>
+            <label>Preço:</label>
+            <input
+              type="text"
+              value={priceValues[0]?.preco || ''}
+              onChange={(e) => handleSinglePriceChange(e.target.value)}
+              className={styles.inputPrice2}
+            />
+          </>
         )}
+
+        <button onClick={handleUpdateProduct} className={styles.buttonSubmit}>
+          Salvar Alterações
+        </button>
       </div>
     </div>
   );

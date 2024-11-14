@@ -10,6 +10,7 @@ import { ProductDetailsModal } from '../../components/productDetailModal';
 
 type ItemProps = {
   id: string;
+  categoriaId?: number;
   nome: string;
   descricao: string;
   preco: string;
@@ -32,6 +33,8 @@ export default function Product({ categoryList }: CategoryProps) {
   const [sizes, setSizes] = useState([{ tamanho: '', preco: '' }, { tamanho: '', preco: '' }, { tamanho: '', preco: '' }]);
   const [productList, setProductList] = useState<ItemProps[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<number>(-1); // -1 significa nenhum filtro
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>(''); // Pode ser 'Ativo', 'Inativo' ou vazio
   const [selectedProduct, setSelectedProduct] = useState<ItemProps | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -75,7 +78,7 @@ export default function Product({ categoryList }: CategoryProps) {
   };
 
   const parsePriceForSubmission = (price: string): string => {
-    return price.replace(/[^\d,]/g, '').replace(',', '.');
+    return price.replace(/[^\d,]/g, '').replace(',', '.').replace('R$', '').trim();
   };
 
   const handleValidation = () => {
@@ -241,31 +244,80 @@ export default function Product({ categoryList }: CategoryProps) {
         <div className={styles.productListContainer}>
           <h1 className={styles.titulo}>Produtos Cadastrados</h1>
 
-          {/* Campo de pesquisa */}
-          <input
-            type="text"
-            placeholder="Pesquisar por nome..."
-            className={styles.input}
-            value={searchTerm} // Use searchTerm para a pesquisa
-            onChange={(e) => setSearchTerm(e.target.value)} // Atualiza searchTerm conforme o usuário digita
-          />
+          {/* Campo de filtros */}
+          <div className={styles.filtersContainer}>
+            <input
+              type="text"
+              placeholder="Pesquisar por nome..."
+              className={styles.input}
+              value={searchTerm} // Use searchTerm para a pesquisa
+              onChange={(e) => setSearchTerm(e.target.value)} // Atualiza searchTerm conforme o usuário digita
+            />
 
+            <select
+              value={selectedCategoryFilter}
+              onChange={(e) => setSelectedCategoryFilter(Number(e.target.value))}
+              className={styles.select}
+            >
+              <option value={-1}>Todas as Categorias</option>
+              {categories.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.nome}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedStatusFilter}
+              onChange={(e) => setSelectedStatusFilter(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Todos os Status</option>
+              <option value="Ativo">Ativo</option>
+              <option value="Inativo">Inativo</option>
+            </select>
+          </div>
+
+          {/* Lista de produtos */}
           {loading ? (
             <p>Carregando produtos...</p>
           ) : (
             <ul>
-              {/* Filtra os produtos pelo nome */}
               {productList
-                .filter(product => product.nome.toLowerCase().includes(searchTerm.toLowerCase()))// Filtra os produtos conforme o texto de pesquisa
+                .filter((product) => {
+                  // Filtro de categoria
+                  if (selectedCategoryFilter !== -1 && product.categoriaId !== selectedCategoryFilter) {
+                    return false;
+                  }
+
+                  // Filtro de status
+                  if (selectedStatusFilter && product.status !== selectedStatusFilter) {
+                    return false;
+                  }
+
+                  // Filtro de pesquisa por nome
+                  return product.nome.toLowerCase().includes(searchTerm.toLowerCase());
+                })
                 .map((product) => (
-                  <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
+                  <li
+                    key={product.id}
+                    className={styles.productItem}
+                    onClick={() => handleProductClick(product)}
+                  >
                     <h2>{product.nome}</h2>
+
+                    {/* Exibe o status do produto com a cor apropriada */}
+                    <p className={product.status === 'Ativo' ? styles.statusAtivo : styles.statusInativo}>
+                      {product.status}
+                    </p>
+
                     <p>{product.descricao}</p>
                   </li>
                 ))}
             </ul>
           )}
         </div>
+
       </main>
       <Footer />
 
