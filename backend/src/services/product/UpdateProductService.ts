@@ -14,6 +14,7 @@ interface ValorRequest {
 interface ProdutoUpdateRequest {
   id: number; // ID do produto que será atualizado
   nome?: string;
+  descricao?: string;
   categoriaId?: number;
   status?: string; // Adicionando status ao ProdutoUpdateRequest
   tamanhos?: TamanhoRequest[];
@@ -84,7 +85,7 @@ class UpdateProductService {
     }
   }
 
-  public async execute({ id, nome, categoriaId, status, tamanhos, valores }: ProdutoUpdateRequest) {
+  public async execute({ id, nome, descricao, categoriaId, status, tamanhos, valores }: ProdutoUpdateRequest) {
     const produtoExiste = await this.produtoExiste(id);
     if (!produtoExiste) {
       throw new Error("Produto não encontrado.");
@@ -95,6 +96,7 @@ class UpdateProductService {
       where: { id },
       data: {
         nome,
+        descricao,
         categoriaId,
         status, // Atualizando o status aqui
         dataUpdate: new Date(),
