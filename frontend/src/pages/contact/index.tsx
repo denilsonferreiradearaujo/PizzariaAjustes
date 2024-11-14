@@ -19,6 +19,30 @@ const PrivacyPolicy: React.FC = () => {
         e.target.date.value = date;
         e.target.time.value = time;
 
+        let contadorRequisicao = Number(sessionStorage.getItem('contadorRequisicao')) || 1;
+
+        function gerarNumeroRequisicao() {
+            const hoje = new Date();
+            const ano = hoje.getFullYear().toString().padStart(4, '0');  // 'yy'
+            const mes = (hoje.getMonth() + 1).toString().padStart(2, '0');  // 'mm'
+            const dia = hoje.getDate().toString().padStart(2, '0');  // 'dd'
+
+            // Concatena data com contador crescente
+            const numeroRequisicao = `${ano}${mes}${dia}-${contadorRequisicao.toString().padStart(6, '0')}`;
+
+            // Incrementa o contador e armazena
+            contadorRequisicao++;
+            sessionStorage.setItem('contadorRequisicao', contadorRequisicao);
+
+            return numeroRequisicao;
+        }
+
+        // Exemplo de uso
+        const requestId = gerarNumeroRequisicao();
+
+        // Atribui o request_id para o campo oculto (ou diretamente no formulário)
+        e.target.request_id.value = requestId;
+
         // Adicione data e hora como parâmetros extras
         emailjs
             .sendForm(
@@ -94,6 +118,7 @@ const PrivacyPolicy: React.FC = () => {
                     {/* Campos ocultos para data e hora */}
                     <input type="hidden" name="date" />
                     <input type="hidden" name="time" />
+                    <input type="hidden" name="request_id" />
 
                     <button className={styles.button} type="submit">
                         Enviar
