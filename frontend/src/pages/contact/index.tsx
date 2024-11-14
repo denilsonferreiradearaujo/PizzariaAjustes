@@ -81,7 +81,7 @@ const PrivacyPolicy: React.FC = () => {
                     </header>
                     <div className={styles.privacyContainer}>
                         <h1>Entre em contato pelos nossos canais de opinião</h1>
-                        <p>Deixe sua opinião, contato ou sugestão sobre nossos serviços para melhor atendê-lo novamente.</p>
+                        <p className={styles.citacao}>Deixe sua opinião, contato ou sugestão sobre nossos serviços para melhor atendê-lo novamente.</p>
 
                         <form className={styles.form} onSubmit={enviarEmail}>
                             <div className={styles.formGroup}>

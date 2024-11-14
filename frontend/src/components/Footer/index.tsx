@@ -9,48 +9,42 @@ import Image from "next/image";
 
 export function Footer() {
     return (
-        <footer className={styles.footerContainer}>
+        <div className={styles.footerContainer}>
             <div className={styles.footerContent}>
                 <nav className={styles.footerNav}>
-                    <Link legacyBehavior href='/privacy'>
-                        <a>Política de Privacidade</a>
-                    </Link>
-                    <Link legacyBehavior href='/contact'>
-                        <a>Contato</a>
-                    </Link>
+                    <Link href='/privacy'>Política de Privacidade</Link>
+                    <Link href='/contact'>Contato</Link>
                 </nav>
 
                 <div className={styles.imgSenai}>
+                    <a href="/">
                     <Image src={imgSsaborEArt} alt="Logo Pizzaria" width={300} height={170} />
+                    </a>
                 </div>
 
-                <div className={styles.imgSocial}>
+                <div className={styles.socialContainer}>
                     <p>Conheça a Sabor&Arts em outras redes sociais</p>
-
-                    <div className="social-icons">
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
+                    <div className={styles.socialIcons}>
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
                             <Image src={imgInstagram} alt="Instagram" width={60} height={60} />
                         </a>
-
-                        <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
+                        <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">
                             <Image src={imgTiktok} alt="TikTok" width={50} height={50} />
                         </a>
-
-                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
+                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
                             <Image src={imgTwitter} alt="Twitter" width={50} height={50} />
                         </a>
-
-                        <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
+                        <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer">
                             <Image src={imgWhatsapp} alt="WhatsApp" width={50} height={50} />
                         </a>
                     </div>
                 </div>
 
-                <div className={styles.direitos}>
+                <div className={styles.rights}>
                     <p>&copy; 2024 Sabor&Art. Todos os direitos reservados.</p>
                 </div>
-
             </div>
-        </footer>
+        </div>
+
     );
 }

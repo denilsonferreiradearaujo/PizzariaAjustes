@@ -21,13 +21,12 @@
 
     p {
         margin-bottom: 15px;
-        margin-left: 35px;
     }
 
     ul {
         list-style-type: disc;
         padding-left: 20px;
-        margin-bottom: 15px;
+        margin-left: 15px;
 
         li {
             margin-bottom: 8px;
@@ -56,7 +55,6 @@
     display: flex;
     align-items: center;
     margin-left: 177px;
-    /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
   }
 
   .button {
@@ -75,7 +73,9 @@
         background-color: #FFC107;
     }
 //   
-
+.citacao{
+    margin-left: 35px;
+}
 .form {
     display: flex;
     flex-direction: column;
@@ -120,8 +120,6 @@
     transition: color 0.3s ease; // Transição suave para hover
     padding: 10px 100px;
 
-
-
     &:hover {
         color: #FFC107; // Cor do link ao passar o mouse
     }
@@ -130,7 +128,7 @@
 .container {
     display: flex;
     gap: 2rem;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 2rem auto;
     padding: 2rem;
     animation: fadeIn 1s ease-in-out;
@@ -138,7 +136,7 @@
   
   .formContainer {
     flex: 2;
-    max-width: 500px;
+    max-width: 1000px;
     padding: 2rem;
     background-color: var(--dark-800);
     border-radius: 0.5rem;
