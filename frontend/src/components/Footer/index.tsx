@@ -29,19 +29,19 @@ export function Footer() {
 
                     <div className="social-icons">
                         <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
-                            <Image src={imgInstagram} alt="Instagram" width={120} height={120} />
+                            <Image src={imgInstagram} alt="Instagram" width={60} height={60} />
                         </a>
 
                         <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
-                            <Image src={imgTiktok} alt="TikTok" width={100} height={100} />
+                            <Image src={imgTiktok} alt="TikTok" width={50} height={50} />
                         </a>
 
                         <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
-                            <Image src={imgTwitter} alt="Twitter" width={100} height={100} />
+                            <Image src={imgTwitter} alt="Twitter" width={50} height={50} />
                         </a>
 
                         <a href="https://whatsapp.com" target="_blank" rel="noopener noreferrer" className="rdsocial">
-                            <Image src={imgWhatsapp} alt="WhatsApp" width={100} height={100} />
+                            <Image src={imgWhatsapp} alt="WhatsApp" width={50} height={50} />
                         </a>
                     </div>
                 </div>

@@ -67,66 +67,71 @@ const PrivacyPolicy: React.FC = () => {
 
     return (
         <>
-            <header className={styles.header}>
-                <div className={styles.logo}>
-                    <Image src={logoImg} alt="Logo Pizzaria" width={200} height={100} />
+            <main className={styles.container}>
+                <div className={styles.formContainer}>
+                    <header className={styles.header}>
+                        <div className={styles.logo}>
+                            <Image src={logoImg} alt="Logo Pizzaria" width={200} height={100} />
+                        </div>
+                        <div className={styles.nav}>
+                            <Link href="/" legacyBehavior>
+                                <a className={styles.a}>Home</a>
+                            </Link>
+                        </div>
+                    </header>
+                    <div className={styles.privacyContainer}>
+                        <h1>Entre em contato pelos nossos canais de opinião</h1>
+                        <p>Deixe sua opinião, contato ou sugestão sobre nossos serviços para melhor atendê-lo novamente.</p>
+
+                        <form className={styles.form} onSubmit={enviarEmail}>
+                            <div className={styles.formGroup}>
+                                <label>Preencha seu nome:</label>
+                                <input
+                                    className={styles.input}
+                                    id="name"
+                                    name="name"
+                                    placeholder="Nome"
+                                    required
+                                />
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label>Adicione seu e-mail:</label>
+                                <input
+                                    className={styles.input}
+                                    id="email"
+                                    name="email"
+                                    placeholder="E-mail"
+                                    required
+                                />
+                            </div>
+
+                            <div className={styles.formGroup}>
+                                <label>Descrição:</label>
+                                <textarea
+                                    className={styles.textArea}
+                                    id="mensagem"
+                                    name="mensagem"
+                                    placeholder="Deixe sua mensagem"
+                                    required
+                                ></textarea>
+                            </div>
+
+                            {/* Campos ocultos para data e hora */}
+                            <input type="hidden" name="date" />
+                            <input type="hidden" name="time" />
+                            <input type="hidden" name="request_id" />
+
+                            <button className={styles.button} type="submit">
+                                Enviar
+                            </button>
+
+                            <p><em>Servir bem para servir sempre</em></p>
+                        </form>
+                    </div>
+
                 </div>
-                <div className={styles.nav}>
-                    <Link href="/" legacyBehavior>
-                        <a className={styles.a}>Home</a>
-                    </Link>
-                </div>
-            </header>
-            <div className={styles.privacyContainer}>
-                <h1>Entre em contato pelos nossos canais de opinião</h1>
-                <p>Deixe sua opinião, contato ou sugestão sobre nossos serviços para melhor atendê-lo novamente.</p>
-
-                <form className={styles.form} onSubmit={enviarEmail}>
-                    <div className={styles.formGroup}>
-                        <label>Preencha seu nome:</label>
-                        <input
-                            className={styles.input}
-                            id="name"
-                            name="name"
-                            placeholder="Nome"
-                            required
-                        />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label>Adicione seu e-mail:</label>
-                        <input
-                            className={styles.input}
-                            id="email"
-                            name="email"
-                            placeholder="E-mail"
-                            required
-                        />
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label>Descrição:</label>
-                        <textarea
-                            className={styles.textArea}
-                            id="mensagem"
-                            name="mensagem"
-                            placeholder="Deixe sua mensagem"
-                            required
-                        ></textarea>
-                    </div>
-
-                    {/* Campos ocultos para data e hora */}
-                    <input type="hidden" name="date" />
-                    <input type="hidden" name="time" />
-                    <input type="hidden" name="request_id" />
-
-                    <button className={styles.button} type="submit">
-                        Enviar
-                    </button>
-
-                    <p><em>Servir bem para servir sempre</em></p>
-                </form>
-            </div>
+            </main>
             <Footer />
         </>
     );

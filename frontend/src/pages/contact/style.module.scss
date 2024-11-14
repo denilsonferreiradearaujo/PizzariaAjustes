@@ -126,3 +126,22 @@
         color: #FFC107; // Cor do link ao passar o mouse
     }
 }
+
+.container {
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  .formContainer {
+    flex: 2;
+    max-width: 500px;
+    padding: 2rem;
+    background-color: var(--dark-800);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }

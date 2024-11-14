@@ -39,20 +39,34 @@
 }
 
 
-.direitos{
-    margin-top: 50px;
-}
+// .direitos{
+//     margin-top: 10px;
+// }
 
 //
 /* Flex container para alinhar as imagens horizontalmente */
 .social-icons {
     display: flex;
-    gap: 10px; /* Espaço entre os itens */
+    gap: 15px; /* Espaço entre os itens */
     align-items: center; /* Alinha verticalmente as imagens caso tenham alturas diferentes */
+    justify-content: center;
 }
 
 /* Estilo para o espaçamento adicional se necessário */
 .rdsocial {
-    margin-left: 10px;
+    display: inline-block;
 }
 
+
+.rdsocial img {
+    transition: transform 0.3s ease; /* Transição suave ao passar o mouse */
+}
+
+.rdsocial.instagram {
+    margin-top: 10px; /* Move o ícone 10px para baixo */
+}
+
+/* Opção de efeito de hover para destacar os ícones ao passar o mouse */
+.rdsocial:hover img {
+    transform: scale(1.1); /* Aumenta um pouco o tamanho ao passar o mouse */
+}
