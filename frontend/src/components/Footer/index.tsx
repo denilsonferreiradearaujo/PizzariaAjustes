@@ -23,10 +23,10 @@ export function Footer() {
                 </div>
 
                 <div className={styles.socialContainer}>
-                    <p>Conheça a Sabor&Arts em outras redes sociais</p>
+                    <p>Conheça a Sabor&Art em outras redes sociais</p>
                     <div className={styles.socialIcons}>
                         <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                            <Image src={imgInstagram} alt="Instagram" width={60} height={60} />
+                            <Image src={imgInstagram} alt="Instagram" width={50} height={50} className={styles.imgInstagram} />
                         </a>
                         <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">
                             <Image src={imgTiktok} alt="TikTok" width={50} height={50} />
