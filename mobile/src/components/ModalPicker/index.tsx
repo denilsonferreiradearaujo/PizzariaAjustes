@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
     View,
@@ -9,31 +8,28 @@ import {
     ScrollView
 } from 'react-native'
 
-import { CategoryProps } from '../../pages/Order'
+// Importa os tipos de categorias e tamanhos
+import { CategoryProps, ProductSizesProps } from '../../pages/Order'
 
 interface ModalPickerProps {
-    options: CategoryProps[];
+    options: CategoryProps[] | ProductSizesProps[]; // Permite tanto categorias quanto tamanhos
     handleCLoseModal: () => void;
-    selectedItem: (item: CategoryProps) => void;
+    selectedItem: (item: CategoryProps | ProductSizesProps) => void; // Ajusta para aceitar ambos os tipos
 }
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
 
 export function ModalPicker({ options, handleCLoseModal, selectedItem }: ModalPickerProps) {
-console.log(options);
 
-
-    function onPressItem(item: CategoryProps){
-        // console.log(item);
+    function onPressItem(item: CategoryProps | ProductSizesProps){
         selectedItem(item);
         handleCLoseModal();
     }
 
-
     const option = options.map((item, index) => (
-        <TouchableOpacity key={index} style={styles.option} onPress={ () => onPressItem(item)}>
+        <TouchableOpacity key={index} style={styles.option} onPress={() => onPressItem(item)}>
             <Text style={styles.item}>
-                {item?.nome}
+                {'nome' in item ? item.nome : item.tamanho} {/* Exibe nome para categoria ou tamanho para tamanhos */}
             </Text>
         </TouchableOpacity>
     ))
@@ -42,7 +38,7 @@ console.log(options);
         <TouchableOpacity style={styles.container} onPress={handleCLoseModal}>
             <View style={styles.content}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                {option}
+                    {option}
                 </ScrollView>
             </View>
         </TouchableOpacity>
@@ -63,12 +59,12 @@ const styles = StyleSheet.create({
         borderColor: '#8a8a8a',
         borderRadius: 4,
     },
-    option:{
+    option: {
         alignItems: 'flex-start',
         borderTopWidth: 0.8,
         borderTopColor: '#8a8a8a'
     },
-    item:{
+    item: {
         margin: 18,
         fontSize: 14,
         fontWeight: 'bold',

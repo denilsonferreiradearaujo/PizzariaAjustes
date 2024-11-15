@@ -27,13 +27,13 @@ class CreatePedidoService {
     }
 
     // Verificar se a Taxa de Entrega existe
-    const taxaEntregaExists = await prismaClient.taxaEntrega.findUnique({
-      where: { id: taxaEntregaId },
-    });
+    // const taxaEntregaExists = await prismaClient.taxaEntrega.findUnique({
+    //   where: { id: taxaEntregaId },
+    // });
 
-    if (!taxaEntregaExists) {
-      throw new Error('Taxa de entrega não encontrada.');
-    }
+    // if (!taxaEntregaExists) {
+    //   throw new Error('Taxa de entrega não encontrada.');
+    // }
 
     // **Nova Verificação**: Certifique-se de que todos os `produtoId` existem no banco de dados
     const produtoIds = items.map((item) => item.produtoId);

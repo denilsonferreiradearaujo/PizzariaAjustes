@@ -39,10 +39,10 @@ export default function Dashboard() {
                 <Text style={styles.buttonText}>Abrir Mesa</Text>
             </TouchableOpacity>
 
-             {/* <Button
+             <Button
             title='Sair do App'
             onPress={signOut}
-            />  */}
+            /> 
 
         </SafeAreaView>
     )
