@@ -1,66 +1,182 @@
+
+
 .produtoContainer {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); // 5 colunas
-  gap: 15px; // Espaçamento entre os cards
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
   padding: 20px;
-  margin-left: 117px;
+  margin-left: 145px;
   margin-right: 210px;
-  padding-bottom: 30px; // Adiciona padding na parte inferior para espaçamento
-
-  @media (max-width: 1200px) {
-    grid-template-columns: repeat(4, 1fr); // Ajusta para 4 colunas em telas menores
-  }
+  padding-bottom: 20px;
 
   @media (max-width: 900px) {
-    grid-template-columns: repeat(3, 1fr); // Ajusta para 3 colunas em telas menores
+    margin-left: 50px;
+    margin-right: 50px;
   }
 
   @media (max-width: 600px) {
-    grid-template-columns: repeat(2, 1fr); // Ajusta para 2 colunas em telas menores
-  }
-
-  @media (max-width: 400px) {
-    grid-template-columns: 1fr; // Ajusta para 1 coluna em telas muito pequenas
+    margin-left: 20px;
+    margin-right: 20px;
   }
 }
 
 .card {
-  display: flex; // Habilita o Flexbox
-  flex-direction: column; // Organiza os itens na coluna
-  justify-content:center; // Distribui o espaço entre os itens
-  background-color: #f9f9f9; // Cor de fundo dos cards
-  border: 1px solid #ccc; // Borda leve
-  border-radius: 8px; // Bordas arredondadas
-  padding: 17px;
-  text-align: center; // Alinhamento geral do conteúdo
-  font-weight: bold; // Texto em negrito
-  height: auto; // Ajusta a altura do card para se adaptar ao conteúdo
-  margin-bottom: 20px; // Adiciona margem inferior para espaçamento entre os cards
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
 
-  h2.cardTitle {
-    text-align: center; // Centraliza o h3
-    font-weight: bold; // Negrito no título
-    margin-top: 10px; // Adiciona espaço acima do título
-    margin-bottom: 10px; // Adiciona espaço abaixo do título
-    font-size: 1.4rem;
+  img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
   }
 
-  p.cardText {
+  h2.cardTitle {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 10px 0;
+  }
+
+  .cardOptions {
     display: flex;
-    text-align: justify; // Parágrafos justificados
-    font-weight: bold; // Negrito no conteúdo
-    margin: 5px 0;
-    gap: 0.4rem;
-    text-align: center;
-    justify-content: center;
-    margin-bottom: 6px; // Adiciona espaço abaixo do título
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+
+    .option {
+      font-size: 1rem;
+      margin: 5px 0;
+    }
+  }
+
+
+  .quantitySelector {
+    display: flex;
+    align-items: center;
+    margin: 10px ;
+    gap: 5px;
+
+    button {
+      background-color: #c8102e;
+      color: #ffffff;
+      border: none;
+      padding: 5px 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin: 5px;
+      
+
+      &:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+      }
+
+      &:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+      }
+    }
+
+    input {
+      width: 40px;
+      text-align: center;
+      font-size: 1rem;
+      margin: 0 5px;
+      padding: 3px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+  }
+
+  .addButton {
+    background-color: #c8102e;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
     font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 
-    span{
-
+    &:hover {
+      background-color: #a10d24;
     }
   }
 }
+
+// .produtoContainer {
+//   display: grid;
+//   grid-template-columns: repeat(5, 1fr);  // 5 colunas
+//   gap: 25px; // Espaçamento entre os cards
+//   padding: 10px;
+//   margin-left: 117px;
+//   margin-right: 210px;
+//   padding-bottom: 30px; // Adiciona padding na parte inferior para espaçamento
+
+//   @media (max-width: 1200px) {
+//     grid-template-columns: repeat(4, 1fr); // Ajusta para 4 colunas em telas menores
+//   }
+
+//   @media (max-width: 900px) {
+//     grid-template-columns: repeat(3, 1fr); // Ajusta para 3 colunas em telas menores
+//   }
+
+//   @media (max-width: 600px) {
+//     grid-template-columns: repeat(2, 1fr); // Ajusta para 2 colunas em telas menores
+//   }
+
+//   @media (max-width: 400px) {
+//     grid-template-columns: 1fr; // Ajusta para 1 coluna em telas muito pequenas
+//   }
+
+
+// }
+
+
+
+// .card {
+//   display: flex; // Habilita o Flexbox
+//   flex-direction: column; // Organiza os itens na coluna
+//   justify-content:center; // Distribui o espaço entre os itens
+//   background-color: #f9f9f9; // Cor de fundo dos cards
+//   border: 1px solid #ccc; // Borda leve
+//   border-radius: 8px; // Bordas arredondadas
+//   padding: 17px;
+//   text-align: center; // Alinhamento geral do conteúdo
+//   font-weight: bold; // Texto em negrito
+//   height: auto; // Ajusta a altura do card para se adaptar ao conteúdo
+//   margin-bottom: 20px; // Adiciona margem inferior para espaçamento entre os cards
+
+//   h2.cardTitle {
+//     text-align: center; // Centraliza o h3
+//     font-weight: bold; // Negrito no título
+//     margin-top: 10px; // Adiciona espaço acima do título
+//     margin-bottom: 10px; // Adiciona espaço abaixo do título
+//     font-size: 1.4rem;
+//   }
+
+//   p.cardText {
+//     display: flex;
+//     text-align: justify; // Parágrafos justificados
+//     font-weight: bold; // Negrito no conteúdo
+//     margin: 5px 0;
+//     gap: 0.4rem;
+//     text-align: center;
+//     justify-content: center;
+//     margin-bottom: 6px; // Adiciona espaço abaixo do título
+//     font-size: 1rem;
+
+//     span{
+
+//     }
+//   }
+// }
 
 // Resto do seu código permanece inalterado
 .header {
@@ -227,4 +343,15 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.cardDetails {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 10px; /* Ajuste o valor do espaço entre os rádios, se necessário */
+}
+
+.radioLabel {
+  display: flex;
+  align-items: flex-start;
 }
