@@ -39,7 +39,6 @@ export default function Product({ categoryList }: CategoryProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sizeOptions = [
-    { value: '', label: 'Selecionar Tamanho' },
     { value: 'Pequena', label: 'Pequena' },
     { value: 'Média', label: 'Média' },
     { value: 'Grande', label: 'Grande' },
@@ -64,12 +63,38 @@ export default function Product({ categoryList }: CategoryProps) {
 
   const handleSizeChange = (index: number, field: string, value: string) => {
     const updatedSizes = [...sizes];
+
+    // Atualiza o tamanho ou o preço na posição especificada
     updatedSizes[index] = {
       ...updatedSizes[index],
       [field]: field === 'preco' ? formatPrice(value) : value,
     };
-    setSizes(updatedSizes);
+
+    // Garante que o tamanho selecionado seja único entre os selects
+    const uniqueSizes = updatedSizes.map((size, idx) => {
+      if (idx !== index && size.tamanho === value && field === 'tamanho') {
+        return { ...size, tamanho: '' }; // Remove tamanho duplicado
+      }
+      return size;
+    });
+
+    setSizes(uniqueSizes);
   };
+
+  // Função para gerar opções dinâmicas
+  const getFilteredSizeOptions = (index: number) => {
+    const selectedSizes = sizes.map((size) => size.tamanho);
+  
+    const filteredOptions = sizeOptions.filter(
+      (option) =>
+        !selectedSizes.includes(option.value) || sizes[index].tamanho === option.value
+    );
+  
+    // Adiciona a opção "Sem tamanho selecionado"
+    return [{ value: '', label: 'Sem tamanho selecionado' }, ...filteredOptions];
+  };
+  
+
 
   const formatPrice = (value: string): string => {
     const cleanValue = value.replace(/\D/g, '');
@@ -216,7 +241,7 @@ export default function Product({ categoryList }: CategoryProps) {
                       onChange={(e) => handleSizeChange(index, 'tamanho', e.target.value)}
                       className={styles.selectSize}
                     >
-                      {sizeOptions.map((option) => (
+                      {getFilteredSizeOptions(index).map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
                         </option>
@@ -322,7 +347,7 @@ export default function Product({ categoryList }: CategoryProps) {
       <Footer />
 
       {isModalOpen && selectedProduct && (
-        <ProductDetailsModal product={selectedProduct} onClose={closeModal}>
+        <ProductDetailsModal product={selectedProduct} onClose={closeModal} onUpdate={fetchProducts}>
           <h2>{selectedProduct.nome}</h2>
           <p>{selectedProduct.descricao}</p>
           {selectedProduct.tamanhos && (
