@@ -46,7 +46,7 @@ const PrivacyPolicy: React.FC = () => {
         // Adicione data e hora como parâmetros extras
         emailjs
             .sendForm(
-                'service_srx9ckq',
+                'service_b1wujkg',
                 'template_emidah4',
                 e.target,
                 '3JaBOCjox6QJDTSxj',

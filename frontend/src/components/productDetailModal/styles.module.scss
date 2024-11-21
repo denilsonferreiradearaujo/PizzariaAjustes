@@ -1,145 +1,185 @@
+/* Overlay e modal */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7); /* Fundo mais escuro para contraste */
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  opacity: 0;
   animation: fadeIn 0.3s forwards;
 }
 
 .modal {
-  background: #fff;
-  padding: 24px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 520px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  background: #fdfdfd;
+  padding: 40px 30px;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 600px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
-  max-height: 80vh;
-  transform: translateY(-20px);
-  transition: transform 0.3s ease-in-out, opacity 0.3s ease;
+  max-height: 90vh;
   opacity: 0;
   animation: modalEntrance 0.3s forwards;
 }
 
+/* Estilos gerais do modal */
 .closeButton {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 20px;
+  right: 20px;
   background: transparent;
   border: none;
-  font-size: 24px;
-  color: #ff5a5f;
+  font-size: 28px;
+  color: #ff4757;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.3s;
 
   &:hover {
-    color: #d32f2f;
+    color: #e84118;
   }
 }
 
 .modalTitle {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 20px;
+  color: #34495e;
+  margin-bottom: 1.5em;
+  text-align: center;
 }
 
+/* Inputs, textarea e select */
 .input,
 .textarea,
 .select {
   width: 100%;
-  padding: 12px;
-  margin: 8px 0 16px;
+  padding: 14px;
+  margin-bottom: 18px;
   border-radius: 8px;
-  border: 1px solid #dcdcdc;
+  border: 1px solid #ced6e0;
   font-size: 1rem;
-  color: #333;
-  transition: border-color 0.3s ease;
+  color: #2f3542;
+  background-color: #f1f2f6;
+  transition: border-color 0.3s;
 
   &:focus {
-    border-color: #3498db;
+    border-color: #1e90ff;
+    background-color: #ffffff;
     outline: none;
   }
 }
 
+/* Estilos para produtos sem tamanhos */
+.noSizes {
+  .sizeList {
+    display: none; /* Esconde a lista de tamanhos */
+  }
+
+  .productPrice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 14px;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+    margin-top: 15px;
+  }
+
+  .productPrice .currencySymbol {
+    font-weight: bold;
+    color: #2f3542;
+    margin-right: 6px;
+  }
+
+  .productPrice input {
+    width: 20%;
+    text-align: right;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ced6e0;
+    background-color: #f1f2f6;
+    transition: border-color 0.3s;
+
+    &:focus {
+      border-color: #1e90ff;
+      background-color: #ffffff;
+    }
+  }
+}
+
+/* Estilos para produtos com tamanhos */
 .sizeList {
-  list-style: none;
   padding: 0;
+  list-style: none;
+  margin: 0;
 }
 
 .sizeItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 10px 0;
-  padding: 10px;
-  background-color: #f3f4f6;
+  margin: 12px 0;
+  padding: 14px;
+  background-color: #f8f9fa;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  
-  strong {
-    color: #34495e;
-  }
-  
-  .inputPrice {
-    width: 80px;
-    text-align: right;
-    padding: 8px;
-    border-radius: 8px;
-    border: 1px solid #dcdcdc;
-    transition: border-color 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
 
-    &:focus {
-      border-color: #3498db;
+  strong {
+    color: #2f3640;
+  }
+
+  .priceInputContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .currencySymbol {
+      font-weight: bold;
+      color: #2f3542;
+      margin-right: 6px;
+    }
+
+    .inputPrice {
+      width: 100%;
+      text-align: right;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ced6e0;
+      background-color: #f1f2f6;
+      transition: border-color 0.3s;
+
+      &:focus {
+        border-color: #1e90ff;
+        background-color: #ffffff;
+      }
     }
   }
 }
 
-.inputPrice2 { //CAMPO DE PREÇO SEM TAMANHO
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 10px 0;
-  padding: 10px;
-  background-color: #f3f4f6;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-  width: 200px;
-  text-align: center;
-  padding: 8px;
-  border-radius: 8px;
-  border: 1px solid #dcdcdc;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    border-color: #3498db;
-  }
-}
-
+/* Botão de salvar alterações */
 .buttonSubmit {
   width: 100%;
-  padding: 12px;
-  font-size: 1rem;
+  padding: 14px;
+  font-size: 1.1rem;
   font-weight: bold;
-  color: #fff;
+  color: #ffffff;
   background-color: #27ae60;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #219150;
+    background-color: #218c4a;
   }
 }
 
+/* Animações */
 @keyframes fadeIn {
   from {
     opacity: 0;
