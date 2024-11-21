@@ -322,7 +322,7 @@ export default function Product({ categoryList }: CategoryProps) {
       <Footer />
 
       {isModalOpen && selectedProduct && (
-        <ProductDetailsModal product={selectedProduct} onClose={closeModal}>
+        <ProductDetailsModal product={selectedProduct} onClose={closeModal}  onUpdate={fetchProducts}>
           <h2>{selectedProduct.nome}</h2>
           <p>{selectedProduct.descricao}</p>
           {selectedProduct.tamanhos && (

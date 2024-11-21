@@ -10,7 +10,7 @@ type Size = {
 };
 
 type Value = {
-  tamanhoId: number;
+  tamanhoId: number | null;
   preco: string;
 };
 
@@ -26,24 +26,36 @@ type Product = {
 interface ProductDetailsModalProps {
   product: Product;
   onClose: () => void;
+  onUpdate: () => void; // Nova propriedade para atualização
 }
 
-export function ProductDetailsModal({ product, onClose }: ProductDetailsModalProps) {
+export function ProductDetailsModal({ product, onClose, onUpdate }: ProductDetailsModalProps) {
   const [name, setName] = useState(product.nome);
   const [description, setDescription] = useState(product.descricao || '');
   const [status, setStatus] = useState(product.status);
   const [priceValues, setPriceValues] = useState(
     product.valores.map((value) => ({
       tamanhoId: value.tamanhoId,
-      preco: value.preco,
+      preco: value.preco.replace('.', ','), // Exibe com vírgula para o usuário
     }))
   );
 
-  const formatPrice = (price: string | number | undefined) => {
-    if (price == null || isNaN(Number(price))) {
-      return 'R$ 0,00';
-    }
-    return `R$ ${Number(price).toFixed(2).replace('.', ',')}`;
+  const handleMaskedPriceChange = (tamanhoId: number, rawValue: string) => {
+    let value = rawValue.replace(/\D/g, '');
+    value = (Number(value) / 100).toFixed(2).replace('.', ',');
+
+    setPriceValues((prevPrices) =>
+      prevPrices.map((price) =>
+        price.tamanhoId === tamanhoId ? { ...price, preco: value } : price
+      )
+    );
+  };
+
+  const handleSinglePriceChange = (rawValue: string) => {
+    let value = rawValue.replace(/\D/g, '');
+    value = (Number(value) / 100).toFixed(2).replace('.', ',');
+
+    setPriceValues([{ tamanhoId: null, preco: value }]);
   };
 
   const handleUpdateProduct = async () => {
@@ -54,30 +66,18 @@ export function ProductDetailsModal({ product, onClose }: ProductDetailsModalPro
       status,
       valores: priceValues.map((value) => ({
         ...value,
-        preco: value.preco.replace(',', '.'),
+        preco: value.preco.replace(',', '.'), // Substitui vírgula por ponto antes de enviar
       })),
     };
 
     try {
       await apiCliente.put(`/updateProduct/${product.id}`, updatedProduct);
       toast.success('Produto atualizado com sucesso!');
-      onClose();
+      onUpdate(); // Chama a função para atualizar a lista de produtos
+      onClose(); // Fecha o modal
     } catch (error) {
       toast.error('Erro ao atualizar o produto');
     }
-  };
-
-  const handlePriceChange = (tamanhoId: number, value: string) => {
-    setPriceValues((prevPrices) =>
-      prevPrices.map((price) =>
-        price.tamanhoId === tamanhoId ? { ...price, preco: value } : price
-      )
-    );
-  };
-
-  const handleSinglePriceChange = (value: string) => {
-    // Atualiza o preço para o único produto sem tamanhos
-    setPriceValues([{ tamanhoId: 0, preco: value }]);
   };
 
   return (
@@ -119,25 +119,31 @@ export function ProductDetailsModal({ product, onClose }: ProductDetailsModalPro
               {product.tamanhos.map((size) => (
                 <li key={size.id} className={styles.sizeItem}>
                   <strong>{size.tamanho}</strong>
-                  <input
-                    type="text"
-                    value={priceValues.find((value) => value.tamanhoId === size.id)?.preco || ''}
-                    onChange={(e) => handlePriceChange(size.id, e.target.value)}
-                    className={styles.inputPrice}
-                  />
+                  <div className={styles.priceInputContainer}>
+                    <span className={styles.currencySymbol}>R$</span>
+                    <input
+                      type="text"
+                      value={priceValues.find((value) => value.tamanhoId === size.id)?.preco || ''}
+                      onChange={(e) => handleMaskedPriceChange(size.id, e.target.value)}
+                      className={styles.inputPrice}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>
           </>
         ) : (
           <>
-            <label>Preço:</label>
+          <label className={styles.precoTitle}>Preço:</label>
+          <div className={styles.productPrice}>
+            <span className={styles.currencySymbol}>R$</span>
             <input
               type="text"
               value={priceValues[0]?.preco || ''}
               onChange={(e) => handleSinglePriceChange(e.target.value)}
               className={styles.inputPrice2}
             />
+          </div>
           </>
         )}
 
