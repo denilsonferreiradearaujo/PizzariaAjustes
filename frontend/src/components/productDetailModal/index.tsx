@@ -26,7 +26,7 @@ type Product = {
 interface ProductDetailsModalProps {
   product: Product;
   onClose: () => void;
-  onUpdate: () => void; // Nova propriedade para atualização
+  onUpdate: () => void;
 }
 
 export function ProductDetailsModal({ product, onClose, onUpdate }: ProductDetailsModalProps) {
@@ -73,7 +73,7 @@ export function ProductDetailsModal({ product, onClose, onUpdate }: ProductDetai
     try {
       await apiCliente.put(`/updateProduct/${product.id}`, updatedProduct);
       toast.success('Produto atualizado com sucesso!');
-      onUpdate(); // Chama a função para atualizar a lista de produtos
+      onUpdate(); // Atualiza a lista de produtos
       onClose(); // Fecha o modal
     } catch (error) {
       toast.error('Erro ao atualizar o produto');
@@ -134,16 +134,16 @@ export function ProductDetailsModal({ product, onClose, onUpdate }: ProductDetai
           </>
         ) : (
           <>
-          <label className={styles.precoTitle}>Preço:</label>
-          <div className={styles.productPrice}>
-            <span className={styles.currencySymbol}>R$</span>
-            <input
-              type="text"
-              value={priceValues[0]?.preco || ''}
-              onChange={(e) => handleSinglePriceChange(e.target.value)}
-              className={styles.inputPrice2}
-            />
-          </div>
+            <label className={styles.precoTitle}>Preço:</label>
+            <div className={styles.productPrice}>
+              <span className={styles.currencySymbol}>R$</span>
+              <input
+                type="text"
+                value={priceValues[0]?.preco || ''}
+                onChange={(e) => handleSinglePriceChange(e.target.value)}
+                className={styles.inputPrice2}
+              />
+            </div>
           </>
         )}
 
