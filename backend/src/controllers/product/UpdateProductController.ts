@@ -4,7 +4,7 @@ import { UpdateProductService } from "../../services/product/UpdateProductServic
 class UpdateProductController {
   async handle(req: Request, res: Response) {
     const { id } = req.params;
-    const { nome, categoriaId, tamanhos, valores } = req.body;
+    const { nome, descricao, categoriaId, status, tamanhos, valores } = req.body;
 
     // Converter o `id` para número
     const idNumero = parseInt(id);
@@ -20,7 +20,9 @@ class UpdateProductController {
       const produtoAtualizado = await updateProductService.execute({
         id: idNumero,
         nome,
+        descricao,
         categoriaId,
+        status, // Passando status aqui para o serviço
         tamanhos,
         valores
       });

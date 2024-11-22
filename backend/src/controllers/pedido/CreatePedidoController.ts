@@ -8,6 +8,7 @@ class CreatePedidoController {
 
     const createPedidoService = new CreatePedidoService();
 
+    console.log("Payload recebido no controller:", req.body);
     try {
       const pedido = await createPedidoService.execute({
         pessoaId,
@@ -25,6 +26,10 @@ class CreatePedidoController {
       return res.status(400).json({ error: error.message });
     }
   }
+  
 }
+
+
+
 
 export { CreatePedidoController };

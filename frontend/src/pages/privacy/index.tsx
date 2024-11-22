@@ -11,7 +11,9 @@ const PrivacyPolicy: React.FC = () => {
         <>
             <header className={styles.header}>
                 <div className={styles.logo}>
-                    <Image src={logoImg} alt="Logo Pizzaria" width={200} height={100} />
+                    <Link href="/" legacyBehavior>
+                        <Image src={logoImg} alt="Logo Pizzaria" width={200} height={100} />
+                    </Link>
                 </div>
                 <div className={styles.nav}>
 

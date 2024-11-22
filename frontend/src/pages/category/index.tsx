@@ -2,10 +2,8 @@ import { useState, useEffect, FormEvent } from 'react';
 import Head from 'next/head';
 import { Header } from '@/src/components/Header';
 import styles from './styles.module.scss';
-
 import { setupAPICliente } from '@/src/services/api';
 import { toast } from 'react-toastify';
-
 import { canSSRAuth } from '@/src/utils/canSSRAuth';
 
 interface Categoria {
@@ -46,7 +44,6 @@ export default function Category() {
 
     const apiCliente = setupAPICliente();
     await apiCliente.post('/category', { nome });
-
     toast.success('Categoria cadastrada com sucesso');
     setNome('');
     await fetchCategorias();
@@ -82,7 +79,6 @@ export default function Category() {
 
       <div>
         <Header />
-
         <div className={styles.container}>
           <h1>Cadastrar ou filtrar uma categoria</h1>
 

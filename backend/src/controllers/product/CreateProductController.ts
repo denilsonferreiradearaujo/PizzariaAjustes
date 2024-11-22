@@ -13,7 +13,7 @@ class CreateProductController {
                 descricao, // Incluído no objeto enviado ao serviço
                 categoriaId,
                 tamanhos: tamanhos || null, // Permite que tamanhos sejam null se não fornecidos
-                valores
+                valores,
             });
 
             return res.json(produto);

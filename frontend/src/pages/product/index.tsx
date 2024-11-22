@@ -10,10 +10,12 @@ import { ProductDetailsModal } from '../../components/productDetailModal';
 
 type ItemProps = {
   id: string;
+  categoriaId?: number;
   nome: string;
   descricao: string;
   preco: string;
   tamanhos: Array<{ tamanho: string; preco: string }>;
+  status: string;
 };
 
 interface CategoryProps {
@@ -28,19 +30,15 @@ export default function Product({ categoryList }: CategoryProps) {
   const [categorySelected, setCategorySelected] = useState(0);
   const [isSizeEnabled, setIsSizeEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const [sizes, setSizes] = useState([
-    { tamanho: '', preco: '' },
-    { tamanho: '', preco: '' },
-    { tamanho: '', preco: '' },
-  ]);
-
+  const [sizes, setSizes] = useState([{ tamanho: '', preco: '' }, { tamanho: '', preco: '' }, { tamanho: '', preco: '' }]);
   const [productList, setProductList] = useState<ItemProps[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<number>(-1); // -1 significa nenhum filtro
+  const [selectedStatusFilter, setSelectedStatusFilter] = useState<string>(''); // Pode ser 'Ativo', 'Inativo' ou vazio
   const [selectedProduct, setSelectedProduct] = useState<ItemProps | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const sizeOptions = [
-    { value: '', label: 'Selecionar Tamanho' },
     { value: 'Pequena', label: 'Pequena' },
     { value: 'Média', label: 'Média' },
     { value: 'Grande', label: 'Grande' },
@@ -53,7 +51,7 @@ export default function Product({ categoryList }: CategoryProps) {
       const response = await apiCliente.get('/listProduct');
       setProductList(response.data);
     } catch (error) {
-      toast.error("Erro ao carregar produtos");
+      toast.error('Erro ao carregar produtos');
     } finally {
       setLoading(false);
     }
@@ -65,12 +63,38 @@ export default function Product({ categoryList }: CategoryProps) {
 
   const handleSizeChange = (index: number, field: string, value: string) => {
     const updatedSizes = [...sizes];
+
+    // Atualiza o tamanho ou o preço na posição especificada
     updatedSizes[index] = {
       ...updatedSizes[index],
       [field]: field === 'preco' ? formatPrice(value) : value,
     };
-    setSizes(updatedSizes);
+
+    // Garante que o tamanho selecionado seja único entre os selects
+    const uniqueSizes = updatedSizes.map((size, idx) => {
+      if (idx !== index && size.tamanho === value && field === 'tamanho') {
+        return { ...size, tamanho: '' }; // Remove tamanho duplicado
+      }
+      return size;
+    });
+
+    setSizes(uniqueSizes);
   };
+
+  // Função para gerar opções dinâmicas
+  const getFilteredSizeOptions = (index: number) => {
+    const selectedSizes = sizes.map((size) => size.tamanho);
+  
+    const filteredOptions = sizeOptions.filter(
+      (option) =>
+        !selectedSizes.includes(option.value) || sizes[index].tamanho === option.value
+    );
+  
+    // Adiciona a opção "Sem tamanho selecionado"
+    return [{ value: '', label: 'Sem tamanho selecionado' }, ...filteredOptions];
+  };
+  
+
 
   const formatPrice = (value: string): string => {
     const cleanValue = value.replace(/\D/g, '');
@@ -79,7 +103,7 @@ export default function Product({ categoryList }: CategoryProps) {
   };
 
   const parsePriceForSubmission = (price: string): string => {
-    return price.replace(/[^\d,]/g, '').replace(',', '.');
+    return price.replace(/[^\d,]/g, '').replace(',', '.').replace('R$', '').trim();
   };
 
   const handleValidation = () => {
@@ -110,16 +134,16 @@ export default function Product({ categoryList }: CategoryProps) {
     if (!handleValidation()) return;
 
     const selectedCategoryId = categories[categorySelected].id;
-    const tamanhos = isSizeEnabled ? sizes.filter(size => size.tamanho && size.preco) : null;
-    const valores = tamanhos
+    const tamanhos = isSizeEnabled ? sizes.filter(size => size.tamanho && size.preco) : [];  //tamanhos nunca será null
+    const valores = tamanhos.length > 0
       ? tamanhos.map(size => ({ preco: parsePriceForSubmission(size.preco), tamanho: size.tamanho }))
-      : [{ preco: parsePriceForSubmission(price) }];
+      : [{ preco: parsePriceForSubmission(price) }]; // Caso tamanhos esteja vazio, mantemos o preço padrão
 
     const data = {
       nome: name,
       descricao: description,
       categoriaId: parseInt(selectedCategoryId, 10),
-      tamanhos,
+      tamanhos: tamanhos.length > 0 ? tamanhos : undefined, // Exclui tamanhos se estiver vazio
       valores,
     };
 
@@ -217,7 +241,7 @@ export default function Product({ categoryList }: CategoryProps) {
                       onChange={(e) => handleSizeChange(index, 'tamanho', e.target.value)}
                       className={styles.selectSize}
                     >
-                      {sizeOptions.map((option) => (
+                      {getFilteredSizeOptions(index).map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
                         </option>
@@ -244,26 +268,88 @@ export default function Product({ categoryList }: CategoryProps) {
 
         <div className={styles.productListContainer}>
           <h1 className={styles.titulo}>Produtos Cadastrados</h1>
+
+          {/* Campo de filtros */}
+          <div className={styles.filtersContainer}>
+            <input
+              type="text"
+              placeholder="Pesquisar por nome..."
+              className={styles.input}
+              value={searchTerm} // Use searchTerm para a pesquisa
+              onChange={(e) => setSearchTerm(e.target.value)} // Atualiza searchTerm conforme o usuário digita
+            />
+
+            <select
+              value={selectedCategoryFilter}
+              onChange={(e) => setSelectedCategoryFilter(Number(e.target.value))}
+              className={styles.select}
+            >
+              <option value={-1}>Todas as Categorias</option>
+              {categories.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.nome}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedStatusFilter}
+              onChange={(e) => setSelectedStatusFilter(e.target.value)}
+              className={styles.select}
+            >
+              <option value="">Todos os Status</option>
+              <option value="Ativo">Ativo</option>
+              <option value="Inativo">Inativo</option>
+            </select>
+          </div>
+
+          {/* Lista de produtos */}
           {loading ? (
             <p>Carregando produtos...</p>
           ) : (
             <ul>
-              {productList.map((product) => (
-                <li key={product.id} className={styles.productItem} onClick={() => handleProductClick(product)}>
-                  <h2>{product.nome}</h2>
-                  <p>{product.descricao}</p>
-                </li>
-              ))}
+              {productList
+                .filter((product) => {
+                  // Filtro de categoria
+                  if (selectedCategoryFilter !== -1 && product.categoriaId !== selectedCategoryFilter) {
+                    return false;
+                  }
+
+                  // Filtro de status
+                  if (selectedStatusFilter && product.status !== selectedStatusFilter) {
+                    return false;
+                  }
+
+                  // Filtro de pesquisa por nome
+                  return product.nome.toLowerCase().includes(searchTerm.toLowerCase());
+                })
+                .map((product) => (
+                  <li
+                    key={product.id}
+                    className={styles.productItem}
+                    onClick={() => handleProductClick(product)}
+                  >
+                    <h2>{product.nome}</h2>
+
+                    <p>{product.descricao}</p>
+
+                    {/* Exibe o status do produto com a cor apropriada */}
+                    <p className={product.status === 'Ativo' ? styles.statusAtivo : styles.statusInativo}>
+                      {product.status}
+                    </p>
+                  </li>
+                ))}
             </ul>
           )}
         </div>
+
       </main>
       <Footer />
 
       {isModalOpen && selectedProduct && (
-        <ProductDetailsModal product={selectedProduct} onClose={closeModal}>
+        <ProductDetailsModal product={selectedProduct} onClose={closeModal} onUpdate={fetchProducts}>
           <h2>{selectedProduct.nome}</h2>
-          <p>{selectedProduct.descricao}</p>
+          <p className={styles.descricao}>{selectedProduct.descricao}</p>
           {selectedProduct.tamanhos && (
             <ul>
               {selectedProduct.tamanhos.map((size, index) => (
@@ -273,6 +359,7 @@ export default function Product({ categoryList }: CategoryProps) {
               ))}
             </ul>
           )}
+          {!selectedProduct.tamanhos && <p>Preço: {selectedProduct.preco}</p>}
         </ProductDetailsModal>
       )}
     </>
@@ -282,7 +369,6 @@ export default function Product({ categoryList }: CategoryProps) {
 export const getServerSideProps = canSSRAuth(async (ctx) => {
   const apiCliente = setupAPICliente(ctx);
   const response = await apiCliente.get('/listCategory');
-
   return {
     props: {
       categoryList: response.data,

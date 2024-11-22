@@ -1,39 +1,200 @@
+/* Overlay e modal */
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  animation: fadeIn 0.3s forwards;
 }
 
 .modal {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
   position: relative;
-  width: 400px;
+  background: #fdfdfd;
+  padding: 40px 30px;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 600px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  max-height: 90vh;
+  opacity: 0;
+  animation: modalEntrance 0.3s forwards;
 }
 
+/* Estilos gerais do modal */
 .closeButton {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   background: transparent;
   border: none;
-  font-size: 18px;
+  font-size: 28px;
+  color: #ff4757;
   cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #e84118;
+  }
 }
 
+.modalTitle {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #34495e;
+  margin-bottom: 1.5em;
+  text-align: center;
+}
+
+/* Inputs, textarea e select */
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 18px;
+  border-radius: 8px;
+  border: 1px solid #ced6e0;
+  font-size: 1rem;
+  color: #2f3542;
+  background-color: #f1f2f6;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #1e90ff;
+    background-color: #ffffff;
+    outline: none;
+  }
+}
+
+/* Estilos para produtos sem tamanhos */
+.noSizes {
+  .sizeList {
+    display: none; /* Esconde a lista de tamanhos */
+  }
+
+  .productPrice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 14px;
+    border-radius: 8px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+    margin-top: 15px;
+  }
+
+  .productPrice .currencySymbol {
+    font-weight: bold;
+    color: #2f3542;
+    margin-right: 6px;
+  }
+
+  .productPrice input {
+    width: 20%;
+    text-align: right;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ced6e0;
+    background-color: #f1f2f6;
+    transition: border-color 0.3s;
+
+    &:focus {
+      border-color: #1e90ff;
+      background-color: #ffffff;
+    }
+  }
+}
+
+/* Estilos para produtos com tamanhos */
 .sizeList {
-  list-style: none;
   padding: 0;
+  list-style: none;
+  margin: 0;
 }
 
 .sizeItem {
-  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px 0;
+  padding: 14px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+
+  strong {
+    color: #2f3640;
+  }
+
+  .priceInputContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .currencySymbol {
+    font-weight: bold;
+    color: #2f3542;
+    margin-right: 6px;
+  }
+
+  .inputPrice {
+    width: 100px;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ced6e0;
+    background-color: #f1f2f6;
+    transition: border-color 0.3s;
+
+    &:focus {
+      border-color: #1e90ff;
+      background-color: #ffffff;
+    }
+  }
+}
+
+/* Botão de salvar */
+.buttonSubmit {
+  width: 100%;
+  padding: 12px;
+  background-color: #a2aa02;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #055b02;
+  }
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

@@ -29,6 +29,7 @@ class CreateProductService {
                           create: tamanhos.map(t => ({ tamanho: t.tamanho })),
                       }
                     : undefined,
+                    status : "Ativo" //Garante que o status é setado como ativo
             },
         });
 

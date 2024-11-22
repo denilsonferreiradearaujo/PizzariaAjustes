@@ -1,41 +1,60 @@
 .footerContainer {
     width: 100%;
-    position: absolute;
-    background-color: #272626; // Cor de fundo
-    color: #ffffff; // Cor do texto
-    padding: 100px 0; // Espaçamento vertical
-    text-align: center; // Centraliza o texto
-    margin-top: 140px; // Espaçamento acima da navegação
-
-    .footerContent {
-        margin-top: -100px; // Espaçamento acima da navegação
-        display: flex;
-        flex-direction: column; // Empilha os elementos verticalmente
-        align-items: center; // Centraliza horizontalmente
-    }
-
-    .footerNav {
-        margin-top: 100px; // Espaçamento acima da navegação
-        a {
-            color: #ffffff; // Cor do link
-            margin: 0 15px; // Espaçamento horizontal entre os links
-            text-decoration: none; // Remove sublinhado
-            transition: color 0.3s ease; // Transição suave para hover
-
-            &:hover {
-                color: #FFC107; // Cor do link ao passar o mouse
-            }
-        }
-    }
+    background-color: #272626;
+    color: #ffffff;
+    padding: 50px 20px;
+    text-align: center;
+    
+    
 }
 
-.imgSenai{
-    margin-top: 90px;
-    justify-items: auto;
+.footerContent {
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
-.direitos{
-    margin-top: 100px;
+.footerNav {
+    display: flex;
+    gap: 30px;
 }
 
+.footerNav a {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footerNav a:hover {
+    color: #FFC107;
+}
+
+.imgSenai {
+    padding: 0px;
+}
+
+.socialContainer {
+    text-align: center;
+}
+
+.socialContainer p {
+    margin-bottom: 15px;
+}
+
+.socialIcons {
+    display: flex;
+    gap: 22px;
+    margin-top: 35px;
+    justify-content: center;
+}
+
+.rights {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #cccccc;
+}
+
+.imgInstagram {
+    position: relative;
+    bottom: 0px; /* Move o ícone 30 pixels para baixo */
+}
