@@ -11,10 +11,23 @@
   }
 
   .nav .button {
-    color: black;
+    color: #ffffff;
     text-decoration: dashed;
     font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #c8102e;
+
+    &:hover {
+      background-color: #a10d24;
+    }
   }
+
+  
 }
 
 .titulo {
@@ -53,7 +66,7 @@
   margin-left: 115vh;
   position: absolute;
   flex: 1;
- 
+
 
 
 
@@ -117,7 +130,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   margin-left: 115vh;
   position: absolute;
-  margin-top: 53vh;
+  margin-top: 44vh;
 
 
 
@@ -157,7 +170,8 @@
   margin-top: 20px;
 }
 
-.orderTable th, .orderTable td {
+.orderTable th,
+.orderTable td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
@@ -173,9 +187,12 @@
   background-color: #f4f4f4;
   // font-weight: bold;
   font-size: 14px;
-  white-space: nowrap; /* Impede a quebra de linha */
-  overflow: hidden; /* Oculta o conteúdo que excede o tamanho */
-  text-overflow: ellipsis; /* Adiciona os "..." ao final do texto */
+  white-space: nowrap;
+  /* Impede a quebra de linha */
+  overflow: hidden;
+  /* Oculta o conteúdo que excede o tamanho */
+  text-overflow: ellipsis;
+  /* Adiciona os "..." ao final do texto */
 }
 
 .trashButton {
@@ -183,5 +200,3 @@
   border: none;
   cursor: pointer;
 }
-
-

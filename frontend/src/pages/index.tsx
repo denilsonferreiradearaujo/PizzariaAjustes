@@ -5,9 +5,6 @@ import Head from "next/head";
 import Image from "next/image";
 import { toast } from 'react-toastify';
 
-import img1 from "../../public/PizzaPacoca.jpeg"; // Importe as imagens que você quer usar no carrossel
-import img2 from "../../public/Portuguesa.png";
-
 import logoImg from '../../public/logo.png';
 import baner from '../../public/baner.jpg';
 import calabresaImg from '../../public/calabresa.png'; // Pizzas Salgadas
@@ -147,21 +144,6 @@ export default function Home() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // 
-  const images = [baner, img1, img2];
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const delay = 3000; // Tempo em milissegundos para trocar a imagem (ex: 3000ms = 3s)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, delay);
-
-    return () => clearInterval(interval); // Limpa o intervalo quando o componente é desmontado
-  }, []);
-
-  // 
-
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
@@ -199,8 +181,8 @@ export default function Home() {
       setCart(uniqueCart);
     }
   }, []);
-
-
+  
+  
 
   const handleClick = async (categoriaId: number) => {
     setClickedButton(categoriaId);
@@ -224,18 +206,18 @@ export default function Home() {
   // const addToCart = (produto: Produto) => {
   //   const tamanhoSelecionado = selectedSize[produto.id];
   //   const valorSelecionado = produto.valores.find((valor) => valor.tamanho === tamanhoSelecionado);
-
+  
   //   if (!tamanhoSelecionado || !valorSelecionado) {
   //     toast.error("Por favor, selecione um tamanho.");
   //     return;
   //   }
-
+  
   //   setCart((prevCart) => {
   //     // Verifica se o produto e tamanho já existem no carrinho
   //     const existingItemIndex = prevCart.findIndex(
   //       (item) => item.id === produto.id && item.tamanho === tamanhoSelecionado
   //     );
-
+  
   //     if (existingItemIndex >= 0) {
   //       // Incrementar quantidade no item existente
   //       const updatedCart = [...prevCart];
@@ -259,27 +241,27 @@ export default function Home() {
   //     }
   //   });
   // };
-
+  
   const addToCart = (produto: Produto) => {
     const tamanhoSelecionado = selectedSize[produto.id];
     const valorSelecionado = produto.valores.find((valor) => valor.tamanho === tamanhoSelecionado);
-
+  
     if (!valorSelecionado) { //!tamanhoSelecionado || 
       toast.error("Por favor, selecione um tamanho.");
       return;
     }
-
+  
     setCart((prevCart) => {
       // Verifica se o produto e tamanho já existem no carrinho
       const existingItemIndex = prevCart.findIndex(
         (item) => item.id === produto.id && item.tamanho === tamanhoSelecionado
       );
-
+  
       if (existingItemIndex >= 0) {
         // Atualiza a quantidade do item existente
         const updatedCart = prevCart.map((item, index) =>
           index === existingItemIndex
-            ? { ...item, quantidade: item.quantidade } // + 1
+            ? { ...item, quantidade: item.quantidade} // + 1
             : item
         );
         localStorage.setItem("cart", JSON.stringify(updatedCart));
@@ -303,6 +285,8 @@ export default function Home() {
       }
     });
   };
+  
+
 
   // const incrementQuantity = (itemId: number, tamanho: string) => {
   //   setCart((prevCart) => {
@@ -347,7 +331,7 @@ export default function Home() {
       const existingItemIndex = prevCart.findIndex(
         (item) => item.id === itemId // && item.tamanho === tamanho
       );
-
+  
       if (existingItemIndex >= 0) {
         const updatedCart = prevCart.map((item, index) =>
           index === existingItemIndex
@@ -360,7 +344,7 @@ export default function Home() {
         const produto = produtos.find((p) => p.id === itemId);
         const tamanhoSelecionado = selectedSize[itemId];
         const valorSelecionado = produto?.valores.find((v) => v.tamanho === tamanhoSelecionado);
-
+  
         if (produto && valorSelecionado) { //&& tamanhoSelecionado
           const newItem: CartItem = {
             id: produto.id,
@@ -378,7 +362,7 @@ export default function Home() {
       }
     });
   };
-
+  
 
   // const decrementQuantity = (itemId: number, tamanho: string) => {
   //   console.log("Decrementando quantidade", itemId, tamanho);
@@ -396,7 +380,7 @@ export default function Home() {
   // };
 
   // Funcão para direcionar para a página do carrinho.
-
+  
   const decrementQuantity = (itemId: number, tamanho: string) => {
     setCart((prevCart) => {
       const updatedCart = prevCart
@@ -409,15 +393,15 @@ export default function Home() {
       return updatedCart;
     });
   };
-
-
+  
+  
   const goToCart = () => {
     router.push("/checkout");
   };
 
   console.log("Tamanho selecionado:", selectedSize);
   console.log("Carrinho:", cart);
-
+  
   return (
     <>
       <header className={styles.header}>
@@ -460,17 +444,8 @@ export default function Home() {
         </Box>
       </Modal>
 
-      {/* <div className={styles.baner}>
-          <Image src={baner} alt="Logo Pizzaria" width={1100} height={400} />
-        </div> */}
-
       <div className={styles.baner}>
-        <Image
-          src={images[currentIndex]}
-          alt={`Imagem ${currentIndex + 1}`}
-          width={1100}
-          height={400}
-        />
+        <Image src={baner} alt="Logo Pizzaria" width={1100} height={400} />
       </div>
 
       <div className={styles.paginacao}>
@@ -510,7 +485,7 @@ export default function Home() {
               <div className={styles.quantityControl}>
                 <button
                   onClick={() => decrementQuantity(produto.id, selectedSize[produto.id])}
-                // disabled={!selectedSize[produto.id]}
+                  // disabled={!selectedSize[produto.id]}
                 >
                   -
                 </button>
@@ -522,7 +497,7 @@ export default function Home() {
                 </span>
                 <button
                   onClick={() => incrementQuantity(produto.id, selectedSize[produto.id])}
-                // disabled={!selectedSize[produto.id]}
+                  // disabled={!selectedSize[produto.id]}
                 >
                   +
                 </button>

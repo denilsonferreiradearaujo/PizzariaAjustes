@@ -111,21 +111,12 @@
   /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
 }
 
-// .baner {
-//   display: flex;
-//   justify-content: center;
-//   /* Centraliza horizontalmente */
-//   align-items: center;
-//   /* Centraliza verticalmente */
-// }
-
 .baner {
-  overflow: hidden;
-  position: relative;
-}
-
-.baner img {
-  transition: opacity 1s ease-in-out;
+  display: flex;
+  justify-content: center;
+  /* Centraliza horizontalmente */
+  align-items: center;
+  /* Centraliza verticalmente */
 }
 
 .paginacao {
