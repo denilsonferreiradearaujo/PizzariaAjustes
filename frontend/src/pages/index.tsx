@@ -150,12 +150,11 @@ export default function Home() {
   // 
   const images = [baner, img1, img2];
   const [currentIndex, setCurrentIndex] = useState(0);
-  const delay = 3000; // Tempo em milissegundos para trocar a imagem (ex: 3000ms = 3s)
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, delay);
+    }, 3000);
 
     return () => clearInterval(interval); // Limpa o intervalo quando o componente é desmontado
   }, []);
@@ -174,19 +173,6 @@ export default function Home() {
     };
     fetchCategorias();
   }, []);
-
-  // Adicionado item do carrinho no local storage
-  // useEffect(() => {
-  //   const storedCart = localStorage.getItem("cart");
-  //   if (storedCart) {
-  //     const parsedCart = JSON.parse(storedCart);
-  //     const uniqueCart = parsedCart.filter(
-  //       (item: CartItem, index: number, self: CartItem[]) =>
-  //         index === self.findIndex((i) => i.id === item.id && i.tamanho === item.tamanho)
-  //     );
-  //     setCart(uniqueCart);
-  //   }
-  // }, []);
 
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
@@ -221,44 +207,6 @@ export default function Home() {
     setSelectedSize((prevSelected) => ({ ...prevSelected, [produtoId]: tamanho }));
   };
 
-  // const addToCart = (produto: Produto) => {
-  //   const tamanhoSelecionado = selectedSize[produto.id];
-  //   const valorSelecionado = produto.valores.find((valor) => valor.tamanho === tamanhoSelecionado);
-
-  //   if (!tamanhoSelecionado || !valorSelecionado) {
-  //     toast.error("Por favor, selecione um tamanho.");
-  //     return;
-  //   }
-
-  //   setCart((prevCart) => {
-  //     // Verifica se o produto e tamanho já existem no carrinho
-  //     const existingItemIndex = prevCart.findIndex(
-  //       (item) => item.id === produto.id && item.tamanho === tamanhoSelecionado
-  //     );
-
-  //     if (existingItemIndex >= 0) {
-  //       // Incrementar quantidade no item existente
-  //       const updatedCart = [...prevCart];
-  //       updatedCart[existingItemIndex].quantidade;
-  //       localStorage.setItem("cart", JSON.stringify(updatedCart));
-  //       toast.success("Quantidade inserida no carrinho!")
-  //       return updatedCart;
-  //     } else {
-  //       // Adicionar novo item ao carrinho
-  //       const newItem: CartItem = {
-  //         id: produto.id,
-  //         nome: produto.nome,
-  //         tamanho: tamanhoSelecionado,
-  //         quantidade: 1,
-  //         preco: valorSelecionado.preco,
-  //       };
-  //       const updatedCart = [...prevCart, newItem];
-  //       localStorage.setItem("cart", JSON.stringify(updatedCart));
-  //       toast.success("Quantidade inserida no carrinho!")
-  //       return updatedCart;
-  //     }
-  //   });
-  // };
 
   const addToCart = (produto: Produto) => {
     const tamanhoSelecionado = selectedSize[produto.id];
@@ -304,43 +252,6 @@ export default function Home() {
     });
   };
 
-  // const incrementQuantity = (itemId: number, tamanho: string) => {
-  //   setCart((prevCart) => {
-  //     const existingItemIndex = prevCart.findIndex(
-  //       (item) => item.id === itemId && item.tamanho === tamanho
-  //     );
-
-  //     if (existingItemIndex >= 0) {
-  //       const updatedCart = prevCart.map((item, index) =>
-  //         index === existingItemIndex
-  //           ? { ...item, quantidade: item.quantidade + 1 }
-  //           : item
-  //       );
-  //       // localStorage.setItem("cart", JSON.stringify(updatedCart));
-  //       return updatedCart;
-  //     } else {
-  //       // Adiciona o item caso ele não exista
-  //       const produto = produtos.find((p) => p.id === itemId);
-  //       const tamanhoSelecionado = selectedSize[itemId];
-  //       const valorSelecionado = produto?.valores.find((v) => v.tamanho === tamanhoSelecionado);
-
-  //       if (produto && tamanhoSelecionado && valorSelecionado) {
-  //         const newItem: CartItem = {
-  //           id: produto.id,
-  //           nome: produto.nome,
-  //           tamanho: tamanhoSelecionado,
-  //           quantidade: 1,
-  //           preco: valorSelecionado.preco,
-  //           idValor: valorSelecionado.id, // Inclui o id do valor selecionado
-  //         };
-  //         const updatedCart = [...prevCart, newItem];
-  //         localStorage.setItem("cart", JSON.stringify(updatedCart));
-  //         return updatedCart;
-  //       }
-  //       return prevCart;
-  //     }
-  //   });
-  // };
 
   const incrementQuantity = (itemId: number, tamanho: string) => {
     setCart((prevCart) => {
@@ -378,24 +289,6 @@ export default function Home() {
       }
     });
   };
-
-
-  // const decrementQuantity = (itemId: number, tamanho: string) => {
-  //   console.log("Decrementando quantidade", itemId, tamanho);
-  //   setCart((prevCart) => {
-  //     const updatedCart = prevCart
-  //       .map((item) =>
-  //         item.id === itemId && item.tamanho === tamanho && item.quantidade > 1
-  //           ? { ...item, quantidade: item.quantidade - 1 }
-  //           : item
-  //       )
-  //       .filter((item) => item.quantidade > 0); // Remove itens com quantidade 0
-  //     localStorage.setItem("cart", JSON.stringify(updatedCart));
-  //     return updatedCart;
-  //   });
-  // };
-
-  // Funcão para direcionar para a página do carrinho.
 
   const decrementQuantity = (itemId: number, tamanho: string) => {
     setCart((prevCart) => {
@@ -464,13 +357,34 @@ export default function Home() {
           <Image src={baner} alt="Logo Pizzaria" width={1100} height={400} />
         </div> */}
 
-      <div className={styles.baner}>
-        <Image
-          src={images[currentIndex]}
-          alt={`Imagem ${currentIndex + 1}`}
-          width={1100}
-          height={400}
-        />
+      <div className={styles.carouselContainer}>
+        <div
+          className={styles.carouselTrack}
+          style={{
+            transform: `translateX(-${currentIndex * 100}%)`, // Muda a posição
+          }}
+        >
+          {images.map((image, index) => (
+            <Image
+              key={index}
+              src={image}
+              alt={`Imagem ${index + 1}`}
+              className={styles.carouselImage}
+              width={1100}
+              height={400}
+            />
+          ))}
+        </div>
+        <div className={styles.indicators}>
+          {images.map((_, index) => (
+            <div
+              key={index}
+              className={`${styles.indicator} ${index === currentIndex ? styles.active : ""
+                }`}
+              onClick={() => setCurrentIndex(index)} // Clique para mudar a imagem
+            />
+          ))}
+        </div>
       </div>
 
       <div className={styles.paginacao}>
@@ -503,7 +417,7 @@ export default function Home() {
                       checked={selectedSize[produto.id] === valor.tamanho}
                       onChange={() => handleSizeChange(produto.id, valor.tamanho)}
                     />
-                    {valor.tamanho} R${valor.preco}
+                    {valor.tamanho}: R${valor.preco}
                   </label>
                 ))}
               </div>

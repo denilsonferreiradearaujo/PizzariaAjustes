@@ -111,23 +111,6 @@
   /* Define o deslocamento para a esquerda (aumente/diminua conforme necessário) */
 }
 
-// .baner {
-//   display: flex;
-//   justify-content: center;
-//   /* Centraliza horizontalmente */
-//   align-items: center;
-//   /* Centraliza verticalmente */
-// }
-
-.baner {
-  overflow: hidden;
-  position: relative;
-}
-
-.baner img {
-  transition: opacity 1s ease-in-out;
-}
-
 .paginacao {
   display: flex;
   /* Ativa o Flexbox */
@@ -236,4 +219,64 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+// .baner {
+//   display: flex;
+//   justify-content: center;
+//   /* Centraliza horizontalmente */
+//   align-items: center;
+//   /* Centraliza verticalmente */
+// }
+
+.baner {
+  overflow: hidden;
+  position: relative;
+}
+
+.baner img {
+  transition: opacity 1s ease-in-out;
+}
+
+// 
+
+.carouselContainer {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 400px;
+}
+
+.carouselTrack {
+  display: flex;
+  transition: transform 0.5s ease-in-out; // Controle a suavidade
+  will-change: transform; // Melhor desempenho
+}
+
+.carouselImage {
+  flex-shrink: 0;
+  width: 100%; // Mesma largura que o contêiner
+  height: 100%;
+}
+
+.indicators {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  background-color: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.indicator.active {
+  background-color: #000; // Cor ativa
 }
