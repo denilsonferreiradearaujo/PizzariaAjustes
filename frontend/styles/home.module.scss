@@ -216,7 +216,7 @@
   padding: 0 0px;
   /* Espaçamento fixo entre a esquerda e a direita */
   background-color: var(--gray-900);
-  border: 1px solid #d1cfcf;
+  // border: 1px solid #d1cfcf;
   height: 70px;
 }
 
@@ -232,6 +232,7 @@
   justify-content: center;
   /* Centraliza horizontalmente */
   align-items: center;
+  margin: 10px;
   /* Centraliza verticalmente */
 }
 
