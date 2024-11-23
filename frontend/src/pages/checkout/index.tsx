@@ -268,7 +268,7 @@ const Checkout: React.FC = () => {
                 pessoaId: 1, // Ajuste conforme sua lógica
                 taxaEntregaId: 1, // Ajuste conforme sua lógica
                 status: "Aberto",
-                numMesa: 50, // Ajuste conforme sua lógica
+                numMesa: "", // Ajuste conforme sua lógica
                 valTotal: cart.reduce((total, item) => total + item.preco * item.quantidade, 0),
                 items: cart.map((item) => ({
                     produtoId: item.produtoId,
@@ -294,6 +294,7 @@ const Checkout: React.FC = () => {
 
     return (
         <>
+
             <Head>
                 <title>Checkout</title>
             </Head>
@@ -306,7 +307,7 @@ const Checkout: React.FC = () => {
                 </div>
                 <div className={styles.nav}>
                     <Link href="/" legacyBehavior>
-                        <a className={styles.button}>Home</a>
+                        <a className={styles.button}>Voltar</a>
                     </Link>
                 </div>
             </header>
@@ -315,6 +316,7 @@ const Checkout: React.FC = () => {
                 <h1>Finalizar Pedido</h1>
 
             </div>
+
             <div className={styles.checkoutContainerPrimaria}>
                 <div className={styles.checkoutContainer}>
 
@@ -426,9 +428,10 @@ const Checkout: React.FC = () => {
                         Confirmar Pedido
                     </button>
                 </div >
-            </div>
-            <Footer />
 
+            </div>
+
+            <Footer />
         </>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
     View,
     Text,
@@ -15,6 +15,7 @@ import { Feather } from '@expo/vector-icons'
 import { api } from "../../services/api";
 import { ModalPicker } from '../../components/ModalPicker'
 import { ListItem } from '../../components/ListItem'
+import { AuthContext } from '../../contexts/AuthContexts'
 
 type RouteDetailParams = {
     Order: {
@@ -30,12 +31,20 @@ export type CategoryProps = {
 type ProductProps = {
     id: string;
     nome: string;
+    valores: ProductSizesProps[]; // Adicione esta linha
 }
 
 type ItemProps = {
     id: string;
     product_id: string;
     amount: string | number;
+}
+
+type ProductSizesProps = {
+    tamanhoId: string;
+    tamanho: string,
+    id: number,
+    preco: number; // Adicione o preço ao tipo
 }
 
 type OrderRouteProps = RouteProp<RouteDetailParams, 'Order'>;
@@ -52,8 +61,17 @@ export default function Order() {
     const [productSelected, setProductSelected] = useState<ProductProps | undefined>()
     const [modalProductVisible, setModalProductVisible] = useState(false);
 
+    const [productSize, setProductSize] = useState<ProductSizesProps[] | []>([]);
+    const [selectedSizes, setSelectedSizes] = useState<ProductSizesProps | undefined>()
+    const [modalProductSize, setModalProductSize] = useState(false)
+
     const [amount, setAmount] = useState('1')
     const [items, setItems] = useState<ItemProps[]>([]);
+
+    const { user } = useContext(AuthContext)
+
+    // console.log("Usuario: ",user.id);
+
 
     useEffect(() => {
         async function loadInfo() {
@@ -78,13 +96,51 @@ export default function Order() {
 
             setProducts(response.data);
             setProductSelected(response.data[0])
-
+            // setProductSize(response.data[0].valores)
+            setSelectedSizes(response.data[0].valores)
+            console.log(response.data);
+            // console.log(response.data[0].valores);
 
         }
 
         loadProducts();
 
     }, [categorySelected])
+
+    useEffect(() => {
+        async function loadProducts() {
+            const response = await api.get('/produtos', {
+                params: {
+                    categoriaId: categorySelected?.id
+                }
+            });
+
+            setProducts(response.data);
+            const firstProduct = response.data[0];
+            setProductSelected(firstProduct);
+            setSelectedSizes(firstProduct.valores[0]);
+
+            // Atualiza `productSize` com os tamanhos disponíveis do primeiro produto
+            setProductSize(firstProduct.valores.map((size: ProductSizesProps) => ({
+                tamanhoId: size.tamanhoId,
+                tamanho: size.tamanho,
+            })));
+        }
+
+        loadProducts();
+    }, [categorySelected]);
+
+    // Atualiza `productSize` quando o produto selecionado mudar
+    useEffect(() => {
+        if (productSelected) {
+            setProductSize(productSelected.valores.map((size: ProductSizesProps) => ({
+                tamanhoId: size.tamanhoId,
+                tamanho: size.tamanho,
+                preco: size.preco,
+                id: size.id
+            })));
+        }
+    }, [productSelected]);
 
     async function handleCloseOrder() {
         try {
@@ -98,12 +154,95 @@ export default function Order() {
         setCategorySelected(item);
     }
 
-    function handleChangeProduct(item: ProductProps){
+    function handleChangeProduct(item: ProductProps) {
         setProductSelected(item);
     }
 
-    async function handleAdd(){
-        console.log("Clicouuu");
+    async function handleAdd() {
+
+        let data = {
+            product_id: productSelected?.id as string,
+            nome: productSelected?.nome as string,
+            tamanho: selectedSizes?.tamanho as string,
+            idValor: selectedSizes?.id as number,
+            preco: selectedSizes?.preco as number,
+            amount: amount
+        }
+
+        setItems(oldArray => [...oldArray, data])
+
+    }
+
+    async function handleDeleteItem(item_id: string) {
+        let removeItem = items.filter(item => {
+            return (item.product_id !== item_id)
+        })
+
+        setItems(removeItem)
+    }
+
+    async function handleRealizarPedido() {
+        console.log("Itens: ", items);
+
+
+        // Calcula o valor total do pedido somando o preço de cada item multiplicado pela quantidade     
+        const valTotal = items.reduce((acc, item) => {
+            const precoTotalItem = parseFloat(item.preco) * parseInt(item.amount);
+            return acc + precoTotalItem;
+        }, 0);
+
+
+        const itemsPayload = {
+            pessoaId: user.id,
+            status: "Aberto",
+            numMesa: Number(route.params.number),
+            valTotal: valTotal,
+            items: items.map(item => ({
+                produtoId: item.product_id,
+                quantidade: Number(item.amount),
+                idValor: selectedSizes?.id,
+            }))
+        };
+
+        console.log("ASD:  ", itemsPayload);
+
+
+
+        await api.post('/createPedido', itemsPayload)
+            .then(response => {
+                console.log("Response:", response);
+            }).catch(error => {
+                console.log("Error: ", error);
+            })
+
+        // try {
+        //   const taxaEntregaId = 1;
+        //   const status = "Aberto";
+        //   const numMesa = route.params.number;
+        //   const valTotal = items.reduce((total, item) => total + item.amount * 10, 0);
+
+        //   const itemsPayload = items.map(item => ({
+        //     produtoId: item.product_id,
+        //     quantidade: Number(item.amount),
+        //     idValor: selectedSizes?.tamanhoId,
+        //   }));
+
+        //   const response = await api.post('/createPedido', {
+        //     taxaEntregaId,
+        //     status,
+        //     numMesa,
+        //     valTotal,
+        //     items: itemsPayload,
+        //   });
+
+        //   console.log("Pedido criado com sucesso:", response.data);
+        //   alert("Pedido realizado com sucesso!");
+
+        //   navigation.goBack();
+        // } catch (error) {
+        //   console.error("Erro ao criar pedido:", error);
+        //   alert("Erro ao criar pedido: " + error.message);
+        // }
     }
 
 
@@ -112,9 +251,11 @@ export default function Order() {
 
             <View style={styles.header}>
                 <Text style={styles.title}>Mesa {route.params.number}</Text>
-                <TouchableOpacity onPress={handleCloseOrder}>
-                    <Feather name="trash-2" size={28} color="#d41408" />
-                </TouchableOpacity>
+                {items.length === 0 && (
+                    <TouchableOpacity onPress={handleCloseOrder}>
+                        <Feather name="trash-2" size={28} color="#d41408" />
+                    </TouchableOpacity>
+                )}
             </View>
 
 
@@ -135,6 +276,15 @@ export default function Order() {
                 </TouchableOpacity>
             )}
 
+            {productSize.length !== 0 && categorySelected?.nome !== 'Bebidas' && (
+                <TouchableOpacity style={styles.input} onPress={() => setModalProductSize(true)}>
+                    <Text style={{ color: '#FFF' }}>
+                        {selectedSizes?.tamanho}
+
+                    </Text>
+                </TouchableOpacity>
+            )}
+
             <View style={styles.qtdContainer}>
                 <Text style={styles.qtdText}>Quantidade</Text>
                 <TextInput
@@ -151,21 +301,22 @@ export default function Order() {
                     <Text style={styles.buttonText}>+</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity 
-                style={[styles.button, { opacity: items.length === 0 ? 0.3 : 1 }]}
-                disabled={items.length === 0}
+                <TouchableOpacity
+                    style={[styles.button, { opacity: items.length === 0 ? 0.3 : 1 }]}
+                    disabled={items.length === 0}
+                    onPress={handleRealizarPedido}
                 >
-                    <Text style={styles.buttonText}>Avançar</Text>
+                    <Text style={styles.buttonText}>Produzir Pedido</Text>
                 </TouchableOpacity>
             </View>
 
 
             <FlatList
-            showsVerticalScrollIndicator={false}
-            style={{ flex: 1, marginTop: 24 }}
-            data={items}
-            keyExtractor={(item) => item.id}
-            renderItem={ ({item}) =>  <ListItem data={item}/>}
+                showsVerticalScrollIndicator={false}
+                style={{ flex: 1, marginTop: 24 }}
+                data={items}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => <ListItem data={item} deleteItem={handleDeleteItem} />}
             />
 
 
@@ -195,6 +346,18 @@ export default function Order() {
                     selectedItem={handleChangeProduct}
                 />
 
+            </Modal>
+
+            <Modal
+                transparent={false}
+                visible={modalProductSize}
+                animationType="none"
+            >
+                <ModalPicker
+                    handleCLoseModal={() => setModalProductSize(false)}
+                    options={productSize} // Aqui estamos passando as opções de tamanhos.
+                    selectedItem={(item) => setSelectedSizes(item as ProductSizesProps)} // Convertendo o item para ProductSizesProps
+                />
             </Modal>
 
         </View>

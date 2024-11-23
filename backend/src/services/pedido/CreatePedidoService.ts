@@ -26,14 +26,14 @@ class CreatePedidoService {
       throw new Error("Pessoa não encontrada.");
     }
 
-    // Verificar se a Taxa de Entrega existe
-    const taxaEntregaExists = await prismaClient.taxaEntrega.findUnique({
-      where: { id: taxaEntregaId },
-    });
+    // // Verificar se a Taxa de Entrega existe
+    // const taxaEntregaExists = await prismaClient.taxaEntrega.findUnique({
+    //   where: { id: taxaEntregaId },
+    // });
 
-    if (!taxaEntregaExists) {
-      throw new Error("Taxa de entrega não encontrada.");
-    }
+    // if (!taxaEntregaExists) {
+    //   throw new Error("Taxa de entrega não encontrada.");
+    // }
 
     // Validar items
     if (!items || items.length === 0) {

@@ -331,12 +331,12 @@ export default function Product({ categoryList }: CategoryProps) {
                   >
                     <h2>{product.nome}</h2>
 
+                    <p>{product.descricao}</p>
+
                     {/* Exibe o status do produto com a cor apropriada */}
                     <p className={product.status === 'Ativo' ? styles.statusAtivo : styles.statusInativo}>
                       {product.status}
                     </p>
-
-                    <p>{product.descricao}</p>
                   </li>
                 ))}
             </ul>
@@ -349,7 +349,7 @@ export default function Product({ categoryList }: CategoryProps) {
       {isModalOpen && selectedProduct && (
         <ProductDetailsModal product={selectedProduct} onClose={closeModal} onUpdate={fetchProducts}>
           <h2>{selectedProduct.nome}</h2>
-          <p>{selectedProduct.descricao}</p>
+          <p className={styles.descricao}>{selectedProduct.descricao}</p>
           {selectedProduct.tamanhos && (
             <ul>
               {selectedProduct.tamanhos.map((size, index) => (

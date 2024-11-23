@@ -1,0 +1,63 @@
+{
+    "Categoria": {
+        "nome": "Pizza Salgada"
+    },
+    "categoriaId": 1,
+    "dataCreate": "2024-11-08T22:27:16.762Z",
+    "dataUpdate": null,
+    "descricao": "Massa de pizza com farinha de trigo, água, fermento biológico, sal e azeite; molho de tomate feito com tomates maduros",
+    "id": 1,
+    "nome": "Pizza de Marguerita",
+    "valores": [
+        {
+            "Tamanho": [Object
+            ],
+            "dataCreate": "2024-11-08T22:27:16.826Z",
+            "dataUpdate": null,
+            "id": 1,
+            "preco": "25.00",
+            "produtoId": 1,
+            "status": true,
+            "tamanho": "Pequena",
+            "tamanhoId": 1
+        },
+        {
+            "Tamanho": [Object
+            ],
+            "dataCreate": "2024-11-08T22:27:16.851Z",
+            "dataUpdate": null,
+            "id": 2,
+            "preco": "45.00",
+            "produtoId": 1,
+            "status": true,
+            "tamanho": "Média",
+            "tamanhoId": 2
+        },
+        {
+            "Tamanho": [Object
+            ],
+            "dataCreate": "2024-11-08T22:27:16.865Z",
+            "dataUpdate": null,
+            "id": 3,
+            "preco": "60.00",
+            "produtoId": 1,
+            "status": true,
+            "tamanho": "Grande",
+            "tamanhoId": 3
+        }
+    ]
+}
+
+{
+    "items": [
+        {
+            "idValor": 1,
+            "produtoId": 1,
+            "quantidade": 1
+        }
+    ],
+    "numMesa": "7",
+    "pessoaId": 1,
+    "status": "Aberto",
+    "valTotal": 25
+}
