@@ -1,145 +1,164 @@
-.privacyContainer {
-    max-width: 800px;
+// Estilos para o contêiner de política de privacidade
+.contact {
+    max-width: 900px;
     margin: 0 auto;
     padding: 20px;
     line-height: 1.6;
-    font-family: Arial, sans-serif;
-    color: #333;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #000000;
+    
 
-    h1 {
+    h1{
         text-align: center;
         font-size: 2rem;
-        color: #444;
-        margin-bottom: 20px;
+        color: #000000;
+        margin-bottom: 15px;
     }
-
-    h2 {
-        font-size: 1.5rem;
-        color: #666;
-        margin-top: 20px;
-    }
-
-    p {
+     .citacao{
+        text-align: center;
+        font-size: 1rem;
+        color: #000000;
         margin-bottom: 15px;
     }
 
+    h2 {
+        font-size: 1.8rem;
+        color: #000000;
+        margin-top: 25px;
+    }
+
+    p {
+        margin-bottom: 1rem;
+        text-align: justify;
+    }
+
     ul {
-        list-style-type: disc;
+        list-style-type: circle;
         padding-left: 20px;
         margin-left: 15px;
 
         li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
     }
 
     strong {
         font-weight: bold;
+        color: #000;
     }
 }
 
+// Estilos para o cabeçalho
 .header {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    /* Distribui logo à esquerda e botões à direita */
     align-items: center;
-    padding: 0 0px;
-    /* Espaçamento fixo entre a esquerda e a direita */
-    background-color: var(--gray-900);
-    border: 1px solid #ffffff;
-    height: 80px;
-  }
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border-bottom: 2px solid #ffffff;
+    height: 70px;
+}
 
-  .logo {
+.logo {
     display: flex;
     align-items: center;
-    margin-left: 177px;
-  }
-
-  .button {
-    background-color: var(--orange-500);
-    color: var(--white);
-    padding: 10px 100px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    margin-bottom: 20px;
-  
-    }
-
-    .button:hover {
-        background-color: #FFC107;
-    }
-//   
-.citacao{
-    margin-left: 35px;
 }
+
+// .button {
+//     background-color: #e74c3c;
+//     color: white;
+//     padding: 12px 25px;
+//     border-radius: 5px;
+//     text-decoration: none;
+//     font-size: 1rem;
+//     transition: background-color 0.3s ease;
+
+//     &:hover {
+//         background-color: #c0392b;
+//     }
+// }
+
+// Estilos para o formulário de contato
 .form {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 800px;
+    width: 100%;
     margin: 0 auto;
-}
+    padding: 20px;
+    
 
-.formGroup {
-    position: relative;
-    margin-bottom: 15px;
-    width: 50%;
-}
+    .formGroup {
+        position: relative;
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 500px;
 
-.input {
-    width: 400px;
-    padding: 10px 10px 10px 40px;
-    border: 1px solid black;
-    border-radius: 4px;
-    outline: none;
-    background-color:--white;
-    color: --black;
-}
+        .input,
+        .textArea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid black;
+            border-radius: 4px;
+            outline: none;
+            background-color: #ffffff;
+            transition: border-color 0.3s ease;
+            
 
-.textArea {
-    width: 400px;
-    height: 400px;
-    padding: 20px 10px 10px 40px;
-    vertical-align: top;
-    resize:none;
-    border: 1px solid black;
-    border-radius: 4px;
-    outline: none;
-    background-color:--white;
-    color: --black;
-}
+           
+        }
 
-.a {
-    color: --black; // Cor do link
-    margin: 10px; // Espaçamento horizontal entre os links
-    text-decoration: none; // Remove sublinhado
-    transition: color 0.3s ease; // Transição suave para hover
-    padding: 10px 100px;
-
-    &:hover {
-        color: #FFC107; // Cor do link ao passar o mouse
+        .textArea {
+            height: 200px;
+            resize: vertical;
+        }
     }
+
+  
 }
 
+// Estilos para contêiner principal
 .container {
     display: flex;
     gap: 2rem;
-    max-width: 1000px;
-    margin: 2rem auto;
+    max-width: 1200px;
+    margin: 3rem auto;
     padding: 2rem;
     animation: fadeIn 1s ease-in-out;
-  }
-  
-  .formContainer {
+   
+   
+}
+
+// Estilos para contêiner do formulário
+.formContainer {
     flex: 2;
-    max-width: 1000px;
-    padding: 2rem;
-    background-color: var(--dark-800);
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+
     transition: transform 0.3s ease;
-  }
+
+    &:hover {
+        transform: scale(1.02);
+    }
+}
+
+// Estilos para botões de navegação
+.nav, .button {
+    color: #ffffff;
+    text-decoration: dashed;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #c8102e;
+
+    &:hover {
+        background-color: #a10d24;
+    }
+}

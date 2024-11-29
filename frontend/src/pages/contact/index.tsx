@@ -1,68 +1,73 @@
-import React from 'react';
-import emailjs from 'emailjs-com';
+import React, { FormEvent } from 'react';
 import { Footer } from '../../components/Footer';
 import styles from './style.module.scss';
 import Image from "next/image";
 import Link from "next/link";
 import logoImg from '../../../public/logo.png';
 import { toast } from 'react-toastify';
+import emailjs from 'emailjs-com'; // Descomente ao usar emailjs / lembre-se de baixar a biblioteca back e front npm install emailjs-com
 
-const PrivacyPolicy: React.FC = () => {
-    const enviarEmail = (e) => {
+
+const Contact: React.FC = () => {
+    const enviarEmail = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const form = e.target as HTMLFormElement;
 
-        // Capture a data e a hora atuais
+        // Captura a data e a hora atuais
         const currentDate = new Date();
         const date = currentDate.toLocaleDateString();
         const time = currentDate.toLocaleTimeString();
 
-        e.target.date.value = date;
-        e.target.time.value = time;
+        // Atualiza os campos ocultos com data e hora
+        const dateInput = form.elements.namedItem("date") as HTMLInputElement;
+        const timeInput = form.elements.namedItem("time") as HTMLInputElement;
+        const requestIdInput = form.elements.namedItem("request_id") as HTMLInputElement;
 
+        dateInput.value = date;
+        timeInput.value = time;
+
+        // Gera o número de requisição
         let contadorRequisicao = Number(sessionStorage.getItem('contadorRequisicao')) || 1;
 
-        function gerarNumeroRequisicao() {
+        const gerarNumeroRequisicao = (): string => {
             const hoje = new Date();
-            const ano = hoje.getFullYear().toString().padStart(4, '0');  // 'yy'
-            const mes = (hoje.getMonth() + 1).toString().padStart(2, '0');  // 'mm'
-            const dia = hoje.getDate().toString().padStart(2, '0');  // 'dd'
-
-            // Concatena data com contador crescente
+            const ano = hoje.getFullYear().toString();
+            const mes = (hoje.getMonth() + 1).toString().padStart(2, '0');
+            const dia = hoje.getDate().toString().padStart(2, '0');
             const numeroRequisicao = `${ano}${mes}${dia}-${contadorRequisicao.toString().padStart(6, '0')}`;
 
-            // Incrementa o contador e armazena
+            // Incrementa o contador e salva no sessionStorage
             contadorRequisicao++;
-            sessionStorage.setItem('contadorRequisicao', contadorRequisicao);
+            sessionStorage.setItem('contadorRequisicao', contadorRequisicao.toString());
 
             return numeroRequisicao;
-        }
+        };
 
-        // Exemplo de uso
         const requestId = gerarNumeroRequisicao();
+        requestIdInput.value = requestId;
 
-        // Atribui o request_id para o campo oculto (ou diretamente no formulário)
-        e.target.request_id.value = requestId;
+        // Envio via emailjs (descomentar para ativar)
 
-        // Adicione data e hora como parâmetros extras
         emailjs
             .sendForm(
                 'service_b1wujkg',
                 'template_emidah4',
-                e.target,
-                '3JaBOCjox6QJDTSxj',
+                form,
+                '3JaBOCjox6QJDTSxj'
             )
             .then(
                 (result) => {
-                    console.log(result.text);
+                    console.log("E-mail enviado:", result.text);
                     toast.success("E-mail enviado com sucesso!");
                 },
                 (error) => {
-                    console.log(error.text);
-                    toast.error("Houve um erro ao enviar o e-mail. Tente novamente.");
+                    console.error("Erro no envio:", error);
+                    toast.error("Erro ao enviar o e-mail. Verifique as configurações.");
                 }
             );
 
-        e.target.reset();
+        form.reset();
+        toast.info("Formulário processado.");
     };
 
     return (
@@ -75,17 +80,19 @@ const PrivacyPolicy: React.FC = () => {
                         </div>
                         <div className={styles.nav}>
                             <Link href="/" legacyBehavior>
-                                <a className={styles.a}>Home</a>
+                                <a className={styles.nav}>Voltar</a>
                             </Link>
                         </div>
                     </header>
-                    <div className={styles.privacyContainer}>
+                    <div className={styles.contact}>
                         <h1>Entre em contato pelos nossos canais de opinião</h1>
-                        <p className={styles.citacao}>Deixe sua opinião, contato ou sugestão sobre nossos serviços para melhor atendê-lo novamente.</p>
+                        <p className={styles.citacao}>
+                            Deixe sua opinião, contato ou sugestão sobre nossos serviços para melhor atendê-lo novamente.
+                        </p>
 
                         <form className={styles.form} onSubmit={enviarEmail}>
                             <div className={styles.formGroup}>
-                                <label>Preencha seu nome:</label>
+                                <label htmlFor="name">Preencha seu nome:</label>
                                 <input
                                     className={styles.input}
                                     id="name"
@@ -96,7 +103,7 @@ const PrivacyPolicy: React.FC = () => {
                             </div>
 
                             <div className={styles.formGroup}>
-                                <label>Adicione seu e-mail:</label>
+                                <label htmlFor="email">Adicione seu e-mail:</label>
                                 <input
                                     className={styles.input}
                                     id="email"
@@ -107,7 +114,7 @@ const PrivacyPolicy: React.FC = () => {
                             </div>
 
                             <div className={styles.formGroup}>
-                                <label>Descrição:</label>
+                                <label htmlFor="mensagem">Descrição:</label>
                                 <textarea
                                     className={styles.textArea}
                                     id="mensagem"
@@ -117,7 +124,7 @@ const PrivacyPolicy: React.FC = () => {
                                 ></textarea>
                             </div>
 
-                            {/* Campos ocultos para data e hora */}
+                            {/* Campos ocultos para data, hora e ID de requisição */}
                             <input type="hidden" name="date" />
                             <input type="hidden" name="time" />
                             <input type="hidden" name="request_id" />
@@ -129,7 +136,6 @@ const PrivacyPolicy: React.FC = () => {
                             <p><em>Servir bem para servir sempre</em></p>
                         </form>
                     </div>
-
                 </div>
             </main>
             <Footer />
@@ -137,4 +143,4 @@ const PrivacyPolicy: React.FC = () => {
     );
 };
 
-export default PrivacyPolicy;
+export default Contact;

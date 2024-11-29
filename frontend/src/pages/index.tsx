@@ -478,24 +478,24 @@ export default function Home() {
                       checked={selectedSize[produto.id] === valor.tamanho}
                       onChange={() => handleSizeChange(produto.id, valor.tamanho)}
                     />
-                    {valor.tamanho} R${valor.preco}
+                    {valor.tamanho} R$ {valor.preco}
                   </label>
                 ))}
               </div>
               <div className={styles.quantityControl}>
-                <button
+                <button className={styles.quantityButton}
                   onClick={() => decrementQuantity(produto.id, selectedSize[produto.id])}
                   // disabled={!selectedSize[produto.id]}
                 >
                   -
                 </button>
-                <span>
+                <span className={styles.quantityValue}>
                   {cart.find(
                     (item) =>
                       item.id === produto.id && item.tamanho === selectedSize[produto.id]
                   )?.quantidade || 0}
                 </span>
-                <button
+                <button   className={styles.quantityButton}
                   onClick={() => incrementQuantity(produto.id, selectedSize[produto.id])}
                   // disabled={!selectedSize[produto.id]}
                 >

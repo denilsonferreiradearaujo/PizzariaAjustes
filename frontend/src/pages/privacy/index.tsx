@@ -18,7 +18,7 @@ const PrivacyPolicy: React.FC = () => {
                 <div className={styles.nav}>
 
                     <Link href="/" legacyBehavior>
-                        <a className={styles.button}>Home</a>
+                        <a className={styles.button}>Voltar</a>
                     </Link>
 
                 </div>
