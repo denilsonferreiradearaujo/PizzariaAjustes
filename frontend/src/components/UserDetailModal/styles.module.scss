@@ -2,70 +2,69 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    padding: 3rem;
-    background-color: #ffffff;
-    border-radius: 25px;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 20px;
     max-width: 600px;
     width: 90%;
     margin: 0 auto;
     color: #333;
-    font-family: 'Arial', sans-serif;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-    animation: slide-in 0.5s ease-out;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s ease-out;
     max-height: 80vh;
     overflow-y: auto;
-    margin-top: 14vh;
+    margin-top: 10vh;
 
-    @keyframes slide-in {
+    @keyframes fadeIn {
         from {
-            transform: translateY(-20px);
             opacity: 0;
+            transform: scale(0.9);
         }
         to {
-            transform: translateY(0);
             opacity: 1;
+            transform: scale(1);
         }
     }
 
     h2 {
-        color: #333;
+        color: #444;
         font-size: 2rem;
-        font-weight: bold;
+        font-weight: 600;
         text-align: center;
         margin-bottom: 1rem;
-        letter-spacing: 1px;
     }
 
     label {
         display: flex;
         flex-direction: column;
-        color: #444;
-        font-weight: bold;
+        color: #555;
+        font-weight: 500;
         gap: 0.5rem;
 
         input, select {
-            padding: 0.75rem;
-            border: 1px solid var(--gray-100); /* Borda igual à dos outros inputs */
-            border-radius: 4px;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             font-size: 1rem;
+            background-color: #fff;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
-            background-color: white;
 
             &:focus {
-                border-color: #1e90ff;
-                box-shadow: 0 0 8px rgba(30, 144, 255, 0.3);
+                border-color: #4a90e2;
+                box-shadow: 0 0 5px rgba(74, 144, 226, 0.4);
                 outline: none;
             }
         }
     }
 
     h3 {
-        color: #333333;
         font-size: 1.5rem;
-        margin-top: 2rem;
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        border-bottom: 1px solid #ffffff;
+        font-weight: 600;
+        margin-top: 1.5rem;
+        color: #555;
+        border-bottom: 2px solid #eee;
         padding-bottom: 0.5rem;
     }
 
@@ -73,45 +72,41 @@
     .phoneGroup {
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
-        background-color: #ffffff;
-        border-radius: 6px;
-        margin-bottom: 1.5rem;
-
-        label {
-            font-weight: normal;
-            color: #666;
-        }
+        gap: 1rem;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .modalButtons {
         display: flex;
         justify-content: space-between;
-        margin-top: 2rem;
+        margin-top: 1.5rem;
 
         .saveButton, .closeButton {
-            padding: 0.8rem 1.5rem;
+            padding: 0.8rem 2rem;
             font-size: 1rem;
             font-weight: bold;
             color: #fff;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
             border: none;
 
             &.saveButton {
-                background-color: #D41509;
+                background-color: #4caf50;
 
                 &:hover {
-                    background-color: #D41509;
+                    background-color: #45a049;
                 }
             }
 
             &.closeButton {
-                background-color: black;
+                background-color: #f44336;
 
                 &:hover {
-                    background-color: black;
+                    background-color: #e53935;
                 }
             }
         }
@@ -120,13 +115,22 @@
 
 .modal-overlay {
     position: fixed;
-    top: 0; /* Começa do topo */
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
-    padding: 1rem;
-}   
+    align-items: center;
+    animation: fadeOverlay 0.3s ease-out;
 
+    @keyframes fadeOverlay {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+}
