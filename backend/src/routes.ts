@@ -56,7 +56,8 @@ router.get("/produtos", new ListProductByCategoryController().handle);
 // Rotas taxa de entrega
 router.post('/addTaxaEntrega', new CreateTaxaEntregaController().handle);
 router.get('/taxasEntrega', new ListAllTaxaEntregaController().handle);
-router.post('/updateTaxaEntrega/:id', new UpdateTaxaEntregaController().handle);
+router.put('/updateTaxaEntrega/:id', new UpdateTaxaEntregaController().handle);
+// router.delete('/taxaEntrega/:id', new DeleteTaxaEntregaController().handle);
 
 // Rotas dos pedidos
 router.post('/createPedido', new CreatePedidoController().handle); // [RF007] - Solicitação de pedido via delivery  

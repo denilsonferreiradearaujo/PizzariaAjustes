@@ -5,11 +5,11 @@ import Head from "next/head";
 import Image from "next/image";
 import { toast } from 'react-toastify';
 
-import img1 from "../../public/PizzaPacoca.jpeg"; // Importe as imagens que você quer usar no carrossel
-import img2 from "../../public/Portuguesa.png";
+import img1 from "../../public/banner01.jpg"; // Importe as imagens que você quer usar no carrossel
+import img2 from "../../public/banner02.jpg";
+import baner from '../../public/baner.jpg';
 
 import logoImg from '../../public/logo.png';
-import baner from '../../public/baner.jpg';
 import calabresaImg from '../../public/calabresa.png'; // Pizzas Salgadas
 import alohoPoroImg from '../../public/alhoPorocomSalada.png';
 import portuguesaImg from '../../public/Portuguesa.png';
@@ -147,7 +147,7 @@ export default function Home() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // 
+  // banber começa aqui
   const images = [baner, img1, img2];
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -159,7 +159,7 @@ export default function Home() {
     return () => clearInterval(interval); // Limpa o intervalo quando o componente é desmontado
   }, []);
 
-  // 
+  // termina aqui
 
   useEffect(() => {
     const fetchCategorias = async () => {
@@ -357,6 +357,7 @@ export default function Home() {
           <Image src={baner} alt="Logo Pizzaria" width={1100} height={400} />
         </div> */}
 
+        {/* começa aqui */}
       <div className={styles.carouselContainer}>
         <div
           className={styles.carouselTrack}
@@ -386,6 +387,7 @@ export default function Home() {
           ))}
         </div>
       </div>
+      {/* termina aqui */}
 
       <div className={styles.paginacao}>
         {categorias.map((categoria) => (
