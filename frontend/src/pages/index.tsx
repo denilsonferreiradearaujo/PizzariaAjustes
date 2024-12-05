@@ -5,7 +5,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { toast } from 'react-toastify';
 
-import img1 from "../../public/banner01.jpg"; // Importe as imagens que você quer usar no carrossel
+import img1 from "../../public/banner01.jpg";
 import img2 from "../../public/banner02.jpg";
 import baner from '../../public/baner.jpg';
 
@@ -357,7 +357,7 @@ export default function Home() {
           <Image src={baner} alt="Logo Pizzaria" width={1100} height={400} />
         </div> */}
 
-        {/* começa aqui */}
+      {/* começa aqui */}
       <div className={styles.carouselContainer}>
         <div
           className={styles.carouselTrack}
@@ -387,6 +387,7 @@ export default function Home() {
           ))}
         </div>
       </div>
+      <p>Imagem de graphicforest no Freepik</p>
       {/* termina aqui */}
 
       <div className={styles.paginacao}>
