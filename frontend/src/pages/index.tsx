@@ -387,9 +387,8 @@ export default function Home() {
           ))}
         </div>
       </div>
-      <p>Imagem de graphicforest no Freepik</p>
+      {/* Imagem de graphicforest no Freepik */}
       {/* termina aqui */}
-
       <div className={styles.paginacao}>
         {categorias.map((categoria) => (
           <button
